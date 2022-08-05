@@ -14,17 +14,17 @@ output "certificate" {
 }
 
 output "eks_cluster" {
-  value = {
+  value = var.create_eks ? {
     issuer                                    = module.eks.issuer
     name                                      = module.eks.cluster_name
     endpoint                                  = module.eks.endpoint
     aws_load_balancer_controller_iam_role_arn = module.eks.aws_load_balancer_controller_iam_role_arn
     external_dns_iam_role_arn                 = module.eks.external_dns_iam_role_arn
-  }
+  } : null
 }
 
 output "kubeconfig_certificate_authority_data" {
-  value = module.eks.kubeconfig_certificate_authority_data
+  value = var.create_eks ? module.eks.kubeconfig_certificate_authority_data : null
 }
 
 output "tags" {
