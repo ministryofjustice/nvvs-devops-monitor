@@ -48,6 +48,7 @@ module "eks_label" {
 }
 
 module "eks" {
+  create          = var.create_eks
   source          = "./modules/eks"
   prefix          = module.eks_label.id
   private_subnets = module.vpc.private_subnets

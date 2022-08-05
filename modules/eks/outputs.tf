@@ -1,23 +1,23 @@
 output "cluster_name" {
-  value = aws_eks_cluster.this.name
+  value = var.create ? aws_eks_cluster.this[0].name : null
 }
 
 output "endpoint" {
-  value = aws_eks_cluster.this.endpoint
+  value = var.create ? aws_eks_cluster.this[0].endpoint : null
 }
 
 output "kubeconfig_certificate_authority_data" {
-  value = aws_eks_cluster.this.certificate_authority[0].data
+  value = var.create ? aws_eks_cluster.this[0].certificate_authority[0].data : null
 }
 
 output "aws_load_balancer_controller_iam_role_arn" {
-  value = aws_iam_role.aws_load_balancer_controller.arn
+  value = var.create ? aws_iam_role.aws_load_balancer_controller[0].arn : null
 }
 
 output "external_dns_iam_role_arn" {
-  value = aws_iam_role.external_dns.arn
+  value = var.create ? aws_iam_role.external_dns[0].arn : null
 }
 
 output "issuer" {
-  value = aws_eks_cluster.this.identity[0].oidc[0].issuer
+  value = var.create ? aws_eks_cluster.this[0].identity[0].oidc[0].issuer : null
 }

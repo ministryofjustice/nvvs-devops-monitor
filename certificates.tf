@@ -17,4 +17,8 @@ module "acm" {
   wait_for_validation = true
 
   tags = module.acm_label.tags
+
+  providers = {
+    aws = aws.main
+  }
 }
