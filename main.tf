@@ -1,6 +1,18 @@
+terraform {
+  backend "s3" {
+    bucket         = "staff-infrastructure-monitoring-cluster-tf-state"
+    dynamodb_table = "staff-infrastructure-monitoring-cluster-tf-lock-table"
+    region         = "eu-west-2"
+  }
+}
+
 provider "aws" {
   region = var.aws_region
   alias  = "main"
+
+  assume_role {
+    role_arn = var.assume_role
+  }
 }
 
 data "aws_availability_zones" "available_zones" {

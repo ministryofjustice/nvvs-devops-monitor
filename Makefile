@@ -4,7 +4,8 @@ fmt:
 	terraform fmt --recursive
 
 init:
-	terraform init -upgrade
+	terraform init -upgrade -reconfigure \
+	--backend-config="key=terraform.development.state"
 
 validate:
 	terraform validate
