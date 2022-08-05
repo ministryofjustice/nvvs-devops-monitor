@@ -1,3 +1,8 @@
+variable "assume_role" {
+  description = "The role to assume in different environments"
+  type        = string
+}
+
 variable "aws_region" {
   description = "The AWS region to create things in"
   type        = string
