@@ -1,3 +1,17 @@
+output "terraform_workspace" {
+  value = terraform.workspace
+}
+output "aws_region" {
+  value = var.aws_region
+}
+output "assume_role" {
+  value = var.assume_role
+}
+
+output "eks_enabled" {
+  value = var.create_eks
+}
+
 output "vpc" {
   value = {
     vpc_id          = module.vpc.vpc_id
@@ -8,7 +22,7 @@ output "vpc" {
 
 output "certificate" {
   value = {
-    certificate_domain = module.acm.distinct_domain_names
+    certificate_domain = module.acm.distinct_domain_names[0]
     certificate_arn    = module.acm.acm_certificate_arn
   }
 }
@@ -23,8 +37,10 @@ output "eks_cluster" {
   } : null
 }
 
-output "kubeconfig_certificate_authority_data" {
-  value = var.create_eks ? module.eks.kubeconfig_certificate_authority_data : null
+resource "local_file" "kubeconfig_certificate_authority" {
+  count    = var.create_eks ? 1 : 0
+  content  = base64decode(module.eks.kubeconfig_certificate_authority_data)
+  filename = "kubernetes.ca.crt"
 }
 
 output "tags" {
