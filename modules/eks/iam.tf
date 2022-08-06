@@ -2,7 +2,7 @@
 
 resource "aws_iam_role" "cluster" {
   count = var.create ? 1 : 0
-  name  = "${var.prefix}-cluster"
+  name  = "${var.prefix}-ClusterRole"
 
   assume_role_policy = <<POLICY
 {
@@ -18,6 +18,8 @@ resource "aws_iam_role" "cluster" {
   ]
 }
 POLICY
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
@@ -38,7 +40,7 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSVPCResourceControlle
 
 resource "aws_iam_role" "node_group" {
   count = var.create ? 1 : 0
-  name  = "${var.prefix}-node-group"
+  name  = "${var.prefix}-NodeGroupRole"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -50,6 +52,8 @@ resource "aws_iam_role" "node_group" {
     }]
     Version = "2012-10-17"
   })
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "node_group_AmazonEKSWorkerNodePolicy" {
@@ -100,7 +104,9 @@ data "aws_iam_policy_document" "aws_load_balancer_assume_role_policy" {
 resource "aws_iam_role" "aws_load_balancer_controller" {
   count              = var.create ? 1 : 0
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_assume_role_policy[count.index].json
-  name               = "AmazonEKSLoadBalancerControllerRole"
+  name               = "${var.prefix}-AWSLoadBalancerControllerRole"
+
+  tags = var.tags
 }
 
 data "template_file" "aws_load_balancer_controller_iam_policy" {
@@ -110,11 +116,13 @@ data "template_file" "aws_load_balancer_controller_iam_policy" {
 
 resource "aws_iam_policy" "aws_load_balancer_controller_iam_policy" {
   count       = var.create ? 1 : 0
-  name        = "AWSLoadBalancerControllerIAMPolicy"
+  name        = "${var.prefix}-AWSLoadBalancerControllerIAMPolicy"
   path        = "/"
-  description = "IAM role policy for AWS Load balancer controller"
+  description = "IAM role policy for AWS Load balancer controller in EKS Cluster for ${var.prefix}"
 
   policy = data.template_file.aws_load_balancer_controller_iam_policy[count.index].rendered
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "load_balancer_controller_AWSLoadBalancerControllerIAMPolicy" {
@@ -140,7 +148,7 @@ data "aws_iam_policy_document" "external_dns_role_policy" {
     condition {
       test     = "StringEquals"
       variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:default:external-dns"]
+      values   = ["system:serviceaccount:external-dns:external-dns"]
     }
 
     principals {
@@ -175,16 +183,18 @@ data "aws_iam_policy_document" "route53_iam_policy" {
 
 resource "aws_iam_policy" "external_dns_iam_policy" {
   count       = var.create ? 1 : 0
-  name        = "ExternalDNSIAMPolicy"
+  name        = "${var.prefix}-ExternalDNSIAMPolicy"
   path        = "/"
-  description = "IAM role policy for External DNS pod"
+  description = "IAM role policy for External DNS pod in EKS Cluster for ${var.prefix}"
 
   policy = data.aws_iam_policy_document.route53_iam_policy[count.index].json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role" "external_dns" {
   count              = var.create ? 1 : 0
-  name               = "AmazonEKSExternalDNSRole"
+  name               = "${var.prefix}-ExternalDNSRole"
   assume_role_policy = data.aws_iam_policy_document.external_dns_role_policy[count.index].json
 
   tags = var.tags
