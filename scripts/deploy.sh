@@ -102,8 +102,9 @@ deploy_ingress_nginx() {
   printf "\n${ORANGE}############# ${PURPLE}Deploying Nginx ingress controller ${ORANGE}#############${NC}\n"
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
-  helm upgrade --install -f values.ingress-nginx.yaml --create-namespace ingress-nginx ingress-nginx/ingress-nginx \
+  helm upgrade --install -f values.ingress-nginx.yaml ingress-nginx ingress-nginx/ingress-nginx \
     -n ingress-nginx \
+    --create-namespace \
     --set controller.service.annotations."external-dns\.alpha\.kubernetes\.io/hostname"="ti-test-app\."$certificate_domain"\." \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-ssl-cert"=$certificate_arn \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-additional-resource-tags"=$tags
