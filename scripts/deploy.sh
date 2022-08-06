@@ -81,6 +81,7 @@ deploy_external_dns() {
   helm repo update
   helm upgrade --install external-dns external-dns/external-dns \
     -n external-dns \
+    --create-namespace \
     --set serviceAccount.name=external-dns \
     --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$external_dns_iam_role_arn \
     --set txtOwnerId=ti-dev-poc-ingress-nginx \

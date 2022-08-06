@@ -13,7 +13,7 @@ uninstall_ingress_nginx() {
 }
 
 uninstall_external_dns() {
-  helm uninstall external-dns
+  helm uninstall external-dns -n external-dns
   helm repo remove external-dns
 }
 
