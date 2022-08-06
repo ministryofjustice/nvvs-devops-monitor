@@ -37,10 +37,8 @@ output "eks_cluster" {
   } : null
 }
 
-resource "local_file" "kubeconfig_certificate_authority" {
-  count    = var.create_eks ? 1 : 0
-  content  = base64decode(module.eks.kubeconfig_certificate_authority_data)
-  filename = "kubernetes.ca.crt"
+output "kubeconfig_certificate_authority_data" {
+  value = var.create_eks ? base64decode(module.eks.kubeconfig_certificate_authority_data) : null
 }
 
 output "tags" {

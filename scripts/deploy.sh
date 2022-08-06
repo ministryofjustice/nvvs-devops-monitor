@@ -6,7 +6,7 @@
 # - Nginx Ingress Controller
 
 ORANGE='\033[1;33m'
-PURPLE='\033[1;31m'
+PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
 
 set_variables() {
@@ -17,6 +17,7 @@ set_variables() {
   terraform_outputs_eks_cluster=`terraform output -json eks_cluster`
   eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
   eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
+  kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
   lb_controller_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_load_balancer_controller_iam_role_arn'`
   external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
   terraform_outputs_certificate=`terraform output -json certificate`
@@ -39,8 +40,16 @@ set_kubeconfig() {
     --exec-arg=$aws_assume_role \
     --exec-env=AWS_PROFILE=$AWS_PROFILE
 
-  # Set a cluster entry in kubeconfig and use the crt file in it
-  kubectl config set-cluster $eks_cluster_name --server=$eks_cluster_endpoint --embed-certs --certificate-authority=./kubernetes.ca.crt
+  # Create a temporary kubernetes certificate authority cert file
+  cat > temp_kubernetes_ca.crt << EOL
+$kubeconfig_certificate_authority_data
+EOL
+
+  # Set a cluster entry in kubeconfig and use the cert file in it
+  kubectl config set-cluster $eks_cluster_name --server=$eks_cluster_endpoint --embed-certs=true --certificate-authority=./temp_kubernetes_ca.crt
+
+  # Remove the temporary cert file
+  rm ./temp_kubernetes_ca.crt
 
   # Set a context entry in kubeconfig
   kubectl config set-context $eks_cluster_name --cluster=$eks_cluster_name --user=$eks_cluster_name --namespace=$namespace
