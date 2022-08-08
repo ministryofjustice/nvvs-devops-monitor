@@ -113,6 +113,14 @@ deploy_ingress_nginx() {
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-additional-resource-tags"=$tags
 }
 
+deploy_app() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying a dummy app as POC ${ORANGE}#############${NC}\n"
+  helm upgrade --install poc-dummy-app ./poc-dummy-app \
+    -n development \
+    --create-namespace \
+    --set host=$application_domain
+}
+
 main() {
   set_variables
   set_kubeconfig
@@ -121,6 +129,7 @@ main() {
   deploy_aws_lb_controller
   deploy_external_dns
   deploy_ingress_nginx
+  deploy_app
 }
 
 if `terraform output eks_enabled`; then
