@@ -1,0 +1,41 @@
+apiVersion: v2
+name: shared-resources
+version: 1.0.0
+description: A Helm chart for shared resources for MoJO Infrastructure Monitoring EKS Cluster
+type: application
+home: https://monitoring.staff.services.justice.gov.uk
+
+sources:
+  - https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster
+
+dependencies:
+  - name: aws-load-balancer-controller
+    version: "1.4.3"
+    repository: "@eks/aws-load-balancer-controller"
+    condition: aws-load-balancer-controller.enabled
+    tags:
+      - aws
+      - ingress
+  - name: ingress-nginx
+    version: "1.0.0"
+    repository: "@ingress-nginx/ingress-nginx"
+    condition: ingress-nginx.enabled
+    tags:
+      - nginx
+      - ingress
+  - name: external-dns
+    version: "1.0.0"
+    repository: "@external-dns/external-dns"
+    condition: external-dns.enabled
+    tags:
+      - aws
+      - dns
+
+
+
+maintainers: 
+  - name: Cloud Operations Team
+    email: CloudOperationsTeam@justice.gov.uk
+    url: https://ministryofjustice.github.io/cloud-operations/
+
+appVersion: "1.0.0"
