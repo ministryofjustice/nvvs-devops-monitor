@@ -1,3 +1,9 @@
+variable "application_name" {
+  description = "An URL friendly name of the application. This name would form the application url together with the route53 zone domain name."
+  type        = string
+  default     = "mojo-infrastructure-monitoring"
+}
+
 variable "assume_role" {
   description = "The role to assume in different environments"
   type        = string

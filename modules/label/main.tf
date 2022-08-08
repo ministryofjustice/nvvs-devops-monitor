@@ -13,7 +13,7 @@ module "label" {
     "business-unit"    = "MoJO-HQ"
     "environment-name" = terraform.workspace
     "is-production"    = terraform.workspace == "production" ? "true" : "false"
-    "application"      = "mojo-infrastructure-monitoring"
+    "application"      = var.application_name
     "source-code"      = "https://github.com/ministryofjustice/mojo-infrastructure-monitoring"
   }
 }

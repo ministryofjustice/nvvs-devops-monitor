@@ -1,6 +1,7 @@
 module "acm_label" {
-  source = "./modules/label"
-  name   = "mojo-ima-acm"
+  source           = "./modules/label"
+  name             = "mojo-ima-acm"
+  application_name = var.application_name
 }
 
 module "acm" {
@@ -11,7 +12,7 @@ module "acm" {
   zone_id     = var.zone_id
 
   subject_alternative_names = [
-    "*.${var.domain_name}",
+    "*.${var.application_name}.${var.domain_name}",
   ]
 
   wait_for_validation = true
