@@ -11,6 +11,7 @@ NC='\033[0m' # No Color
 
 set_variables() {
   printf "\n${ORANGE}############# ${PURPLE}Setting up local variables ${ORANGE}#############${NC}\n"
+  application_name=`terraform output -raw application_name`
   namespace=`terraform output -raw terraform_workspace`
   region=`terraform output aws_region`
   aws_assume_role=`terraform output assume_role`
@@ -23,7 +24,8 @@ set_variables() {
   terraform_outputs_certificate=`terraform output -json certificate`
   certificate_domain=`echo $terraform_outputs_certificate | jq -r '.certificate_domain'`
   certificate_arn=`echo $terraform_outputs_certificate | jq -r '.certificate_arn'`
-  tags=`terraform output -json tags`
+  application_domain=`echo $application_name"."$certificate_domain`
+  tags=`terraform output -raw tags`
 }
 
 set_kubeconfig() {
@@ -93,8 +95,9 @@ deploy_external_dns() {
     --create-namespace \
     --set serviceAccount.name=external-dns \
     --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$external_dns_iam_role_arn \
-    --set txtOwnerId=ti-dev-poc-ingress-nginx \
-    --set txtPrefix=ti-poc-ext-dns \
+    --set txtOwnerId=mojo-ima-ingress-nginx \
+    --set txtPrefix=mojo-ima-dns \
+    --set policy=sync \
     --set domainFilters[0]=$certificate_domain
 }
 
@@ -105,7 +108,7 @@ deploy_ingress_nginx() {
   helm upgrade --install -f values.ingress-nginx.yaml ingress-nginx ingress-nginx/ingress-nginx \
     -n ingress-nginx \
     --create-namespace \
-    --set controller.service.annotations."external-dns\.alpha\.kubernetes\.io/hostname"="ti-test-app\."$certificate_domain"\." \
+    --set controller.service.annotations."external-dns\.alpha\.kubernetes\.io/hostname"=$application_domain \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-ssl-cert"=$certificate_arn \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-additional-resource-tags"=$tags
 }
