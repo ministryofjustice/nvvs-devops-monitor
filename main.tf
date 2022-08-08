@@ -20,13 +20,15 @@ data "aws_availability_zones" "available_zones" {
 }
 
 module "label" {
-  source = "./modules/label"
-  name   = "mojo-ima"
+  source           = "./modules/label"
+  name             = "mojo-ima"
+  application_name = var.application_name
 }
 
 module "vpc_label" {
-  source = "./modules/label"
-  name   = "mojo-ima-vpc"
+  source           = "./modules/label"
+  name             = "mojo-ima-vpc"
+  application_name = var.application_name
 }
 
 module "vpc" {
@@ -43,8 +45,9 @@ module "vpc" {
 }
 
 module "eks_label" {
-  source = "./modules/label"
-  name   = "mojo-ima-eks"
+  source           = "./modules/label"
+  name             = "mojo-ima-eks"
+  application_name = var.application_name
 }
 
 module "eks" {
