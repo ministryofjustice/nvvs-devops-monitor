@@ -1,0 +1,35 @@
+kubeStateMetrics:
+  enabled: true
+nodeExporter:
+  enabled: true
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+grafana:
+  enabled: false
+  forceDeployDatasources: true
+  forceDeployDashboards: true
+prometheus:
+      prometheusSpec:
+        podMonitorNamespaceSelector:
+          matchLabels:
+            name: external-dns
+            name: kube-system
+            name: monitoring
+        podMonitorSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
+        ruleNamespaceSelector:
+          matchLabels:
+            name: external-dns
+            name: kube-system
+            name: monitoring
+        ruleSelector: {}
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorNamespaceSelector:
+          matchLabels:
+            name: external-dns
+            name: kube-system
+            name: monitoring
+        serviceMonitorSelector: {}
+        serviceMonitorSelectorNilUsesHelmValues: false
