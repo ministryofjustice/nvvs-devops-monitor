@@ -1,0 +1,8 @@
+image:
+  repository: 602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-load-balancer-controller
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
