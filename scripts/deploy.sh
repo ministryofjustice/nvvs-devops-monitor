@@ -60,9 +60,19 @@ EOL
   kubectl config use-context $eks_cluster_name
 }
 
+deploy_kube-prometheus-stack() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying Kube prometheus stack ${ORANGE}#############${NC}\n"
+  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  helm repo update
+  helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+    -f ./k8s-values/values.kube-prometheus-stack.yaml \
+    -n monitoring \
+    --create-namespace
+}
+
 deploy_service_accounts_helm_chart() {
   printf "\n${ORANGE}############# ${PURPLE}Creating all the service accounts ${ORANGE}#############${NC}\n"
-  helm upgrade --install service-accounts ./service-accounts \
+  helm upgrade --install service-accounts ./k8s-charts/service-accounts \
     -n kube-system \
     --set eks_cluster.lb_controller_iam_role_arn=$lb_controller_iam_role_arn
 }
@@ -79,25 +89,21 @@ deploy_aws_lb_controller() {
   helm repo add eks https://aws.github.io/eks-charts
   helm repo update
   helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+    -f ./k8s-values/values.aws-load-balancer-controller.yaml \
     -n kube-system \
-    --set image.repository=602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-load-balancer-controller \
-    --set clusterName=$eks_cluster_name \
-    --set serviceAccount.create=false \
-    --set serviceAccount.name=aws-load-balancer-controller
+    --set clusterName=$eks_cluster_name
 }
 
 deploy_external_dns() {
-  printf "\n${ORANGE}############# ${PURPLE}Deploying External-DNS pod ${ORANGE}#############${NC}\n"
+  printf "\n${ORANGE}############# ${PURPLE}Deploying External-DNS ${ORANGE}#############${NC}\n"
   helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
   helm repo update
   helm upgrade --install external-dns external-dns/external-dns \
+    -f ./k8s-values/values.external-dns.yaml \
     -n external-dns \
     --create-namespace \
-    --set serviceAccount.name=external-dns \
+    --set txtOwnerId=$application_name \
     --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$external_dns_iam_role_arn \
-    --set txtOwnerId=mojo-ima-ingress-nginx \
-    --set txtPrefix=mojo-ima-dns \
-    --set policy=sync \
     --set domainFilters[0]=$certificate_domain
 }
 
@@ -105,7 +111,8 @@ deploy_ingress_nginx() {
   printf "\n${ORANGE}############# ${PURPLE}Deploying Nginx ingress controller ${ORANGE}#############${NC}\n"
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
-  helm upgrade --install -f values.ingress-nginx.yaml ingress-nginx ingress-nginx/ingress-nginx \
+  helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+    -f ./k8s-values/values.ingress-nginx.yaml \
     -n ingress-nginx \
     --create-namespace \
     --set controller.service.annotations."external-dns\.alpha\.kubernetes\.io/hostname"=$application_domain \
@@ -113,14 +120,27 @@ deploy_ingress_nginx() {
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-additional-resource-tags"=$tags
 }
 
+deploy_grafana() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying Grafana ${ORANGE}#############${NC}\n"
+  helm repo add grafana https://grafana.github.io/helm-charts
+  helm repo update
+  helm upgrade --install grafana grafana/grafana \
+    -f ./k8s-values/values.grafana.yaml \
+    -n grafana \
+    --create-namespace \
+    --set ingress.hosts[0]=$application_domain
+}
+
 main() {
   set_variables
   set_kubeconfig
+  deploy_kube-prometheus-stack
   deploy_service_accounts_helm_chart
   annotate_service_account
   deploy_aws_lb_controller
   deploy_external_dns
   deploy_ingress_nginx
+  deploy_grafana
 }
 
 if `terraform output eks_enabled`; then
