@@ -105,6 +105,8 @@ deploy_external_dns() {
     --set txtOwnerId=$application_name \
     --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$external_dns_iam_role_arn \
     --set domainFilters[0]=$certificate_domain
+  # Create a dashboard for Grafana with the metrics from the ServiceMonitor\
+  kubectl apply -f ./k8s-configmaps/external-dns-grafana-dashboard.yaml -n external-dns
 }
 
 deploy_ingress_nginx() {

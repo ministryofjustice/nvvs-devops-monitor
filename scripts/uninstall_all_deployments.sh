@@ -22,6 +22,8 @@ uninstall_ingress_nginx() {
 uninstall_external_dns() {
   helm uninstall external-dns -n external-dns
   helm repo remove external-dns
+  # Clean up the dashboard configmap as it was manually created:
+  kubectl delete configmap external-dns -n external-dns
   kubectl delete namespace external-dns
 }
 
