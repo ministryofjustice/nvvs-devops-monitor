@@ -72,7 +72,7 @@ deploy_kube-prometheus-stack() {
 
 deploy_service_accounts_helm_chart() {
   printf "\n${ORANGE}############# ${PURPLE}Creating all the service accounts ${ORANGE}#############${NC}\n"
-  helm upgrade --install service-accounts ./k8s-charts/service-accounts \
+  helm upgrade --install service-accounts ./k8s-helm-charts/service-accounts \
     -n kube-system \
     --set eks_cluster.lb_controller_iam_role_arn=$lb_controller_iam_role_arn
 }
