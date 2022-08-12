@@ -12,6 +12,7 @@ uninstall_grafana() {
 }
 
 uninstall_ingress_nginx() {
+  # This ValidatingWebhookConfiguration throws errors when ingress controller is removed and redeployed, when it throws error, manually delete it and then redeploy:
   kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
   helm uninstall ingress-nginx -n ingress-nginx
   helm repo remove ingress-nginx
@@ -36,6 +37,7 @@ uninstall_service_accounts_helm_chart() {
 uninstall_kube-prometheus-stack() {
   helm uninstall kube-prometheus-stack -n monitoring
   helm repo remove prometheus-community
+  # CRDs created by this chart are not removed by default and should be manually cleaned up:
   kubectl delete crd alertmanagerconfigs.monitoring.coreos.com
   kubectl delete crd alertmanagers.monitoring.coreos.com
   kubectl delete crd podmonitors.monitoring.coreos.com
@@ -45,6 +47,8 @@ uninstall_kube-prometheus-stack() {
   kubectl delete crd servicemonitors.monitoring.coreos.com
   kubectl delete crd thanosrulers.monitoring.coreos.com
   kubectl delete namespace monitoring
+  # kubelet service in kube-system created by this chart is not removed by default and should be manually cleaned up:
+  kubectl delete service/kube-prometheus-stack-kubelet -n kube-system
 }
 
 main() {
