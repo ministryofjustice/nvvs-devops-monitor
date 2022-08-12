@@ -12,24 +12,12 @@ grafana:
   forceDeployDashboards: true
 prometheus:
       prometheusSpec:
-        podMonitorNamespaceSelector:
-          matchLabels:
-            name: external-dns
-            name: kube-system
-            name: monitoring
+        podMonitorNamespaceSelector: {}
         podMonitorSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        ruleNamespaceSelector:
-          matchLabels:
-            name: external-dns
-            name: kube-system
-            name: monitoring
+        ruleNamespaceSelector: {}
         ruleSelector: {}
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorNamespaceSelector:
-          matchLabels:
-            name: external-dns
-            name: kube-system
-            name: monitoring
+        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
