@@ -5,8 +5,14 @@ sidecar:
   dashboards:
     enabled: true
     searchNamespace: ALL
+    provider:
+      folder: "Provisioned"
 ingress:
   enabled: true
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   ingressClassName: nginx
+persistence:
+  enabled: true
+  storageClassName: "efs-sc"
+  existingClaim: "grafana-efs-claim"

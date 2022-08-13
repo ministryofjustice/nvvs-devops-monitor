@@ -32,8 +32,8 @@ uninstall_aws_lb_controller() {
   helm repo remove eks
 }
 
-uninstall_service_accounts_helm_chart() {
-  helm uninstall service-accounts -n kube-system
+uninstall_shared_resources_helm_chart() {
+  helm uninstall shared-resources -n kube-system
 }
 
 uninstall_kube-prometheus-stack() {
@@ -58,7 +58,7 @@ main() {
   uninstall_ingress_nginx
   uninstall_external_dns
   uninstall_aws_lb_controller
-  uninstall_service_accounts_helm_chart
+  uninstall_shared_resources_helm_chart
   uninstall_kube-prometheus-stack
 }
 
