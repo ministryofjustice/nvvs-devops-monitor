@@ -38,6 +38,8 @@ output "eks_cluster" {
     endpoint                                  = module.eks.endpoint
     aws_load_balancer_controller_iam_role_arn = module.eks.aws_load_balancer_controller_iam_role_arn
     external_dns_iam_role_arn                 = module.eks.external_dns_iam_role_arn
+    aws_efs_csi_driver_iam_role_arn           = module.eks.aws_efs_csi_driver_iam_role_arn
+    efs_file_system_id                        = module.eks.efs_file_system_id
   } : null
 }
 

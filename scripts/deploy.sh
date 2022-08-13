@@ -18,9 +18,11 @@ set_variables() {
   terraform_outputs_eks_cluster=`terraform output -json eks_cluster`
   eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
   eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
-  kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
   lb_controller_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_load_balancer_controller_iam_role_arn'`
+  efs_csi_driver_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_efs_csi_driver_iam_role_arn'`
+  efs_file_system_id=`echo $terraform_outputs_eks_cluster | jq -r '.efs_file_system_id'`
   external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
+  kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
   terraform_outputs_certificate=`terraform output -json certificate`
   certificate_domain=`echo $terraform_outputs_certificate | jq -r '.certificate_domain'`
   certificate_arn=`echo $terraform_outputs_certificate | jq -r '.certificate_arn'`
@@ -70,11 +72,13 @@ deploy_kube-prometheus-stack() {
     --create-namespace
 }
 
-deploy_service_accounts_helm_chart() {
-  printf "\n${ORANGE}############# ${PURPLE}Creating all the service accounts ${ORANGE}#############${NC}\n"
-  helm upgrade --install service-accounts ./k8s-helm-charts/service-accounts \
+deploy_shared_resources_helm_chart() {
+  printf "\n${ORANGE}############# ${PURPLE}Creating all the shared resources ${ORANGE}#############${NC}\n"
+  helm upgrade --install shared-resources ./k8s-helm-charts/shared-resources \
     -n kube-system \
-    --set eks_cluster.lb_controller_iam_role_arn=$lb_controller_iam_role_arn
+    --set eks_cluster.lb_controller_iam_role_arn=$lb_controller_iam_role_arn \
+    --set eks_cluster.efs_csi_driver_iam_role_arn=$efs_csi_driver_iam_role_arn \
+    --set eks_cluster.efs_file_system_id=$efs_file_system_id
 }
 
 annotate_service_account() {
@@ -92,6 +96,15 @@ deploy_aws_lb_controller() {
     -f ./k8s-values/values.aws-load-balancer-controller.yaml \
     -n kube-system \
     --set clusterName=$eks_cluster_name
+}
+
+deploy_aws_efs_csi_driver() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying AWS EFS CSI Driver ${ORANGE}#############${NC}\n"
+  helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver/
+  helm repo update
+  helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
+    -f ./k8s-values/values.aws-efs-csi-driver.yaml \
+    -n kube-system
 }
 
 deploy_external_dns() {
@@ -137,9 +150,10 @@ main() {
   set_variables
   set_kubeconfig
   deploy_kube-prometheus-stack
-  deploy_service_accounts_helm_chart
+  deploy_shared_resources_helm_chart
   annotate_service_account
   deploy_aws_lb_controller
+  deploy_aws_efs_csi_driver
   deploy_external_dns
   deploy_ingress_nginx
   deploy_grafana

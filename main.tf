@@ -51,11 +51,13 @@ module "eks_label" {
 }
 
 module "eks" {
-  create          = var.create_eks
-  source          = "./modules/eks"
-  prefix          = module.eks_label.id
-  private_subnets = module.vpc.private_subnets
-  tags            = module.eks_label.tags
+  create                      = var.create_eks
+  source                      = "./modules/eks"
+  prefix                      = module.eks_label.id
+  vpc_id                      = module.vpc.vpc_id
+  private_subnets             = module.vpc.private_subnets
+  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  tags                        = module.eks_label.tags
 
   providers = {
     aws = aws.main

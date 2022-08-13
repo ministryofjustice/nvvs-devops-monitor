@@ -205,3 +205,60 @@ resource "aws_iam_role_policy_attachment" "external_dns_AmazonEKSExternalDNSIAMP
   policy_arn = aws_iam_policy.external_dns_iam_policy[count.index].arn
   role       = aws_iam_role.external_dns[count.index].name
 }
+
+# IAM role for the AWS EFS CSI Driver
+
+data "aws_iam_policy_document" "aws_efs_csi_driver_assume_role_policy" {
+  count = var.create ? 1 : 0
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-efs-csi-driver"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.this[0].arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "aws_efs_csi_driver" {
+  count              = var.create ? 1 : 0
+  assume_role_policy = data.aws_iam_policy_document.aws_efs_csi_driver_assume_role_policy[count.index].json
+  name               = "${var.prefix}-AWSEFSCSIDriverRole"
+
+  tags = var.tags
+}
+
+data "template_file" "aws_efs_csi_driver_iam_policy" {
+  count    = var.create ? 1 : 0
+  template = file("${path.module}/policies/aws_efs_csi_driver_iam_policy.json")
+}
+
+resource "aws_iam_policy" "aws_efs_csi_driver_iam_policy" {
+  count       = var.create ? 1 : 0
+  name        = "${var.prefix}-AWSEFSCSIDriverIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for AWS EFS CSI Driver in EKS Cluster for ${var.prefix}"
+
+  policy = data.template_file.aws_efs_csi_driver_iam_policy[count.index].rendered
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "efs_csi_driver_AWSEFSCSIDriverIAMPolicy" {
+  count      = var.create ? 1 : 0
+  policy_arn = aws_iam_policy.aws_efs_csi_driver_iam_policy[count.index].arn
+  role       = aws_iam_role.aws_efs_csi_driver[count.index].name
+}

@@ -1,0 +1,4 @@
+eks_cluster:
+  lb_controller_iam_role_arn: ""
+  efs_csi_driver_iam_role_arn: ""
+  efs_file_system_id: ""

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: service-accounts
-description: A Helm chart for service accounts.
+name: shared-resources
+description: A Helm chart for cluster-wide shared resources in the EKS Cluster.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
