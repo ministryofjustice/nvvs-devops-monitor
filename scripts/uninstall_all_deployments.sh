@@ -27,6 +27,11 @@ uninstall_external_dns() {
   kubectl delete namespace external-dns
 }
 
+uninstall_aws_efs_csi_driver() {
+  helm uninstall aws-efs-csi-driver -n kube-system
+  helm repo remove aws-efs-csi-driver
+}
+
 uninstall_aws_lb_controller() {
   helm uninstall aws-load-balancer-controller -n kube-system
   helm repo remove eks
@@ -57,6 +62,7 @@ main() {
   uninstall_grafana
   uninstall_ingress_nginx
   uninstall_external_dns
+  uninstall_aws_efs_csi_driver
   uninstall_aws_lb_controller
   uninstall_shared_resources_helm_chart
   uninstall_kube-prometheus-stack
