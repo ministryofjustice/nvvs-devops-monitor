@@ -133,6 +133,8 @@ deploy_ingress_nginx() {
     --set controller.service.annotations."external-dns\.alpha\.kubernetes\.io/hostname"=$application_domain \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-ssl-cert"=$certificate_arn \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-additional-resource-tags"=$tags
+  # wait 10 seconds for ingress controller to be in ready state.
+  sleep 10
 }
 
 deploy_grafana() {
