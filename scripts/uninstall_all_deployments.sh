@@ -8,6 +8,7 @@ NC='\033[0m' # No Color
 uninstall_grafana() {
   helm uninstall grafana -n grafana
   helm repo remove grafana
+  kubectl delete pvc grafana-efs-claim -n grafana
   kubectl delete namespace grafana
 }
 
