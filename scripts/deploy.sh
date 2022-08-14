@@ -146,6 +146,7 @@ deploy_grafana() {
     -n grafana \
     --create-namespace \
     --set ingress.hosts[0]=$application_domain
+  kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
 }
 
 main() {
