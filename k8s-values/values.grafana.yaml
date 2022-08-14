@@ -20,3 +20,5 @@ persistence:
   existingClaim: "grafana-efs-claim"
   accessModes:
     - ReadWriteMany
+serviceMonitor:
+  enabled: true
