@@ -1,5 +1,6 @@
 replicas: 2
 sidecar:
+  skipTlsVerify: true
   datasources:
     enabled: true
     searchNamespace: ALL

@@ -8,16 +8,22 @@ kubeScheduler:
   enabled: false
 grafana:
   enabled: false
-  forceDeployDatasources: true
+  forceDeployDatasources: false
   forceDeployDashboards: true
 prometheus:
-      prometheusSpec:
-        podMonitorNamespaceSelector: {}
-        podMonitorSelector: {}
-        podMonitorSelectorNilUsesHelmValues: false
-        ruleNamespaceSelector: {}
-        ruleSelector: {}
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorNamespaceSelector: {}
-        serviceMonitorSelector: {}
-        serviceMonitorSelectorNilUsesHelmValues: false
+  prometheusSpec:
+    podMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+    thanos:
+      image: "bitnami/thanos:0.27.0"
+  thanosService:
+    enabled: true
+  thanosServiceMonitor:
+    enabled: true

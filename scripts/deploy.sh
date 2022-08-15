@@ -5,6 +5,8 @@
 # - External DNS
 # - Nginx Ingress Controller
 
+set -e
+
 ORANGE='\033[1;33m'
 PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
@@ -70,6 +72,16 @@ deploy_kube-prometheus-stack() {
     -f ./k8s-values/values.kube-prometheus-stack.yaml \
     -n monitoring \
     --create-namespace
+}
+
+deploy_thanos_stack() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying thanos stack ${ORANGE}#############${NC}\n"
+  helm repo add bitnami https://charts.bitnami.com/bitnami
+  helm upgrade --install thanos bitnami/thanos \
+    -f ./k8s-values/values.thanos-stack.yaml \
+    -n monitoring
+  # Create a datasource for Grafana
+  kubectl apply -f ./k8s-configmaps/thanos-query-grafana-datasource.yaml -n monitoring
 }
 
 deploy_shared_resources_helm_chart() {
@@ -153,6 +165,7 @@ main() {
   set_variables
   set_kubeconfig
   deploy_kube-prometheus-stack
+  deploy_thanos_stack
   deploy_shared_resources_helm_chart
   annotate_service_account
   deploy_aws_lb_controller

@@ -42,6 +42,12 @@ uninstall_shared_resources_helm_chart() {
   helm uninstall shared-resources -n kube-system
 }
 
+uninstall_thanos_stack() {
+  kubectl delete configmap thanos-query-datasource -n monitoring
+  helm uninstall thanos -n monitoring
+  helm repo remove bitnami
+}
+
 uninstall_kube-prometheus-stack() {
   helm uninstall kube-prometheus-stack -n monitoring
   helm repo remove prometheus-community
@@ -66,6 +72,7 @@ main() {
   uninstall_aws_efs_csi_driver
   uninstall_aws_lb_controller
   uninstall_shared_resources_helm_chart
+  uninstall_thanos_stack
   uninstall_kube-prometheus-stack
 }
 
