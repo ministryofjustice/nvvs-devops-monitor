@@ -83,6 +83,7 @@ deploy_thanos_stack() {
     -f ./k8s-values/values.thanos-stack.yaml \
     -n monitoring \
     --set storegateway.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$thanos_iam_role_arn \
+    --set compactor.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$thanos_iam_role_arn \
     --set objstoreConfig="type: S3
 config:
   bucket: '$thanos_storage_s3_bucket_name'

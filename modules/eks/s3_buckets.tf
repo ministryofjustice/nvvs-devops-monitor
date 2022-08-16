@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "thanos_storage_s3_bucket_policy_document" {
     ]
 
     condition {
-      test     = "ForAnyValue:StringEquals"
+      test     = "StringEquals"
       variable = "aws:SourceVpc"
       values   = [var.vpc_id]
     }
