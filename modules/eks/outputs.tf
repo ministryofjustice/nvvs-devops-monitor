@@ -26,6 +26,14 @@ output "efs_file_system_id" {
   value = var.create ? aws_efs_file_system.this[0].id : null
 }
 
+output "thanos_iam_role_arn" {
+  value = var.create ? aws_iam_role.thanos[0].arn : null
+}
+
 output "issuer" {
   value = var.create ? aws_eks_cluster.this[0].identity[0].oidc[0].issuer : null
+}
+
+output "thanos_storage_s3_bucket_name" {
+  value = var.create ? aws_s3_bucket.thanos_storage[0].id : null
 }

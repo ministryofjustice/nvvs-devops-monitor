@@ -262,3 +262,75 @@ resource "aws_iam_role_policy_attachment" "efs_csi_driver_AWSEFSCSIDriverIAMPoli
   policy_arn = aws_iam_policy.aws_efs_csi_driver_iam_policy[count.index].arn
   role       = aws_iam_role.aws_efs_csi_driver[count.index].name
 }
+
+
+# IAM role for the thanos service account
+
+data "aws_iam_policy_document" "thanos_assume_role_policy" {
+  count = var.create ? 1 : 0
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:monitoring:thanos-storegateway"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.this[0].arn]
+      type        = "Federated"
+    }
+  }
+}
+
+
+resource "aws_iam_role" "thanos" {
+  count              = var.create ? 1 : 0
+  assume_role_policy = data.aws_iam_policy_document.thanos_assume_role_policy[count.index].json
+  name               = "${var.prefix}-ThanosRole"
+
+  tags = var.tags
+}
+
+resource "aws_iam_policy" "s3_bucket_access_policy" {
+  count       = var.create ? 1 : 0
+  name        = "thanos_s3_bucket_access_policy"
+  path        = "/"
+  description = "S3 bucket access policy for thanos in EKS Cluster for ${var.prefix}"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "Statement",
+          "Effect": "Allow",
+          "Action": [
+              "s3:ListBucket",
+              "s3:GetObject",
+              "s3:DeleteObject",
+              "s3:PutObject"
+          ],
+          "Resource": [
+              "arn:aws:s3:::${aws_s3_bucket.thanos_storage[count.index].id}/*",
+              "arn:aws:s3:::${aws_s3_bucket.thanos_storage[count.index].id}"
+          ]
+      }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "thanos_s3_bucket_access_policy" {
+  count      = var.create ? 1 : 0
+  policy_arn = aws_iam_policy.s3_bucket_access_policy[count.index].arn
+  role       = aws_iam_role.thanos[count.index].name
+}
