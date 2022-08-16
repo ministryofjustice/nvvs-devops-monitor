@@ -40,6 +40,8 @@ output "eks_cluster" {
     external_dns_iam_role_arn                 = module.eks.external_dns_iam_role_arn
     aws_efs_csi_driver_iam_role_arn           = module.eks.aws_efs_csi_driver_iam_role_arn
     efs_file_system_id                        = module.eks.efs_file_system_id
+    thanos_iam_role_arn                       = module.eks.thanos_iam_role_arn
+    thanos_storage_s3_bucket_name             = module.eks.thanos_storage_s3_bucket_name
   } : null
 }
 

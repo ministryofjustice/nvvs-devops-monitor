@@ -21,9 +21,11 @@ set_variables() {
   eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
   eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
   lb_controller_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_load_balancer_controller_iam_role_arn'`
+  external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
   efs_csi_driver_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_efs_csi_driver_iam_role_arn'`
   efs_file_system_id=`echo $terraform_outputs_eks_cluster | jq -r '.efs_file_system_id'`
-  external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
+  thanos_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_iam_role_arn'`
+  thanos_storage_s3_bucket_name=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_storage_s3_bucket_name'`
   kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
   terraform_outputs_certificate=`terraform output -json certificate`
   certificate_domain=`echo $terraform_outputs_certificate | jq -r '.certificate_domain'`
@@ -79,7 +81,13 @@ deploy_thanos_stack() {
   helm repo add bitnami https://charts.bitnami.com/bitnami
   helm upgrade --install thanos bitnami/thanos \
     -f ./k8s-values/values.thanos-stack.yaml \
-    -n monitoring
+    -n monitoring \
+    --set storegateway.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$thanos_iam_role_arn \
+    --set objstoreConfig="type: S3
+config:
+  bucket: '$thanos_storage_s3_bucket_name'
+  endpoint: 's3.eu-west-2.amazonaws.com'
+"
   # Create a datasource for Grafana
   kubectl apply -f ./k8s-configmaps/thanos-query-grafana-datasource.yaml -n monitoring
 }
