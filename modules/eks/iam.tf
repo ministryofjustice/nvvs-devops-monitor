@@ -279,9 +279,12 @@ data "aws_iam_policy_document" "thanos_assume_role_policy" {
     }
 
     condition {
-      test     = "StringEquals"
+      test     = "ForAnyValue:StringEquals"
       variable = "${replace(aws_iam_openid_connect_provider.this[0].url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:monitoring:thanos-storegateway"]
+      values = [
+        "system:serviceaccount:monitoring:thanos-storegateway",
+        "system:serviceaccount:monitoring:thanos-compactor"
+      ]
     }
 
     principals {
