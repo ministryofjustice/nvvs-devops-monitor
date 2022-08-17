@@ -10,6 +10,7 @@ grafana:
   enabled: false
   forceDeployDatasources: false
   forceDeployDashboards: true
+  defaultDashboardsTimezone: "Europe/London"
 prometheus:
   prometheusSpec:
     podMonitorNamespaceSelector: {}
