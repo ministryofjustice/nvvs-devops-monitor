@@ -22,7 +22,9 @@ prometheus:
     serviceMonitorSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
     thanos:
-      image: "bitnami/thanos:0.27.0"
+      objectStorageConfig:
+        key: "objstore.yml"
+        name: "thanos-objstore-secret"
   thanosService:
     enabled: true
   thanosServiceMonitor:

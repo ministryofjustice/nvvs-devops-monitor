@@ -1,5 +1,3 @@
-image:
-  tag: "0.27.0"
 query:
   stores:
     - "dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local"
