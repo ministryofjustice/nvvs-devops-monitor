@@ -92,6 +92,9 @@ config:
 "
   # Create a datasource for Grafana
   kubectl apply -f ./k8s-configmaps/thanos-query-grafana-datasource.yaml -n monitoring
+
+  # Create a dashboard for Grafana with the metrics from the ServiceMonitor\
+  kubectl apply -f ./k8s-configmaps/thanos-overview-grafana-dashboard.yaml -n monitoring
 }
 
 deploy_shared_resources_helm_chart() {
