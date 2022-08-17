@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-json-exporter
+spec:
+  selector:
+    app: json-exporter
+  ports:
+    - name: http
+      protocol: TCP
+      port: 7979
+      targetPort: 7979

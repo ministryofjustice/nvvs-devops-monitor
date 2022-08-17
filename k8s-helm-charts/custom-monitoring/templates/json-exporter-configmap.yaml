@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: json-exporter-configmap
+data:
+  config.yml: |+
+    modules:
+      default:
+        headers:
+          MyHeader: JsonExporter
+        http_client_config:
+          tls_config:
+            insecure_skip_verify: true
+          basic_auth:
+            username: "{{ .Values.jsonExporterUsername }}"
+            password: "{{ .Values.jsonExporterPassword }}"
+        
+        metrics:
+          - name: subnet_statistics
+            type: object
+            help: DHCP statistics of MoJO subnets
+            path: '{ $.sites[*].*.subnets.* }' 
+            labels:
+              cidr_block: '{ .cidr_block }'
+            values:
+              remaining_ips: '{ .remaining_ips_count }'
+              reservations_count: '{ .reservations_count }'
+              usage: '{ .usage_percentage }'
+              leases: '{ .leases_count }'
+              
+          - name: MoJO_site
+            type: object
+            help: CIDR Ranges present at MoJO sites
+            path: '{ $.sites[*] }' 
+            labels:
+              Info: '{ }'
+              subnets: '{ .*.subnets[*].cidr_block }'
+            values:
+              info: 1
