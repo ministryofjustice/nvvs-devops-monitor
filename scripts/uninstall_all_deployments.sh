@@ -45,6 +45,9 @@ uninstall_shared_resources_helm_chart() {
 uninstall_thanos_stack() {
   kubectl delete configmap thanos-query-datasource -n monitoring
   helm uninstall thanos -n monitoring
+  # Clean up the dashboard and datasource configmaps as it was manually created:
+  kubectl delete configmap thanos-overview -n monitoring
+  kubectl delete configmap thanos-query-grafana-datasource -n monitoring
   helm repo remove bitnami
 }
 
