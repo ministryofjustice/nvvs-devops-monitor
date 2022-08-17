@@ -73,7 +73,8 @@ deploy_kube-prometheus-stack() {
   helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
     -f ./k8s-values/values.kube-prometheus-stack.yaml \
     -n monitoring \
-    --create-namespace
+    --create-namespace \
+    --set prometheus.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$thanos_iam_role_arn
 }
 
 deploy_thanos_stack() {
