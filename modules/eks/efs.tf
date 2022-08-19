@@ -28,7 +28,11 @@ resource "aws_security_group" "allow_inbound_nfs_traffic" {
 }
 
 resource "aws_efs_mount_target" "this" {
-  for_each        = var.create ? toset(var.private_subnets) : null
+  for_each = {
+    for subnet in var.private_subnets : subnet => subnet
+    if var.create
+  }
+  # for_each        = var.create ? toset(var.private_subnets) : null
   file_system_id  = aws_efs_file_system.this[0].id
   subnet_id       = each.key
   security_groups = [aws_security_group.allow_inbound_nfs_traffic[0].id]
