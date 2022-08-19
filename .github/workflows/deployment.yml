@@ -40,6 +40,16 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         role-session-name: GitHubWorkflow
 
+    # Install Kubectl and Helm CLI
+    - name: Setup Kubectl and Helm
+      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      with:
+        kubectl: '1.22.12'
+        helm: '3.8.0'
+    - run: |
+        kubectl version --client
+        helm version
+
     # Install Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2.0.0
@@ -105,6 +115,16 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         role-session-name: GitHubWorkflow
 
+    # Install kubectl and helm
+    - name: Setup Kubectl and Helm
+      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      with:
+        kubectl: '1.22.12'
+        helm: '3.8.0'
+    - run: |
+        kubectl version --client
+        helm version
+
     # Install Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2.0.0
@@ -169,6 +189,16 @@ jobs:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         role-session-name: GitHubWorkflow
+
+   # Install kubectl and helm
+    - name: Setup Kubectl and Helm
+      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      with:
+        kubectl: '1.22.12'
+        helm: '3.8.0'
+    - run: |
+        kubectl version --client
+        helm version
 
     # Install Terraform CLI
     - name: Setup Terraform
