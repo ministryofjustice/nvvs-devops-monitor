@@ -1,4 +1,6 @@
 #!make
+include .env
+export
 
 fmt:
 	terraform fmt --recursive
