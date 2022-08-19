@@ -1,0 +1,207 @@
+name: Deployment
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-development:
+    name: 'Deploy Development'
+    runs-on: ubuntu-latest
+    environment: development
+    defaults:
+      run:
+        shell: bash
+    env:
+        ENV: "development"
+        TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+        TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+        TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
+        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Configure AWS credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: eu-west-2
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        role-session-name: GitHubWorkflow
+
+    # Install Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.0
+      with:
+        terraform_version: 1.2.0
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+
+    # Select or create and then select a Terraform workspace
+    - name: Terraform Workspace
+      run: terraform workspace select $ENV || terraform workspace new $ENV
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt --recursive -check
+
+    # Validates Terraform configuration
+    - name: Terraform Validate
+      run: terraform validate
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan
+
+      # On push to main, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
+
+    - name: Run the deployment script
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: make deploy
+
+  # Terraform apply in pre-production
+  deploy-pre-production:
+    name: 'Deploy Pre-Production'
+    needs: deploy-development
+    runs-on: ubuntu-latest
+    environment: pre-production
+    defaults:
+      run:
+        shell: bash
+    env:
+        ENV: "pre-production"
+        TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+        TF_VAR_private_dns_zone_name_vpn: ${{ secrets.PRIVATE_DNS_ZONE_NAME_VPN }}
+        TF_VAR_private_dns_zone_name_network: ${{ secrets.PRIVATE_DNS_ZONE_NAME_NETWORK }}
+        TF_VAR_dns_dhcp_vpc_id: ${{ secrets.DNS_DHCP_VPC_ID }}
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Configure AWS credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: eu-west-2
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        role-session-name: GitHubWorkflow
+
+    # Install Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.0
+      with:
+        terraform_version: 1.2.0
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+
+    # Select or create and then select a Terraform workspace
+    - name: Terraform Workspace
+      run: terraform workspace select $ENV || terraform workspace new $ENV
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt --recursive -check
+
+    # Validates Terraform configuration
+    - name: Terraform Validate
+      run: terraform validate
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan
+
+      # On push to main, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
+    
+    - name: Run the deployment script
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: make deploy
+
+  # Terraform apply in production
+  deploy-production:
+    name: 'Deploy Production'
+    needs: deploy-pre-production
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        shell: bash
+    env:
+        ENV: "production"
+        TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+        TF_VAR_private_dns_zone_name_vpn: ${{ secrets.PRIVATE_DNS_ZONE_NAME_VPN }}
+        TF_VAR_private_dns_zone_name_network: ${{ secrets.PRIVATE_DNS_ZONE_NAME_NETWORK }}
+        TF_VAR_dns_dhcp_vpc_id: ${{ secrets.DNS_DHCP_VPC_ID }}
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Configure AWS credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: eu-west-2
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        role-session-name: GitHubWorkflow
+
+    # Install Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.0
+      with:
+        terraform_version: 1.2.0
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+
+    # Select or create and then select a Terraform workspace
+    - name: Terraform Workspace
+      run: terraform workspace select $ENV || terraform workspace new $ENV
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt --recursive -check
+
+    # Validates Terraform configuration
+    - name: Terraform Validate
+      run: terraform validate
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan
+
+      # On push to main, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
+
+    - name: Run the deployment script
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: make deploy
