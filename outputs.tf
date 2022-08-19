@@ -9,7 +9,8 @@ output "aws_region" {
   value = var.aws_region
 }
 output "assume_role" {
-  value = var.assume_role
+  value     = var.assume_role
+  sensitive = true
 }
 
 output "eks_enabled" {
@@ -22,6 +23,7 @@ output "vpc" {
     private_subnets = module.vpc.private_subnets_cidr_blocks
     public_subnets  = module.vpc.public_subnets_cidr_blocks
   }
+  sensitive = true
 }
 
 output "certificate" {
@@ -29,6 +31,7 @@ output "certificate" {
     certificate_domain = module.acm.distinct_domain_names[0]
     certificate_arn    = module.acm.acm_certificate_arn
   }
+  sensitive = true
 }
 
 output "eks_cluster" {
@@ -43,10 +46,12 @@ output "eks_cluster" {
     thanos_iam_role_arn                       = module.eks.thanos_iam_role_arn
     thanos_storage_s3_bucket_name             = module.eks.thanos_storage_s3_bucket_name
   } : null
+  sensitive = true
 }
 
 output "kubeconfig_certificate_authority_data" {
-  value = var.create_eks ? base64decode(module.eks.kubeconfig_certificate_authority_data) : null
+  value     = var.create_eks ? base64decode(module.eks.kubeconfig_certificate_authority_data) : null
+  sensitive = true
 }
 
 output "tags" {
