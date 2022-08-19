@@ -5,6 +5,14 @@ ORANGE='\033[1;33m'
 PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
 
+uninstall_cns_team_monitoring() {
+  # Delete manually created configmaps
+  kubectl delete configmaps -n monitoring kea-dhcp-metrics-grafana-dashboard
+  kubectl delete configmaps -n dhcp-lease-statistics-grafana-dashboard
+  # Uninstall the helm chart
+  helm uninstall cns-team-monitoring -n monitoring
+}
+
 uninstall_grafana() {
   helm uninstall grafana -n grafana
   helm repo remove grafana

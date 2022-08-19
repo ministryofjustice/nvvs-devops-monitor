@@ -174,6 +174,21 @@ deploy_grafana() {
   kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
 }
 
+deploy_cns_team_monitoring() {
+  printf "\n${ORANGE}############# ${PURPLE}Deploying CNS Team monitoring helm chart ${ORANGE}#############${NC}\n"
+  helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \
+    -n monitoring \
+    --set jsonExporterUsername="user" \
+    --set jsonExporterPassword="pass" \
+    --set environment=$namespace
+  # Create dashboards (with grafana variables) configmaps for grafana
+  kubectl create configmap dhcp-lease-statistics-grafana-dashboard --from-file ./grafana_dashboards/dhcp-lease-statistics.json -n monitoring --dry-run=client -o yaml | kubectl apply -f -
+  kubectl create configmap kea-dhcp-metrics-grafana-dashboard --from-file ./grafana_dashboards/kea-dhcp-metrics.json -n monitoring --dry-run=client -o yaml | kubectl apply -f -
+  # Label the above configmaps with appropriate labels, so that Grafana sidecar picks them up as dashboards
+  kubectl label --overwrite configmaps -n monitoring dhcp-lease-statistics-grafana-dashboard grafana_dashboard=1
+  kubectl label --overwrite configmaps -n monitoring kea-dhcp-metrics-grafana-dashboard grafana_dashboard=1
+}
+
 main() {
   set_variables
   set_kubeconfig
@@ -186,6 +201,7 @@ main() {
   deploy_external_dns
   deploy_ingress_nginx
   deploy_grafana
+  deploy_cns_team_monitoring
 }
 
 if `terraform output eks_enabled`; then

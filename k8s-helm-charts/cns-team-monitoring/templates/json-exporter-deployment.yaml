@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
+  name: prometheus-json-exporter
+  labels:
+    app: json-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: json-exporter
+  template:
+    metadata:
+      labels:
+        app: json-exporter
+    spec:
+      containers:
+      - name: json-exporter
+        image: quay.io/prometheuscommunity/json-exporter
+        ports:
+        - containerPort: 7979
+        args:
+          - "--config.file=/config/config.yml"
+        volumeMounts:
+        - name: configuration
+          mountPath: "/config"
+          readOnly: true
+      volumes:
+      - name: configuration
+        configMap:
+          name: prometheus-json-exporter-configmap
+          items:
+          - key: "config.yml"
+            path: "config.yml"

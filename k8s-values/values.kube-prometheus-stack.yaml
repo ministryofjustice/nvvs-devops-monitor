@@ -22,6 +22,34 @@ prometheus:
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+    - job_name: dhcp_portal_api
+      scrape_interval: 120s
+      scrape_timeout: 65s
+      metrics_path: /probe
+      params:
+        module: [default]
+      static_configs:
+        - targets:
+          - 'https://dhcp-dns-admin.dev.staff.service.justice.gov.uk/api/dhcp-stats'
+      relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 'prometheus-json-exporter.monitoring.svc.cluster.local:7979'
+    - job_name: json_exporter
+      metrics_path: /metrics
+      honor_labels: true
+      static_configs:
+      - targets:
+        - prometheus-json-exporter.monitoring.svc.cluster.local:7979
+    - job_name: cloudwatch
+      honor_labels: true
+      static_configs:
+      - targets:
+        - cloudwatch-exporter:5000
     storageSpec:
       volumeClaimTemplate:
         spec:

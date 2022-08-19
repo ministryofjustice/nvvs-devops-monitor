@@ -1,0 +1,16 @@
+apiVersion: v2
+name: cns-team-monitoring
+version: 1.0.0
+description: A Helm chart for CNS Team monitoring
+type: application
+home: https://monitoring.staff.services.justice.gov.uk
+
+sources:
+  - https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster
+
+maintainers:
+  - name: Cloud Operations Team
+    email: CloudOperationsTeam@justice.gov.uk
+    url: https://ministryofjustice.github.io/cloud-operations/
+
+appVersion: "1.0.0"
