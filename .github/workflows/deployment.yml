@@ -98,9 +98,9 @@ jobs:
     env:
         ENV: "pre-production"
         TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
-        TF_VAR_private_dns_zone_name_vpn: ${{ secrets.PRIVATE_DNS_ZONE_NAME_VPN }}
-        TF_VAR_private_dns_zone_name_network: ${{ secrets.PRIVATE_DNS_ZONE_NAME_NETWORK }}
-        TF_VAR_dns_dhcp_vpc_id: ${{ secrets.DNS_DHCP_VPC_ID }}
+        TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+        TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
+        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -173,9 +173,9 @@ jobs:
     env:
         ENV: "production"
         TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
-        TF_VAR_private_dns_zone_name_vpn: ${{ secrets.PRIVATE_DNS_ZONE_NAME_VPN }}
-        TF_VAR_private_dns_zone_name_network: ${{ secrets.PRIVATE_DNS_ZONE_NAME_NETWORK }}
-        TF_VAR_dns_dhcp_vpc_id: ${{ secrets.DNS_DHCP_VPC_ID }}
+        TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+        TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
+        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
