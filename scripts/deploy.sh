@@ -45,8 +45,7 @@ set_kubeconfig() {
     --exec-arg=--cluster-name \
     --exec-arg=$eks_cluster_name \
     --exec-arg=--role \
-    --exec-arg=$aws_assume_role \
-    --exec-env=AWS_PROFILE=$AWS_PROFILE
+    --exec-arg=$aws_assume_role
 
   # Create a temporary kubernetes certificate authority cert file
   cat > temp_kubernetes_ca.crt << EOL
