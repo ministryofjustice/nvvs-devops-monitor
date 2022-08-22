@@ -13,10 +13,6 @@ output "assume_role" {
   sensitive = true
 }
 
-output "eks_enabled" {
-  value = var.create_eks
-}
-
 output "vpc" {
   value = {
     vpc_id          = module.vpc.vpc_id
