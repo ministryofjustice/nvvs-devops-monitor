@@ -36,6 +36,7 @@ set_variables() {
 
 set_kubeconfig() {
   printf "\n${ORANGE}############# ${PURPLE}Setting up kubeconfig ${ORANGE}#############${NC}\n"
+  echo "Printing value for $AWS_PROFILE :" $AWS_PROFILE
   # Set a user entry in kubeconfig
   kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
     --exec-arg=eks \
@@ -67,6 +68,7 @@ EOL
 }
 
 deploy_kube-prometheus-stack() {
+  kubectl config get-contexts
   printf "\n${ORANGE}############# ${PURPLE}Deploying Kube prometheus stack ${ORANGE}#############${NC}\n"
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
   helm repo update
