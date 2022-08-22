@@ -17,7 +17,3 @@ variable "private_subnets_cidr_blocks" {
 variable "tags" {
   type = map(string)
 }
-
-variable "create" {
-  type = bool
-}

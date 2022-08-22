@@ -1,7 +1,6 @@
 resource "aws_eks_cluster" "this" {
-  count                     = var.create ? 1 : 0
   name                      = var.prefix
-  role_arn                  = aws_iam_role.cluster[count.index].arn
+  role_arn                  = aws_iam_role.cluster.arn
   enabled_cluster_log_types = ["api", "audit"]
 
   vpc_config {
@@ -20,13 +19,11 @@ resource "aws_eks_cluster" "this" {
 }
 
 data "tls_certificate" "this" {
-  count = var.create ? 1 : 0
-  url   = aws_eks_cluster.this[0].identity[0].oidc[0].issuer
+  url = aws_eks_cluster.this.identity[0].oidc[0].issuer
 }
 
 resource "aws_iam_openid_connect_provider" "this" {
-  count           = var.create ? 1 : 0
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.this[count.index].certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.this[count.index].identity[0].oidc[0].issuer
+  thumbprint_list = [data.tls_certificate.this.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.this.identity[0].oidc[0].issuer
 }

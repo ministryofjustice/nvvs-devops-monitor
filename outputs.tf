@@ -35,7 +35,7 @@ output "certificate" {
 }
 
 output "eks_cluster" {
-  value = var.create_eks ? {
+  value = {
     issuer                                    = module.eks.issuer
     name                                      = module.eks.cluster_name
     endpoint                                  = module.eks.endpoint
@@ -45,12 +45,12 @@ output "eks_cluster" {
     efs_file_system_id                        = module.eks.efs_file_system_id
     thanos_iam_role_arn                       = module.eks.thanos_iam_role_arn
     thanos_storage_s3_bucket_name             = module.eks.thanos_storage_s3_bucket_name
-  } : null
+  }
   sensitive = true
 }
 
 output "kubeconfig_certificate_authority_data" {
-  value     = var.create_eks ? base64decode(module.eks.kubeconfig_certificate_authority_data) : null
+  value     = base64decode(module.eks.kubeconfig_certificate_authority_data)
   sensitive = true
 }
 
