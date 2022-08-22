@@ -158,10 +158,10 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-
+    
     - name: Run the deployment script
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: kubectl config get-contexts
+      run: make deploy
 
   # Terraform apply in production
   deploy-production:
