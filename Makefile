@@ -24,7 +24,7 @@ deploy:
 uninstall:
 	./scripts/uninstall_all_deployments.sh
 
-destroy: uninstall
+destroy:
 	terraform destroy
 
 .PHONY: init validate plan apply deploy uninstall destroy
