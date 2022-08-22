@@ -25,7 +25,6 @@ jobs:
         TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
         TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
         TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -80,12 +79,19 @@ jobs:
       # On push to main, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: terraform apply -auto-approve
 
     - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: make deploy
+
+    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
+    - name: Terraform Destroy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == false
+      run: |
+        make uninstall
+        terraform destroy -auto-approve
 
   # Terraform apply in pre-production
   deploy-pre-production:
@@ -101,7 +107,6 @@ jobs:
         TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
         TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
         TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -156,12 +161,19 @@ jobs:
       # On push to main, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: terraform apply -auto-approve
-    
+
     - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: make deploy
+
+    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
+    - name: Terraform Destroy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == false
+      run: |
+        make uninstall
+        terraform destroy -auto-approve
 
   # Terraform apply in production
   deploy-production:
@@ -177,7 +189,6 @@ jobs:
         TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
         TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
         TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-        TF_VAR_create_eks: ${{ secrets.CREATE_EKS }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -232,9 +243,16 @@ jobs:
       # On push to main, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: terraform apply -auto-approve
 
     - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == true
       run: make deploy
+
+    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
+    - name: Terraform Destroy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ secrets.CREATE_IMA_PLATFORM }} == false
+      run: |
+        make uninstall
+        terraform destroy -auto-approve

@@ -24,10 +24,3 @@ variable "zone_id" {
   description = "The AWS Route53 zone id for the domain used for the var.domain_name"
   type        = string
 }
-
-
-variable "create_eks" {
-  description = "Flag to create the eks cluster dependent on the environment"
-  type        = bool
-  default     = false
-}
