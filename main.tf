@@ -34,7 +34,7 @@ module "vpc_label" {
 module "vpc" {
   source          = "./modules/vpc"
   prefix          = module.vpc_label.id
-  cidr            = "10.0.0.0/22"
+  cidr            = "10.180.100.0/22"
   region          = var.aws_region
   available_zones = data.aws_availability_zones.available_zones.zone_ids
   tags            = module.vpc_label.tags
