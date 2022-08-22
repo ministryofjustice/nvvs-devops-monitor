@@ -1,8 +1,7 @@
 resource "aws_eks_node_group" "green" {
-  count           = var.create ? 1 : 0
-  cluster_name    = aws_eks_cluster.this[count.index].name
+  cluster_name    = aws_eks_cluster.this.name
   node_group_name = "green"
-  node_role_arn   = aws_iam_role.node_group[count.index].arn
+  node_role_arn   = aws_iam_role.node_group.arn
   subnet_ids      = var.private_subnets
 
   scaling_config {
