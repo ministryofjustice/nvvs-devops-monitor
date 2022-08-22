@@ -3,7 +3,6 @@ module "label" {
   version = "0.25.0"
 
   namespace = terraform.workspace
-  stage     = terraform.workspace == "production" ? "prod" : "staging"
   name      = var.name
   delimiter = "-"
 
