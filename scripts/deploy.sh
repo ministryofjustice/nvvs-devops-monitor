@@ -203,9 +203,4 @@ main() {
   deploy_cns_team_monitoring
 }
 
-if `terraform output eks_enabled`; then
-  printf "\n${ORANGE}############# ${PURPLE}Preparing the EKS Cluster for deployments ${ORANGE}#############${NC}\n"
-  main
-else
-  printf "\n${ORANGE}############# ${PURPLE}Nothing to deploy as EKS is not enabled ${ORANGE}#############${NC}\n"
-fi
+main
