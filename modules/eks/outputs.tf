@@ -37,3 +37,7 @@ output "issuer" {
 output "thanos_storage_s3_bucket_name" {
   value = aws_s3_bucket.thanos_storage.id
 }
+
+output "cloudwatch_exporter_iam_role_arn" {
+  value = aws_iam_role.cloudwatch_exporter.arn
+}

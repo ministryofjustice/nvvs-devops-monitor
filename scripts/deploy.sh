@@ -25,6 +25,7 @@ set_variables() {
   efs_csi_driver_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_efs_csi_driver_iam_role_arn'`
   efs_file_system_id=`echo $terraform_outputs_eks_cluster | jq -r '.efs_file_system_id'`
   thanos_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_iam_role_arn'`
+  cloudwatch_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.cloudwatch_exporter_iam_role_arn'`
   thanos_storage_s3_bucket_name=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_storage_s3_bucket_name'`
   kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
   terraform_outputs_certificate=`terraform output -json certificate`
@@ -179,7 +180,8 @@ deploy_cns_team_monitoring() {
     -n monitoring \
     --set jsonExporterUsername="user" \
     --set jsonExporterPassword="pass" \
-    --set environment=$namespace
+    --set environment=$namespace \
+    --set cloudwatch_iam_role=$cloudwatch_iam_role_arn
   # Create dashboards (with grafana variables) configmaps for grafana
   kubectl create configmap dhcp-lease-statistics-grafana-dashboard --from-file ./grafana_dashboards/dhcp-lease-statistics.json -n monitoring --dry-run=client -o yaml | kubectl apply -f -
   kubectl create configmap kea-dhcp-metrics-grafana-dashboard --from-file ./grafana_dashboards/kea-dhcp-metrics.json -n monitoring --dry-run=client -o yaml | kubectl apply -f -

@@ -312,3 +312,55 @@ resource "aws_iam_role_policy_attachment" "thanos_s3_bucket_access_policy" {
   policy_arn = aws_iam_policy.s3_bucket_access_policy.arn
   role       = aws_iam_role.thanos.name
 }
+
+# IAM role for Cloudwatch Exporter
+
+data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:monitoring:cloudwatch-exporter"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.this.arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "cloudwatch_exporter" {
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy.json
+  name               = "${var.prefix}-CloudwatchExporter"
+
+  tags = var.tags
+}
+
+data "template_file" "cloudwatch_exporter_iam_policy" {
+  template = file("${path.module}/policies/cloudwatch_exporter_iam_policy.json")
+}
+
+resource "aws_iam_policy" "cloudwatch_exporter_iam_policy" {
+  name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
+
+  policy = data.template_file.cloudwatch_exporter_iam_policy.rendered
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy" {
+  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy.arn
+  role       = aws_iam_role.cloudwatch_exporter.name
+}

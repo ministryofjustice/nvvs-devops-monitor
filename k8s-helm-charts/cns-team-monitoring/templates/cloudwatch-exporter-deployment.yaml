@@ -16,6 +16,7 @@ spec:
       labels:
         app: cloudwatch-exporter
     spec:
+      serviceAccountName: cloudwatch-exporter
       containers:
       - name: cloudwatch-exporter
         image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.38.0-alpha

@@ -41,6 +41,7 @@ output "eks_cluster" {
     efs_file_system_id                        = module.eks.efs_file_system_id
     thanos_iam_role_arn                       = module.eks.thanos_iam_role_arn
     thanos_storage_s3_bucket_name             = module.eks.thanos_storage_s3_bucket_name
+    cloudwatch_exporter_iam_role_arn          = module.eks.cloudwatch_exporter_iam_role_arn
   }
   sensitive = true
 }
