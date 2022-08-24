@@ -7,30 +7,18 @@ NC='\033[0m' # No Color
 
 set_variables() {
   printf "\n${ORANGE}############# ${PURPLE}Setting up local variables ${ORANGE}#############${NC}\n"
-  application_name=`terraform output -raw application_name`
-  namespace=`terraform output -raw terraform_workspace`
   region=`terraform output aws_region`
   aws_assume_role=`terraform output assume_role`
   terraform_outputs_eks_cluster=`terraform output -json eks_cluster`
   eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
   eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
-  lb_controller_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_load_balancer_controller_iam_role_arn'`
-  external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
-  efs_csi_driver_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_efs_csi_driver_iam_role_arn'`
-  efs_file_system_id=`echo $terraform_outputs_eks_cluster | jq -r '.efs_file_system_id'`
-  thanos_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_iam_role_arn'`
-  thanos_storage_s3_bucket_name=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_storage_s3_bucket_name'`
   kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
-  terraform_outputs_certificate=`terraform output -json certificate`
-  certificate_domain=`echo $terraform_outputs_certificate | jq -r '.certificate_domain'`
-  certificate_arn=`echo $terraform_outputs_certificate | jq -r '.certificate_arn'`
-  application_domain=`echo $application_name"."$certificate_domain`
-  tags=`terraform output -raw tags`
 }
 
 set_kubeconfig() {
   printf "\n${ORANGE}############# ${PURPLE}Setting up kubeconfig ${ORANGE}#############${NC}\n"
   # Set a user entry in kubeconfig
+  if [ -z $AWS_PROFILE ]; then
   kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
     --exec-arg=eks \
     --exec-arg=get-token \
@@ -40,6 +28,18 @@ set_kubeconfig() {
     --exec-arg=$eks_cluster_name \
     --exec-arg=--role \
     --exec-arg=$aws_assume_role
+  else
+  kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
+    --exec-arg=eks \
+    --exec-arg=get-token \
+    --exec-arg=--region \
+    --exec-arg=$region \
+    --exec-arg=--cluster-name \
+    --exec-arg=$eks_cluster_name \
+    --exec-arg=--role \
+    --exec-arg=$aws_assume_role \
+    --exec-env=AWS_PROFILE=$AWS_PROFILE
+  fi
 
   # Create a temporary kubernetes certificate authority cert file
   cat > temp_kubernetes_ca.crt << EOL
