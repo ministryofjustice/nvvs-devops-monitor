@@ -23,3 +23,5 @@ persistence:
     - ReadWriteMany
 serviceMonitor:
   enabled: true
+envFromSecrets:
+  - name: aws-account-ids
