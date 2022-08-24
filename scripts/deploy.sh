@@ -176,10 +176,11 @@ deploy_grafana() {
 
 deploy_cns_team_monitoring() {
   printf "\n${ORANGE}############# ${PURPLE}Deploying CNS Team monitoring helm chart ${ORANGE}#############${NC}\n"
+  # $dhcpApiBasicAuth variables are environemt variables (or from .env file for local development)
   helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \
     -n monitoring \
-    --set dhcpApiBasicAuthUsername=$dhcpApiBasicAuthUsername \ # envitonment variable (.env file for local)
-    --set dhcpApiBasicAuthPassword=$dhcpApiBasicAuthPassword \ # envitonment variable (.env file for local)
+    --set dhcpApiBasicAuthUsername=$dhcpApiBasicAuthUsername \
+    --set dhcpApiBasicAuthPassword=$dhcpApiBasicAuthPassword \
     --set environment=$namespace \
     --set cloudwatch_iam_role=$cloudwatch_iam_role_arn
   # Create dashboards (with grafana variables) configmaps for grafana

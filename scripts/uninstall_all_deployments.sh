@@ -142,9 +142,4 @@ main() {
   uninstall_kube-prometheus-stack
 }
 
-if `terraform output eks_enabled`; then
-  printf "\n${ORANGE}############# ${PURPLE}Uninstalling shared helm charts from the EKS Cluster ${ORANGE}#############${NC}\n"
-  main
-else
-  printf "\n${ORANGE}############# ${PURPLE}Nothing to uninstall as EKS is not enabled ${ORANGE}#############${NC}\n"
-fi
+main
