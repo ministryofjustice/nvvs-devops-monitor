@@ -38,6 +38,7 @@ set_variables() {
 set_kubeconfig() {
   printf "\n${ORANGE}############# ${PURPLE}Setting up kubeconfig ${ORANGE}#############${NC}\n"
   # Set a user entry in kubeconfig
+  if [ -z $AWS_PROFILE ]; then
   kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
     --exec-arg=eks \
     --exec-arg=get-token \
@@ -47,6 +48,18 @@ set_kubeconfig() {
     --exec-arg=$eks_cluster_name \
     --exec-arg=--role \
     --exec-arg=$aws_assume_role
+  else
+  kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
+    --exec-arg=eks \
+    --exec-arg=get-token \
+    --exec-arg=--region \
+    --exec-arg=$region \
+    --exec-arg=--cluster-name \
+    --exec-arg=$eks_cluster_name \
+    --exec-arg=--role \
+    --exec-arg=$aws_assume_role \
+    --exec-env=AWS_PROFILE=$AWS_PROFILE
+  fi
 
   # Create a temporary kubernetes certificate authority cert file
   cat > temp_kubernetes_ca.crt << EOL

@@ -93,13 +93,6 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'true'
       run: make deploy
 
-    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
-    - name: Terraform Destroy
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'false'
-      run: |
-        make uninstall
-        terraform destroy -auto-approve
-
   # Terraform apply in pre-production
   deploy-pre-production:
     name: 'Deploy Pre-Production'
@@ -176,13 +169,6 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'true'
       run: make deploy
 
-    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
-    - name: Terraform Destroy
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'false'
-      run: |
-        make uninstall
-        terraform destroy -auto-approve
-
   # Terraform apply in production
   deploy-production:
     name: 'Deploy Production'
@@ -258,10 +244,3 @@ jobs:
     - name: Run the deployment script
       if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'true'
       run: make deploy
-
-    # If feature flag is set to not create a platform for IMA, then to run terraform destroy to destroy the infra if already exists
-    - name: Terraform Destroy
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.CREATE_IMA_PLATFORM == 'false'
-      run: |
-        make uninstall
-        terraform destroy -auto-approve
