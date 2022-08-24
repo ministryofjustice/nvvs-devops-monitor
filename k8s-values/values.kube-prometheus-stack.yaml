@@ -32,6 +32,8 @@ prometheus:
       static_configs:
         - targets:
           - 'https://dhcp-dns-admin.dev.staff.service.justice.gov.uk/api/dhcp-stats'
+          - 'https://dhcp-dns-admin.prep.staff.service.justice.gov.uk/api/dhcp-stats'
+          - 'https://dhcp-dns-admin.staff.service.justice.gov.uk/api/dhcp-stats'
       relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

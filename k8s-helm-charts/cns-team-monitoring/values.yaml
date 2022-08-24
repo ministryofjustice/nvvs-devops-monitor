@@ -1,4 +1,4 @@
 environment: ""
-jsonExporterUsername: ""
-jsonExporterPassword: ""
+dhcpApiBasicAuthUsername: ""
+dhcpApiBasicAuthPassword: ""
 cloudwatch_iam_role: ""
