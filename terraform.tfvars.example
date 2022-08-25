@@ -1,4 +1,9 @@
+# The Role which Shared Services will build with in the relevant AWS account
 assume_role = 
-domain_name = 
-zone_id     = 
-create_eks  = 
+
+# Run aws route53 list-hosted-zones in the relevant account to get the following variables
+domain_name = <hosted zone "Name" in the account you are working in e.g example.gov.uk where Name = "example.gov.uk">
+zone_id     = <hosted zone "Id" in the account you are working in e.g 123456789 where Id = "/hostedzone/123456789">
+
+# To create (or not delete, if already created) the infrastructure set to 'true'. Similarly set to 'false' [default] to destroy infrastructure. 
+enabled     = 
