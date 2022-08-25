@@ -1861,7 +1861,7 @@
         "current": {
           "selected": true,
           "text": "Production",
-          "value": "'"$PROD_AWS_ACCOUNT_ID"'"
+          "value": "\"$PROD_AWS_ACCOUNT_ID\""
         },
         "hide": 0,
         "includeAll": false,
@@ -1872,20 +1872,20 @@
           {
             "selected": true,
             "text": "Production",
-            "value": "'"$PROD_AWS_ACCOUNT_ID"'"
+            "value": "\"$PROD_AWS_ACCOUNT_ID\""
           },
           {
             "selected": false,
             "text": "Pre-Production",
-            "value": "'"$PREP_AWS_ACCOUNT_ID"'"
+            "value": "\"$PREP_AWS_ACCOUNT_ID\""
           },
           {
             "selected": false,
             "text": "Development",
-            "value": "'"$DEV_AWS_ACCOUNT_ID"'"
+            "value": "\"$DEV_AWS_ACCOUNT_ID\""
           }
         ],
-        "query": "'"$PROD_AWS_ACCOUNT_ID"','"$PREP_AWS_ACCOUNT_ID"','"$DEV_AWS_ACCOUNT_ID"'",
+        "query": "\"$PROD_AWS_ACCOUNT_ID\",\"$PREP_AWS_ACCOUNT_ID\",\"$DEV_AWS_ACCOUNT_ID\"",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
