@@ -16,6 +16,7 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "available_zones" {
+  count = var.enabled ? 1 : 0
   state = "available"
 }
 
@@ -32,11 +33,12 @@ module "vpc_label" {
 }
 
 module "vpc" {
+  count           = var.enabled ? 1 : 0
   source          = "./modules/vpc"
   prefix          = module.vpc_label.id
   cidr            = "10.180.100.0/22"
   region          = var.aws_region
-  available_zones = data.aws_availability_zones.available_zones.zone_ids
+  available_zones = data.aws_availability_zones.available_zones[0].zone_ids
   tags            = module.vpc_label.tags
 
   providers = {
@@ -51,11 +53,12 @@ module "eks_label" {
 }
 
 module "eks" {
+  count                       = var.enabled ? 1 : 0
   source                      = "./modules/eks"
   prefix                      = module.eks_label.id
-  vpc_id                      = module.vpc.vpc_id
-  private_subnets             = module.vpc.private_subnets
-  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  vpc_id                      = module.vpc[0].vpc_id
+  private_subnets             = module.vpc[0].private_subnets
+  private_subnets_cidr_blocks = module.vpc[0].private_subnets_cidr_blocks
   tags                        = module.eks_label.tags
 
   providers = {

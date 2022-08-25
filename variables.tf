@@ -4,6 +4,12 @@ variable "application_name" {
   default     = "mojo-infrastructure-monitoring"
 }
 
+variable "enabled" {
+  description = "Feature flag that controls the deployment of the infrastructure in a given environment"
+  type        = bool
+  default     = false
+}
+
 variable "assume_role" {
   description = "The role to assume in different environments"
   type        = string

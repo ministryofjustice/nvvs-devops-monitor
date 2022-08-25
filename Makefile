@@ -7,7 +7,7 @@ fmt:
 
 init:
 	terraform init -upgrade -reconfigure \
-	--backend-config="key=terraform.production.state"
+	--backend-config="key=terraform.development.state"
 
 validate:
 	terraform validate
