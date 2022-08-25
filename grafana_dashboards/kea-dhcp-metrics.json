@@ -54,7 +54,10 @@
       "type": "row"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -132,7 +135,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName=~\".+dhcp.+\"}",
           "interval": "",
           "legendFormat": "{{dimension_ServiceName}}",
           "refId": "A"
@@ -142,7 +145,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -220,7 +226,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_networkelb_un_healthy_host_count_average{dimension_TargetGroup=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_networkelb_un_healthy_host_count_average{dimension_TargetGroup=~\".+dhcp.+\"}",
           "interval": "",
           "legendFormat": "{{dimension_AvailabilityZone}} - {{dimension_LoadBalancer}}",
           "refId": "A"
@@ -312,7 +318,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "sum(aws_rds_read_iops_average{account_id=\"$account_id\"})",
+          "expr": "sum(aws_rds_read_iops_average)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -323,7 +329,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "sum(aws_rds_write_iops_average{account_id=\"$account_id\"})",
+          "expr": "sum(aws_rds_write_iops_average)",
           "interval": "",
           "legendFormat": "",
           "refId": "B"
@@ -334,7 +340,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -412,7 +421,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_networkelb_processed_bytes_average{dimension_LoadBalancer=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_networkelb_processed_bytes_average{dimension_LoadBalancer=~\".+dhcp.+\"}",
           "interval": "",
           "legendFormat": "{{dimension_LoadBalancer}}",
           "refId": "A"
@@ -427,7 +436,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -469,7 +481,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+dhcp.+\"}",
           "interval": "",
           "legendFormat": "{{dimension_DBInstanceIdentifier}}",
           "refId": "A"
@@ -591,7 +603,7 @@
             "ClusterName": "staff-device-production-dhcp-cluster"
           },
           "exemplar": true,
-          "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+dhcp.+\"}",
           "expression": "",
           "id": "",
           "interval": "",
@@ -616,7 +628,7 @@
             "ClusterName": "staff-device-production-dhcp-cluster"
           },
           "exemplar": true,
-          "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
+          "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+dhcp.+\"}",
           "expression": "",
           "id": "",
           "interval": "",
@@ -662,7 +674,10 @@
       "type": "row"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -740,7 +755,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": false,
-          "expr": "aws_kea_dhcp_error_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_error_sum",
           "interval": "",
           "legendFormat": "Primary Error",
           "refId": "A"
@@ -751,7 +766,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_fatal_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_fatal_sum",
           "interval": "",
           "legendFormat": "Primary Fatal Error",
           "refId": "B"
@@ -762,7 +777,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_warn_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_warn_sum",
           "interval": "",
           "legendFormat": "Primary Warning",
           "refId": "C"
@@ -773,7 +788,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_error_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_error_sum",
           "interval": "",
           "legendFormat": "Standby Error",
           "refId": "E"
@@ -784,7 +799,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_fatal_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_fatal_sum",
           "interval": "",
           "legendFormat": "Standby Fatal",
           "refId": "F"
@@ -795,7 +810,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_warn_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_warn_sum",
           "interval": "",
           "legendFormat": "Standby Warning",
           "refId": "G"
@@ -805,7 +820,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -883,7 +901,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_configuration_successful_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_configuration_successful_sum",
           "interval": "",
           "legendFormat": "Primary - Successful",
           "refId": "A"
@@ -894,7 +912,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_config_reload_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_config_reload_failed_sum",
           "interval": "",
           "legendFormat": "Primary - Reload Failed",
           "refId": "B"
@@ -905,7 +923,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_configuration_successful_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_configuration_successful_sum",
           "interval": "",
           "legendFormat": "Standby - Successful",
           "refId": "C"
@@ -916,7 +934,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_config_reload_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_config_reload_failed_sum",
           "interval": "",
           "legendFormat": "Standby - Reload Failed",
           "refId": "D"
@@ -1007,7 +1025,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_ha_sync_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_ha_sync_failed_sum",
           "interval": "",
           "legendFormat": "Primary - HA Sync Failed",
           "refId": "A"
@@ -1018,7 +1036,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_ha_heartbeat_communications_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_ha_heartbeat_communications_failed_sum",
           "interval": "",
           "legendFormat": "Primary - HA Heartbeat Communication Failed",
           "refId": "B"
@@ -1029,7 +1047,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_ha_sync_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_ha_sync_failed_sum",
           "interval": "",
           "legendFormat": "Standby - HA Sync Failed",
           "refId": "C"
@@ -1040,7 +1058,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_ha_heartbeat_communications_failed_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_ha_heartbeat_communications_failed_sum",
           "interval": "",
           "legendFormat": "Standby - HA Heartbeat Communication Failed",
           "refId": "D"
@@ -1131,7 +1149,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_error_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_error_sum",
           "interval": "",
           "legendFormat": "Primary  - Allocation Error",
           "refId": "A"
@@ -1142,7 +1160,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum",
           "interval": "",
           "legendFormat": "Primary  - Allocation Fail",
           "refId": "B"
@@ -1153,7 +1171,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_classes_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_classes_sum",
           "interval": "",
           "legendFormat": "Primary  - Allocation Fail Classes",
           "refId": "C"
@@ -1164,7 +1182,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_error_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_error_sum",
           "interval": "",
           "legendFormat": "Standby - Allocation Error",
           "refId": "D"
@@ -1175,7 +1193,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_sum",
           "interval": "",
           "legendFormat": "Standby  - Allocation Fail",
           "refId": "E"
@@ -1186,7 +1204,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_classes_sum{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_classes_sum",
           "interval": "",
           "legendFormat": "Standby - Allocation Fail Classes",
           "refId": "F"
@@ -1196,7 +1214,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1274,7 +1295,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "rate(aws_kea_dhcp_pkt4_discover_received_average{account_id=\"$account_id\"}[15m])",
+          "expr": "rate(aws_kea_dhcp_pkt4_discover_received_average[15m])",
           "instant": false,
           "interval": "",
           "legendFormat": "Primary",
@@ -1285,7 +1306,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1363,7 +1387,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "rate(aws_kea_dhcp_pkt4_nak_sent_average{account_id=\"$account_id\"}[15m])",
+          "expr": "rate(aws_kea_dhcp_pkt4_nak_sent_average[15m])",
           "interval": "",
           "legendFormat": "Primary",
           "refId": "A"
@@ -1377,7 +1401,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1419,7 +1446,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "rate(aws_kea_dhcp_pkt4_request_received_average{account_id=\"$account_id\"}[15m])  ",
+          "expr": "rate(aws_kea_dhcp_pkt4_request_received_average[15m])  ",
           "interval": "",
           "legendFormat": "Primary",
           "refId": "A"
@@ -1456,7 +1483,10 @@
       }
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1534,7 +1564,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "rate(aws_kea_dhcp_pkt4_ack_sent_average{account_id=\"$account_id\"}[15m])",
+          "expr": "rate(aws_kea_dhcp_pkt4_ack_sent_average[15m])",
           "interval": "",
           "legendFormat": "Primary",
           "refId": "A"
@@ -1625,7 +1655,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_pkt4_nak_sent_average{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_pkt4_nak_sent_average",
           "interval": "",
           "legendFormat": "Primary - pkt4-nak-sent",
           "refId": "A"
@@ -1636,7 +1666,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_pkt4_nak_received_average{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_pkt4_nak_received_average",
           "interval": "",
           "legendFormat": "Primary - pkt4-nak-received",
           "refId": "B"
@@ -1646,7 +1676,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1724,7 +1757,7 @@
             "uid": "eARrzmTnz"
           },
           "exemplar": true,
-          "expr": "aws_kea_dhcp_pkt4_decline_received_average{account_id=\"$account_id\"}",
+          "expr": "aws_kea_dhcp_pkt4_decline_received_average",
           "interval": "",
           "legendFormat": "Primary - Decline Received",
           "refId": "A"
@@ -1856,41 +1889,7 @@
     "DHCP"
   ],
   "templating": {
-    "list": [
-      {
-        "current": {
-          "selected": true,
-          "text": "Production",
-          "value": "037161842252"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": "Environment",
-        "multi": false,
-        "name": "account_id",
-        "options": [
-          {
-            "selected": true,
-            "text": "Production",
-            "value": "037161842252"
-          },
-          {
-            "selected": false,
-            "text": "Pre-Production",
-            "value": "473630360727"
-          },
-          {
-            "selected": false,
-            "text": "Development",
-            "value": "068084030754"
-          }
-        ],
-        "query": "037161842252,473630360727,068084030754",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-6h",
@@ -1900,6 +1899,6 @@
   "timezone": "",
   "title": "KEA DHCP Metrics",
   "uid": "cEwjsH1Gk",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
