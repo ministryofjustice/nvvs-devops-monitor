@@ -5,6 +5,7 @@ module "acm_label" {
 }
 
 module "acm" {
+  count   = var.enabled ? 1 : 0
   source  = "terraform-aws-modules/acm/aws"
   version = "~> 3.0"
 

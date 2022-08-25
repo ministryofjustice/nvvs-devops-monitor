@@ -142,4 +142,9 @@ main() {
   uninstall_kube-prometheus-stack
 }
 
-main
+if `terraform output enabled`; then
+  printf "\n${ORANGE}############# ${PURPLE}Uninstalling all deployments in `terraform output -raw terraform_workspace` ${ORANGE}#############${NC}\n"
+  main
+else
+  printf "\n${ORANGE}############# ${PURPLE}Nothing to uninstall as environment: `terraform output -raw terraform_workspace` is not enabled ${ORANGE}#############${NC}\n"
+fi

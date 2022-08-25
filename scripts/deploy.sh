@@ -219,4 +219,9 @@ main() {
   deploy_cns_team_monitoring
 }
 
-main
+if `terraform output enabled`; then
+  printf "\n${ORANGE}############# ${PURPLE}Preparing the EKS Cluster for deployments in `terraform output -raw terraform_workspace` ${ORANGE}#############${NC}\n"
+  main
+else
+  printf "\n${ORANGE}############# ${PURPLE}Nothing to deploy as environment: `terraform output -raw terraform_workspace` is not enabled ${ORANGE}#############${NC}\n"
+fi
