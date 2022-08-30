@@ -52,6 +52,244 @@ prometheus:
       static_configs:
       - targets:
         - cloudwatch-exporter:5000
+    - job_name: postfix
+      metrics_path: /metrics
+      honor_labels: true
+      scheme: http
+      dns_sd_configs:
+      - names: ['<fix this later>']
+        type: A
+        port: 9154  
+    - job_name: 'blackbox-http-pki'
+      scrape_interval: 300s
+      metrics_path: /probe
+      params:
+        module: [http_get_pki] # Look for a HTTP post
+      static_configs:
+        - targets:
+          - https://enrolment.certificates.prep.staff.service.justice.gov.uk/csrscep/a0361_user/pkiclient.exe?operation=GetCACaps
+          - https://enrolment.certificates.staff.service.justice.gov.uk/csrscep/b0361_user/pkiclient.exe?operation=GetCACaps
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'blackbox-http'
+      metrics_path: /probe
+      params:
+        module: [http_2xx] # Look for a HTTP 200 response
+      static_configs:
+        - targets:
+          # Staff Service URLs
+          - https://dhcp-dns-admin.staff.service.justice.gov.uk
+          - https://dhcp-dns-admin.dev.staff.service.justice.gov.uk
+          - https://dhcp-dns-admin.prep.staff.service.justice.gov.uk
+          - https://monitoring-alerting.staff.service.justice.gov.uk
+          - https://monitoring-alerting.dev.staff.service.justice.gov.uk
+          - https://monitoring-alerting.prep.staff.service.justice.gov.uk
+          # MoJ Service URLs
+          - https://enrolment.certificates.prep.staff.service.justice.gov.uk/csrscep/a0361_user/pkiclient.exe?operation=GetCACaps #MoJO PKI prep
+          - https://enrolment.certificates.staff.service.justice.gov.uk/csrscep/b0361_user/pkiclient.exe?operation=GetCACaps #MoJO PKI prod
+          # MoJ Global Protect
+          - https://portal.vpn.justice.gov.uk #Production
+          - https://portal.prep.vpn.justice.gov.uk #Prep
+          - https://alpha-fw.vpn.justice.gov.uk/ #Alpha VPN
+          # SOP OCI
+          - https://sop.govsharedservices.gov.uk:4450
+          # PA 5260s Firewalls in Farnham and Corsham
+          - https://gateway-c.internal.vpn.justice.gov.uk
+          - https://gateway-f.internal.vpn.justice.gov.uk
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'blackbox-staff-urls'
+      metrics_path: /probe
+      params:
+        module: [http_slow_sites] # Look for a HTTP 200 response timeout set to 30secs
+      static_configs:
+        - targets:
+          # PSN Service URLs
+          - https://intranet.noms.gsi.gov.uk/ # There is no routing via PSN so removing
+          - https://www.ppud.gsi.gov.uk/ # There is no routing via PSN so removing
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: blackbox-ping-ark
+      metrics_path: /probe
+      params:
+        module: [icmp]
+      static_configs:
+        - targets:
+          # Corsham
+          - 172.16.181.1 # MoJ-ARKC-FW02_A (Gateway)
+          - 172.16.181.5 # MOJ-ARKC-SCON01
+          - 172.16.181.6 # MOJ-ARKC-SW03
+          - 172.16.181.7 # MoJ-ARKC-FW02_A
+          - 172.16.181.8 # MoJ-ARKC-FW02_B
+          - 172.16.181.10 # MoJ-ARKC-FW01_A
+          - 172.16.181.11 # MoJ-ARKC-FW01_B
+          - 172.16.181.20 # MOJ-ARKC-SW01
+          - 172.16.181.30 # MOJ-ARKC-SW02
+          - 172.16.181.201 # MoJ-ARKC-ESX01
+          - 172.16.181.202 # MoJ-ARKC-ESX02
+
+          # Farnborough
+          - 172.16.182.1 # MoJ-ARKC-FW02_A (Gateway)
+          - 172.16.182.5 # MOJ-ARKC-SCON01
+          - 172.16.182.6 # MOJ-ARKC-SW03
+          - 172.16.182.7 # MoJ-ARKC-FW02_A
+          - 172.16.182.8 # MoJ-ARKC-FW02_B
+          - 172.16.182.10 # MoJ-ARKC-FW01_A
+          - 172.16.182.11 # MoJ-ARKC-FW01_B
+          - 172.16.182.20 # MOJ-ARKC-SW01
+          - 172.16.182.30 # MOJ-ARKC-SW02
+          - 172.16.182.201 # MoJ-ARKC-ESX01
+          - 172.16.182.202 # MoJ-ARKC-ESX02
+          # External DNS
+          - 1.1.1.1 # Cloudflare
+          - 25.25.25.25 # NCSC PDNS
+          - 25.26.27.28 # NCSC PDNS
+      relabel_configs:    # <== This comes from the blackbox exporter README
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'dom1_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [dom1_dns_probe]
+      static_configs:
+        - targets:
+          - 10.171.68.147
+          - 10.171.68.148
+          - 10.171.68.149
+          - 10.171.68.150
+          - 10.172.68.147
+          - 10.172.68.148
+          - 10.172.68.149
+          - 10.172.68.150
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'quantum_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [quantum_dns_probe]
+      static_configs:
+        - targets:
+          - 10.64.16.67
+          - 10.64.141.16
+          - 10.64.141.17
+          - 10.64.141.18
+          - 10.64.141.19
+          - 10.64.141.20
+          - 10.64.141.119
+          - 10.64.141.121
+          - 10.65.1.26
+          - 10.65.1.27
+          - 10.65.1.28
+          - 10.65.1.29
+          - 10.95.41.121
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'psn_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [psn_dns_probe]
+      static_configs:
+        - targets:
+          - 51.33.255.42
+          - 51.33.255.58
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'lexlive_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [lexlive_dns_probe]
+      static_configs:
+        - targets:
+          - 10.171.68.145
+          - 10.171.68.146
+          - 10.172.68.146
+          - 10.172.68.145
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'internal_vpn_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [internal_vpn_dns_probe]
+      static_configs:
+        - targets:
+          - 10.180.80.60
+          - 10.180.81.60
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'internal.network_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [internal.network_dns_probe]
+      static_configs:
+        - targets:
+          - 10.180.80.60
+          - 10.180.81.60
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
+    - job_name: 'protective_dns_probe'
+      metrics_path: /probe
+      params:
+        module: [protective_dns_probe]
+      static_configs:
+        - targets:
+          - 25.26.27.28
+          - 25.25.25.25
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 'prometheus-blackbox-exporter:9115'
     storageSpec:
       volumeClaimTemplate:
         spec:
