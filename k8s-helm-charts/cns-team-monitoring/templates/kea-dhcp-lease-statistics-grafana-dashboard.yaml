@@ -386,7 +386,7 @@ data:
               "exemplar": true,
               "expr": "subnet_statistics_usage > 60",
               "interval": "",
-              "legendFormat": ""{{ "{{cidr_block}}" }}"",
+              "legendFormat": "{{ "{{cidr_block}}" }}",
               "range": true,
               "refId": "A"
             }
