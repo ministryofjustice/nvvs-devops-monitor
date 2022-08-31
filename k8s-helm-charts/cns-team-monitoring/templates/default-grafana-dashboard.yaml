@@ -12,8 +12,8 @@ data:
           {
             "builtIn": 1,
             "datasource": {
-              "type": "grafana",
-              "uid": "-- Grafana --"
+              "type": "datasource",
+              "uid": "grafana"
             },
             "enable": true,
             "hide": true,
@@ -29,184 +29,131 @@ data:
           }
         ]
       },
-      "editable": true,
+      "editable": false,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
+      "id": 35,
       "links": [],
       "liveNow": false,
       "panels": [
         {
+          "collapsed": false,
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
+            "type": "datasource",
+            "uid": "grafana"
           },
           "gridPos": {
-            "h": 2,
-            "w": 23,
+            "h": 1,
+            "w": 24,
             "x": 0,
             "y": 0
           },
           "id": 4,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true
-          },
-          "pluginVersion": "9.0.5",
+          "panels": [],
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+                "type": "datasource",
+                "uid": "grafana"
               },
-              "editorMode": "code",
-              "expr": "MoJO_site_info{Info=~\".+$SiteName.+\"} ",
-              "legendFormat": "{{ "{{SiteName}}" }}",
-              "range": true,
               "refId": "A"
             }
           ],
-          "title": "Subnets for $SiteName",
-          "transformations": [
-            {
-              "id": "labelsToFields",
-              "options": {
-                "mode": "columns",
-                "valueLabel": "Info"
-              }
-            },
-            {
-              "id": "extractFields",
-              "options": {
-                "format": "auto",
-                "replace": true,
-                "source": "subnets"
-              }
-            }
-          ],
-          "type": "table"
+          "title": "Welcome",
+          "type": "row"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "eARrzmTnz"
           },
-          "description": "",
           "gridPos": {
-            "h": 3,
-            "w": 6,
+            "h": 14,
+            "w": 12,
             "x": 0,
-            "y": 2
+            "y": 1
           },
-          "id": 6,
+          "id": 8,
           "options": {
-            "content": "# $SiteName2",
+            "content": "# Dashboard Index\n\nUse the search button on the left or  to go directly to a service use the links below.\n\n## Ministry of Justice Official Staff Services\n- [Azure Landing Zone](https://monitoring-alerting.staff.service.justice.gov.uk/d/b-jIxAQMz/azl-resources?orgId=1&refresh=5m) - Azure - Azure Landing Zone Hub - WIP\n- [Certificate Services](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/-K2gf41Gk/staff-device-certificate-services) - AWS - Public Key Infrastructure (PKI) services for staff devices and users\n- [DNS and DHCP](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/hBI4MBCnk/staff-device-dns-dhcp-infrastructure) - AWS - IP Addressing and domain name resolution for Prison, HQ sites, e.g. devices on the purple cable and remote users on Global Protect\n- [Global Protect](https://monitoring-alerting.staff.service.justice.gov.uk/d/pzIOwlxnz/global-protect-firewalls?orgId=1) - AWS - Remote user access via Global Protect\n- [Internet Gateway Service](https://monitoring-alerting.staff.service.justice.gov.uk/d/Fi96pMWGk/snmp-interface-detail?orgId=1&refresh=30m) - ARK Corsham and Farnborough DCs Internet breakout, Vodafone WAN to prison and HQ sites\n- [Infrastructure Monitoring and Alerting Platform](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/OU3wTDJGk/staff-infrastructure-monitoring) - AWS - Grafana, Prometheus and exporters, to scrape metrics from cloud and physical devices\n- [Print Services]() - ARK - Azure Universal Print - WIP\n- [Public Services Network](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/PkTtBk8Mk/psn-lumen-link) - AWS - Public Services Network connection out of AWS to allow access to HMPPS Intranet, NOMIS, PPUD\n- [Security Log Shipping](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/sgp9b4JMz/staff-device-logging-infrastructure) - AWS - Forwarding of security logs from ARK DC and AWS to Operation Platform Security team\n- [SOP OCI](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/Ql1GAZ1Mk/application-sop-oci) - AWS - Virtual Firewalls with IPsec tunnels to Oracle Cloud (OCI) which hosts SOP\n- [Development Dashboards](https://monitoring-alerting.staff.service.justice.gov.uk/dashboards/f/NGPlVycGz/development) - Developement dashboards yet to be provisioned as code\n - [ARK Datacentre Failover view](https://monitoring-alerting.staff.service.justice.gov.uk/d/ZhssXifGz/ark-failover?orgId=1) - Failover status and overview of the Palo Aloto 5260 firewalls in ARK DCs\n - [Certificate Expiry](https://monitoring-alerting.staff.service.justice.gov.uk/d/xtkCtBkizsdsdf/certificates-expiry-http-and-public-dns-checks?orgId=1&from=now-2d&to=now&refresh=5s) - Information on the certificates used by our services\n\n## External health status pages\n- [Amazon Web Services UK](https://status.aws.amazon.com/#EU_block)\n- [Azure Services UK](https://status.azure.com/en-gb/status)\n- [GitHub](https://www.githubstatus.com/)\n\n## Other information\n- If there is a service missing or issue please see the getting started guide below\n- The GitHub repositories that make up the Infrastructure Monitoring and Alerting Platform are located [here](https://github.com/ministryofjustice/staff-infrastructure-monitoring)",
             "mode": "markdown"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.1",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "eARrzmTnz"
               },
-              "editorMode": "code",
-              "expr": "",
-              "legendFormat": "{{ "{{SiteName}}" }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Site Finder ($customSubnet)",
-          "transformations": [
-            {
-              "id": "labelsToFields",
-              "options": {
-                "keepLabels": [
-                  "Info"
-                ],
-                "mode": "columns",
-                "valueLabel": "Info"
-              }
+              "expression": "fields @timestamp, RunningTaskCount\n| filter (Type=\"Service\")\n| filter (ServiceName=\"mojo-production-ima-prom-ecs-service\")\n| sort @timestamp desc\n| limit 1",
+              "id": "",
+              "logGroupNames": [
+                "/aws/ecs/containerinsights/mojo-production-ima-ecs-cluster/performance"
+              ],
+              "namespace": "",
+              "queryMode": "Logs",
+              "refId": "A",
+              "region": "default",
+              "statsGroups": []
             }
           ],
           "type": "text"
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "camptocamp-prometheus-alertmanager-datasource",
+            "uid": "VWAdWh6Gk"
           },
-          "description": "Paste a subnet into the \"Find Site by Subnet\" box to see it's usage here!",
+          "description": "",
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
+                    "color": "#299c46",
                     "value": null
                   },
                   {
-                    "color": "#EAB839",
-                    "value": 80
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 1
                   },
                   {
-                    "color": "semi-dark-red",
-                    "value": 90
+                    "color": "#d44a3a",
+                    "value": 5
                   }
                 ]
               },
-              "unit": "percent"
+              "unit": "none"
             },
             "overrides": []
           },
           "gridPos": {
-            "h": 3,
-            "w": 7,
-            "x": 6,
-            "y": 2
+            "h": 4,
+            "w": 9,
+            "x": 12,
+            "y": 1
           },
-          "id": 9,
+          "id": 35,
+          "links": [],
+          "maxDataPoints": 100,
           "options": {
-            "colorMode": "value",
+            "colorMode": "background",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -216,59 +163,92 @@ data:
             },
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.1",
           "targets": [
             {
+              "active": true,
+              "annotations": false,
               "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+                "type": "camptocamp-prometheus-alertmanager-datasource",
+                "uid": "VWAdWh6Gk"
               },
-              "exemplar": true,
-              "expr": "subnet_statistics_usage{cidr_block=\"$customSubnet\"}",
-              "interval": "",
-              "legendFormat": "Leases",
-              "refId": "A"
+              "expr": "",
+              "labelSelector": "*",
+              "legendFormat": "",
+              "refId": "A",
+              "silenced": false,
+              "target": "Query",
+              "type": "single"
             }
           ],
-          "title": "Subnet Usage for $customSubnet",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
+          "title": "Total Alerts",
+          "transformations": [
+            {
+              "id": "reduce",
+              "options": {
+                "reducers": [
+                  "count"
                 ]
               }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "camptocamp-prometheus-alertmanager-datasource",
+            "uid": "VWAdWh6Gk"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 1
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 5
+                  }
+                ]
+              },
+              "unit": "none"
             },
             "overrides": []
           },
           "gridPos": {
-            "h": 13,
-            "w": 10,
-            "x": 13,
-            "y": 2
+            "h": 4,
+            "w": 9,
+            "x": 12,
+            "y": 5
           },
-          "id": 8,
+          "id": 43,
+          "links": [],
+          "maxDataPoints": 100,
           "options": {
-            "colorMode": "value",
+            "colorMode": "background",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -278,216 +258,393 @@ data:
             },
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.1",
           "targets": [
             {
+              "active": false,
+              "annotations": false,
               "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+                "type": "camptocamp-prometheus-alertmanager-datasource",
+                "uid": "VWAdWh6Gk"
               },
-              "exemplar": true,
-              "expr": "sum(subnet_statistics_leases)",
-              "interval": "",
-              "legendFormat": "Leases",
-              "refId": "A"
+              "expr": "",
+              "labelSelector": "*",
+              "legendFormat": "",
+              "refId": "A",
+              "silenced": true,
+              "target": "Query",
+              "type": "single"
             }
           ],
-          "title": "Total Number of leases across MoJO",
+          "title": "Total Silenced Alerts",
+          "transformations": [
+            {
+              "id": "reduce",
+              "options": {
+                "reducers": [
+                  "count"
+                ]
+              }
+            }
+          ],
           "type": "stat"
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "camptocamp-prometheus-alertmanager-datasource",
+            "uid": "VWAdWh6Gk"
           },
           "description": "",
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 3,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "line"
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
                 }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "max": 100,
+              ],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
+                    "color": "#299c46",
                     "value": null
                   },
                   {
                     "color": "orange",
-                    "value": 80
+                    "value": 1
                   },
                   {
-                    "color": "dark-red",
-                    "value": 90
+                    "color": "red",
+                    "value": 2
                   }
                 ]
               },
-              "unit": "percent"
+              "unit": "none"
             },
             "overrides": []
           },
           "gridPos": {
-            "h": 10,
-            "w": 13,
-            "x": 0,
-            "y": 5
+            "h": 6,
+            "w": 3,
+            "x": 12,
+            "y": 9
           },
-          "id": 2,
+          "id": 41,
+          "links": [],
+          "maxDataPoints": 100,
           "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom"
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
             },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
+            "textMode": "auto"
           },
+          "pluginVersion": "9.1.1",
+          "targets": [
+            {
+              "active": true,
+              "annotations": false,
+              "datasource": {
+                "type": "camptocamp-prometheus-alertmanager-datasource",
+                "uid": "VWAdWh6Gk"
+              },
+              "expr": "service=~\"IMAP\"",
+              "filters": "service=IMAP",
+              "labelSelector": "*",
+              "legendFormat": "",
+              "refId": "A",
+              "target": "Query",
+              "type": "timeserie"
+            }
+          ],
+          "title": "IMAP Alerts",
+          "transformations": [
+            {
+              "id": "reduce",
+              "options": {
+                "reducers": [
+                  "count"
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "camptocamp-prometheus-alertmanager-datasource",
+            "uid": "VWAdWh6Gk"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "orange",
+                    "value": 1
+                  },
+                  {
+                    "color": "red",
+                    "value": 2
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 3,
+            "x": 15,
+            "y": 9
+          },
+          "id": 39,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.1.1",
+          "targets": [
+            {
+              "active": true,
+              "annotations": false,
+              "datasource": {
+                "type": "camptocamp-prometheus-alertmanager-datasource",
+                "uid": "VWAdWh6Gk"
+              },
+              "expr": "service=~\"DNS DHCP\"",
+              "filters": "service=DNS DHCP",
+              "labelSelector": "*",
+              "legendFormat": "",
+              "refId": "A",
+              "target": "Query",
+              "type": "timeserie"
+            }
+          ],
+          "title": "DNS DHCP Alerts",
+          "transformations": [
+            {
+              "id": "reduce",
+              "options": {
+                "reducers": [
+                  "count"
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "camptocamp-prometheus-alertmanager-datasource",
+            "uid": "VWAdWh6Gk"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "index": 0,
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "orange",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 3,
+            "x": 18,
+            "y": 9
+          },
+          "id": 37,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.1.1",
+          "targets": [
+            {
+              "active": true,
+              "annotations": false,
+              "datasource": {
+                "type": "camptocamp-prometheus-alertmanager-datasource",
+                "uid": "VWAdWh6Gk"
+              },
+              "expr": "service=~\"Network\"",
+              "filters": "service=certificate-services",
+              "labelSelector": "*",
+              "legendFormat": "",
+              "refId": "A",
+              "target": "Query",
+              "type": "timeserie"
+            }
+          ],
+          "title": "Certificate Services",
+          "transformations": [
+            {
+              "id": "reduce",
+              "options": {
+                "reducers": [
+                  "count"
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "id": 21,
+          "panels": [],
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
+                "type": "datasource",
+                "uid": "grafana"
               },
-              "editorMode": "code",
-              "exemplar": true,
-              "expr": "subnet_statistics_usage > 60",
-              "interval": "",
-              "legendFormat": ""{{ "{{cidr_block}}" }}"",
-              "range": true,
               "refId": "A"
             }
           ],
-          "title": "Subnet Usage by CIDR > 60%",
-          "type": "timeseries"
+          "title": "Infrastructure Monitoring and Alerting Platform Information",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 22,
+            "x": 0,
+            "y": 16
+          },
+          "id": 25,
+          "links": [],
+          "options": {
+            "content": "<h1>Getting started with your own service (Production)</h1>\n\n\n<p>As the Infrastructure Monitoring and Alerting (IMA) Platform utilises <a href=\"https://grafana.com/\" target=\"_blank\">Grafana</a>, the following documentation include links to <a href=\"https://grafana.com/docs/grafana/latest/\" target=\"_blank\">Grafana’s documentation</a> as well as our own for using the platform:</p>\n\n<ul>\n    <li><a href=\"https://github.com/ministryofjustice/staff-infrastructure-monitoring-config#8-add-dashboards\" target=\"_blank\">Adding dashboards</a> - to monitor the heath of a service team’s infrastructure</li>\n    <li><a href=\"https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/\" target=\"_blank\">Adding data sources</a> - to acquire relevant metrics to monitor</li>\n    <li><a href=\"https://grafana.com/docs/grafana/latest/alerting/notifications/\" target=\"_blank\">Creating a notification channel</a> - to receive alerts via email, Slack, etc.</li>\n    <li><a href=\"https://grafana.com/docs/grafana/latest/alerting/create-alerts/\" target=\"_blank\">Creating alerts</a> - to notify a service team</li>\n</ul>\n\n<p>Don't expect to make the perfect dashboard in your first attempt - continually review and iterate on them. If you're wondering what to monitor, then we recommend to:</p>\n\n<ol>\n    <li>Focus on a problem that a user could have</li>\n    <li>Define the possible symptoms of that problem</li>\n    <li>Define the possible causes of that problem</li>\n</ol>\n\n<p>> Note: Grafana only supports alerts for panels using a graph and that don’t use template variables or transformations. We recommend creating a separate dashboard for alerts and another for viewing.</p>\n\n<p>These will then directly translate to dashboards and alerts and help to ensure your monitoring is focused on your users. Grafana describes the <a href=\"https://grafana.com/docs/grafana/latest/best-practices/common-observability-strategies/\" target=\"_blank\">common observability strategies</a> that can be used to enable this and identifies some <a href=\"https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/\" target=\"_blank\">best practices for creating dasboards</a>.</p>\n\n<h2>Provisioning</h2>\n\n<p>If you're done prototyping, see <a href=\"https://github.com/ministryofjustice/staff-infrastructure-monitoring-datasource-config#integrating-with-the-platform\" target=\"_blank\">our guidance on provisioning your configuration</a>.</p>",
+            "mode": "html"
+          },
+          "pluginVersion": "9.1.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "datasource",
+                "uid": "grafana"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "Infrastructure Monitoring and Alerting Platform (Production)",
+          "type": "text"
         }
       ],
-      "refresh": false,
-      "schemaVersion": 36,
+      "refresh": "5s",
+      "schemaVersion": 37,
       "style": "dark",
       "tags": [
-        "DHCP",
-        "Kea"
+        "provisioned"
       ],
       "templating": {
-        "list": [
-          {
-            "current": {
-              "selected": false,
-              "text": "10 South Colonnade",
-              "value": "10 South Colonnade"
-            },
-            "datasource": {
-              "type": "prometheus",
-              "uid": "prometheus"
-            },
-            "definition": "MoJO_site_info",
-            "hide": 0,
-            "includeAll": false,
-            "label": "MoJO Site Name",
-            "multi": false,
-            "name": "SiteName",
-            "options": [],
-            "query": {
-              "query": "MoJO_site_info",
-              "refId": "StandardVariableQuery"
-            },
-            "refresh": 1,
-            "regex": ".*Info=\"{\"([^\"]*).*",
-            "skipUrlSync": false,
-            "sort": 0,
-            "type": "query"
-          },
-          {
-            "current": {
-              "selected": false,
-              "text": "10.80.39.0/24",
-              "value": "10.80.39.0/24"
-            },
-            "description": "Enter your cidr block in the box in standard notation i.e 192.168.0.1/24 the Site finder panel will populate with your Site Name",
-            "hide": 0,
-            "label": "Find Site by Subnet",
-            "name": "customSubnet",
-            "options": [
-              {
-                "selected": true,
-                "text": "10.80.39.0/24",
-                "value": "10.80.39.0/24"
-              }
-            ],
-            "query": "10.80.39.0/24",
-            "skipUrlSync": false,
-            "type": "textbox"
-          },
-          {
-            "current": {
-              "selected": false,
-              "text": "HMP Frankland",
-              "value": "HMP Frankland"
-            },
-            "datasource": {
-              "type": "prometheus",
-              "uid": "prometheus"
-            },
-            "definition": "MoJO_site_info{Info=~\".+$customSubnet.+\"}",
-            "hide": 2,
-            "includeAll": false,
-            "multi": false,
-            "name": "SiteName2",
-            "options": [],
-            "query": {
-              "query": "MoJO_site_info{Info=~\".+$customSubnet.+\"}",
-              "refId": "StandardVariableQuery"
-            },
-            "refresh": 1,
-            "regex": "/.*Info=\"{\"([^\"]*).*/m",
-            "skipUrlSync": false,
-            "sort": 0,
-            "type": "query"
-          }
-        ]
+        "list": []
       },
       "time": {
-        "from": "now-1h",
+        "from": "now-5m",
         "to": "now"
       },
       "timepicker": {},
-      "timezone": "Europe/London",
-      "title": "Default Grafana Dashboard",
-      "uid": "pz_T2rWVk",
+      "timezone": "",
+      "title": "Home",
+      "uid": "z3xrTDJGz",
       "version": 1,
-      "weekStart": "Monday"
+      "weekStart": ""
     }
