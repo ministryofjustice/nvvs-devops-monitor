@@ -46,6 +46,7 @@ output "eks_cluster" {
     thanos_iam_role_arn                       = module.eks[0].thanos_iam_role_arn
     thanos_storage_s3_bucket_name             = module.eks[0].thanos_storage_s3_bucket_name
     cloudwatch_exporter_iam_role_arn          = module.eks[0].cloudwatch_exporter_iam_role_arn
+    db_endpoint                               = module.eks[0].db_endpoint
   } : null
   sensitive = true
 }

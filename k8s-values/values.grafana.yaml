@@ -27,6 +27,13 @@ grafana.ini:
     name: "Azure AD"
     enabled: true
     allow_sign_up: true
+  database: 
+    type: postgres
+    host: ${grafana_db_endpoint} ### fix this
+    name: "grafanadb"
+    user: "grafana"
+    password: "jswprHGqwd2C9aPm"
+    ssl_mode: 
 ingress:
   enabled: true
   annotations:
