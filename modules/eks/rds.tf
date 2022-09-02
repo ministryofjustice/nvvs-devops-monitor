@@ -1,5 +1,5 @@
 resource "aws_db_instance" "this" {
-  identifier                  = "${var.prefix}-grafana-db" 
+  identifier                  = "${var.prefix}-grafana-db"
   allocated_storage           = 10
   storage_type                = "gp2"
   engine                      = "postgres"
@@ -37,11 +37,11 @@ resource "aws_security_group" "admin_db" {
 }
 
 resource "aws_security_group_rule" "admin_db_in_from_eks" {
-  description              = "Allow access to admin database from app containers"
-  type                     = "ingress"
-  from_port                = 3306
-  to_port                  = 3306
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.admin_db.id
-  cidr_blocks              = var.private_subnets_cidr_blocks
+  description       = "Allow access to admin database from app containers"
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  security_group_id = aws_security_group.admin_db.id
+  cidr_blocks       = var.private_subnets_cidr_blocks
 }

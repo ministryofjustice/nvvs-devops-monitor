@@ -62,7 +62,7 @@ module "eks" {
   db_username                 = var.db_username
   db_password                 = var.db_password
 
-  tags                        = module.eks_label.tags
+  tags = module.eks_label.tags
 
   providers = {
     aws = aws.main
