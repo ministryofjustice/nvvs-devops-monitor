@@ -189,8 +189,12 @@ deploy_grafana() {
     --set env.GF_AUTH_AZUREAD_CLIENT_SECRET=$AZUREAD_CLIENT_SECRET \
     --set env.GF_AUTH_AZUREAD_AUTH_URL=$AZUREAD_AUTH_URL \
     --set env.GF_AUTH_AZUREAD_TOKEN_URL=$AZUREAD_TOKEN_URL \
-    --set env.GF_SERVER_ROOT_URL=$SERVER_ROOT_URL \ 
-    --set env.GF_
+    --set env.GF_SERVER_ROOT_URL=$SERVER_ROOT_URL \
+    --set env.GF_DATABASE_TYPE="postgres" \
+    --set env.GF_DATABASE_HOST=$grafana_db_endpoint \
+    --set env.GF_DATABASE_USER=$DB_USERNAME \
+    --set env.GF_DATABASE_PASSWORD=$DB_PASSWORD \
+    --set env.GF_DATABASE_NAME=$DB_NAME
   kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
 }
 
