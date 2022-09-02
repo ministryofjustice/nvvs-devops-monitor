@@ -9,6 +9,24 @@ sidecar:
     searchNamespace: ALL
     provider:
       folder: "Provisioned"
+grafana.ini:
+  analytics:
+    check_for_updates: true
+  grafana_net:
+    url: https://grafana.net
+  log:
+    mode: console
+  paths:
+    data: /var/lib/grafana
+    logs: /var/log/grafana
+    plugins: /var/lib/grafana/plugins
+    provisioning: /etc/grafana/provisioning
+  dashboards:
+    default_home_dashboard_path: /tmp/dashboards/default-grafana-dashboard.json
+  auth.azuread:
+    name: "Azure AD"
+    enabled: true
+    allow_sign_up: true
 ingress:
   enabled: true
   annotations:

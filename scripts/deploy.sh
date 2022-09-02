@@ -183,7 +183,12 @@ deploy_grafana() {
     -f ./k8s-values/values.grafana.yaml \
     -n grafana \
     --create-namespace \
-    --set ingress.hosts[0]=$application_domain
+    --set ingress.hosts[0]=$application_domain \
+    --set env.GF_AUTH_AZUREAD_CLIENT_ID=$AZUREAD_CLIENT_ID \
+    --set env.GF_AUTH_AZUREAD_CLIENT_SECRET=$AZUREAD_CLIENT_SECRET \
+    --set env.GF_AUTH_AZUREAD_AUTH_URL=$AZUREAD_AUTH_URL \
+    --set env.GF_AUTH_AZUREAD_TOKEN_URL=$AZUREAD_TOKEN_URL \
+    --set env.GF_SERVER_ROOT_URL=$SERVER_ROOT_URL
   kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
 }
 
