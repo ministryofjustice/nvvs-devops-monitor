@@ -20,6 +20,7 @@ set_variables() {
   terraform_outputs_eks_cluster=`terraform output -json eks_cluster`
   eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
   eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
+  grafana_db_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.db_endpoint'`
   lb_controller_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_load_balancer_controller_iam_role_arn'`
   external_dns_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.external_dns_iam_role_arn'`
   efs_csi_driver_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.aws_efs_csi_driver_iam_role_arn'`
@@ -188,7 +189,8 @@ deploy_grafana() {
     --set env.GF_AUTH_AZUREAD_CLIENT_SECRET=$AZUREAD_CLIENT_SECRET \
     --set env.GF_AUTH_AZUREAD_AUTH_URL=$AZUREAD_AUTH_URL \
     --set env.GF_AUTH_AZUREAD_TOKEN_URL=$AZUREAD_TOKEN_URL \
-    --set env.GF_SERVER_ROOT_URL=$SERVER_ROOT_URL
+    --set env.GF_SERVER_ROOT_URL=$SERVER_ROOT_URL \ 
+    --set env.GF_
   kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
 }
 

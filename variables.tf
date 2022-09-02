@@ -30,3 +30,11 @@ variable "zone_id" {
   description = "The AWS Route53 zone id for the domain used for the var.domain_name"
   type        = string
 }
+
+variable "db_username" {
+  type        = string
+}
+
+variable "db_password" {
+  type        = string
+}
