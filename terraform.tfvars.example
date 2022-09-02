@@ -7,3 +7,7 @@ zone_id     = <hosted zone "Id" in the account you are working in e.g 123456789 
 
 # To create (or not delete, if already created) the infrastructure set to 'true'. Similarly set to 'false' [default] to destroy infrastructure. 
 enabled     = 
+
+# Grafana RDS Database Username & Password
+db_username =
+db_password =

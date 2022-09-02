@@ -59,7 +59,10 @@ module "eks" {
   vpc_id                      = module.vpc[0].vpc_id
   private_subnets             = module.vpc[0].private_subnets
   private_subnets_cidr_blocks = module.vpc[0].private_subnets_cidr_blocks
-  tags                        = module.eks_label.tags
+  db_username                 = var.db_username
+  db_password                 = var.db_password
+
+  tags = module.eks_label.tags
 
   providers = {
     aws = aws.main

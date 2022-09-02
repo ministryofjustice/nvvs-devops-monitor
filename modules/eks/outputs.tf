@@ -41,3 +41,7 @@ output "thanos_storage_s3_bucket_name" {
 output "cloudwatch_exporter_iam_role_arn" {
   value = aws_iam_role.cloudwatch_exporter.arn
 }
+
+output "db_endpoint" {
+  value = aws_db_instance.this.endpoint
+}
