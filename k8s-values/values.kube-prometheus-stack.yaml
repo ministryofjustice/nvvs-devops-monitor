@@ -59,7 +59,7 @@ prometheus:
       dns_sd_configs:
       - names: ['<fix this later>']
         type: A
-        port: 9154  
+        port: 9154
     - job_name: 'blackbox-http-pki'
       scrape_interval: 300s
       metrics_path: /probe
@@ -306,3 +306,11 @@ prometheus:
     enabled: true
   thanosServiceMonitor:
     enabled: true
+alertmanager:
+  alertmanagerSpec:
+    alertmanagerConfigSelector:
+      matchLabels:
+        alertmanagerConfig: example-config
+  config:
+    global:
+      resolve_timeout: 5m

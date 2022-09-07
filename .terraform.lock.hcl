@@ -43,6 +43,7 @@ provider "registry.terraform.io/hashicorp/template" {
 provider "registry.terraform.io/hashicorp/tls" {
   version = "4.0.2"
   hashes = [
+    "h1:Gd73uM6TrlgdI8+3o2EJW60LelDvN6tCfwjcfQLiprA=",
     "h1:VYEzF5yGPxZvV7/JyX3h+tkhf3fJTFHSVGLBIZ1Qk18=",
     "zh:080ac1021049927025e00bf42137658a24660e0e88f150041cc2a9a2a023006f",
     "zh:122def74983c5f31e76903bb71fa1991bd187fa52f48efaa7216bc70806370a8",
