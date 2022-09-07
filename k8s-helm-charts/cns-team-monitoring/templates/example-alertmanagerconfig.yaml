@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    heritage: Helm
+    release: {{ .Release.Name }}
+    alertmanagerConfig: example-config
+  name: {{ .Release.Name }}-example-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  route:
+    receiver: example-notification-channels
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 24h
+    groupBy:
+    - service
+  receivers:
+  - name: example-notification-channels
+    emailConfigs:
+    - to: 'techops-3ls-euc@justice.gov.uk'
