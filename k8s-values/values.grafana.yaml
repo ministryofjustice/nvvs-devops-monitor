@@ -21,7 +21,7 @@ grafana.ini:
     enabled: true
     allow_sign_up: true
   plugins:
-  - camptocamp-prometheus-alertmanager-datasource
+    - camptocamp-prometheus-alertmanager-datasource
 ingress:
   enabled: true
   annotations:

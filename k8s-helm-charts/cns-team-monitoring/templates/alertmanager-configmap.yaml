@@ -2,35 +2,34 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
   labels:
-    app: {{ .Release.Name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: { { .Release.Name } }
+    app.kubernetes.io/instance: { { .Release.Name } }
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: {{ .Release.Name }}
-    chart: {{ .Chart.Name }}
+    app.kubernetes.io/part-of: { { .Release.Name } }
+    chart: { { .Chart.Name } }
     heritage: Helm
-    release: {{ .Release.Name }}
+    release: { { .Release.Name } }
     alertmanagerConfig: alertmanager-config
   name: alertmanager-config
-  namespace: {{ .Release.Namespace }}
+  namespace: { { .Release.Namespace } }
 spec:
   route:
-    receiver: 'parent_route'
+    receiver: "parent_route"
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
 
     routes:
-    - matchers:
-      - name: service
-        value: Example
-      receiver: 'example-notification-channels'
+      - matchers:
+          - name: service
+            value: Example
+        receiver: "example-notification-channels"
 
   receivers:
-  - name: 'parent_route'
-    emailConfigs:
-    - to: "<email_address>"
+    - name: "parent_route"
+      emailConfigs:
+        - to: "<email_address>"
 
-  - name: 'example-notification-channels'
-    emailConfigs:
-    - to: "<email_address>"
-
+    - name: "example-notification-channels"
+      emailConfigs:
+        - to: "<email_address>"
