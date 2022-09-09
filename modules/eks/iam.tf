@@ -241,6 +241,74 @@ resource "aws_iam_role_policy_attachment" "efs_csi_driver_AWSEFSCSIDriverIAMPoli
   role       = aws_iam_role.aws_efs_csi_driver.name
 }
 
+# IAM role for the AWS Secrets Store CSI Driver
+
+data "aws_iam_policy_document" "aws_secrets_store_csi_driver_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-secrets-store-csi-driver"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.this.arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "aws_secrets_store_csi_driver" {
+  assume_role_policy = data.aws_iam_policy_document.aws_secrets_store_csi_driver_assume_role_policy.json
+  name               = "${var.prefix}-AWSSecretsCSIDriverRole"
+
+  tags = var.tags
+}
+
+resource "aws_iam_policy" "aws_secrets_store_csi_driver_iam_policy" {
+  name        = "${var.prefix}-AWSSecretsCSIDriverIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for AWS Secrets Store CSI Driver in EKS Cluster for ${var.prefix}"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DescribeParameters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+POLICY
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_store_csi_driver_AWSSecretsCSIDriverIAMPolicy" {
+  policy_arn = aws_iam_policy.aws_secrets_store_csi_driver_iam_policy.arn
+  role       = aws_iam_role.aws_secrets_store_csi_driver.name
+}
+
 
 # IAM role for the thanos service account
 

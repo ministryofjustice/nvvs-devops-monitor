@@ -42,6 +42,7 @@ output "eks_cluster" {
     aws_load_balancer_controller_iam_role_arn = module.eks[0].aws_load_balancer_controller_iam_role_arn
     external_dns_iam_role_arn                 = module.eks[0].external_dns_iam_role_arn
     aws_efs_csi_driver_iam_role_arn           = module.eks[0].aws_efs_csi_driver_iam_role_arn
+    aws_secrets_store_csi_driver_iam_role_arn = module.eks[0].aws_secrets_store_csi_driver_iam_role_arn
     efs_file_system_id                        = module.eks[0].efs_file_system_id
     thanos_iam_role_arn                       = module.eks[0].thanos_iam_role_arn
     thanos_storage_s3_bucket_name             = module.eks[0].thanos_storage_s3_bucket_name

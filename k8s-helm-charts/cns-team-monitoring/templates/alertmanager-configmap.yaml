@@ -14,23 +14,28 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   route:
-    receiver: 'parent_route'
+    receiver: "parent_route"
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
 
     routes:
-    - matchers:
-      - name: service
-        value: Example
-      receiver: 'example-notification-channels'
+      - matchers:
+          - name: service
+            value: Example
+        receiver: "example-notification-channels"
 
   receivers:
-  - name: 'parent_route'
-    emailConfigs:
-    - to: "<email_address>"
+    - name: "parent_route"
+      emailConfigs:
+        - to: "aaron.robinson1@justice.gov.uk"
 
-  - name: 'example-notification-channels'
-    emailConfigs:
-    - to: "<email_address>"
-
+    - name: "example-notification-channels"
+      emailConfigs:
+        - to: "aaron.robinson1@justice.gov.uk"
+      pagerdutyConfigs:
+        - serviceKey:
+            key: pagerduty_service_key
+            name: alertmanager-secrets
+            optional: false
+  
