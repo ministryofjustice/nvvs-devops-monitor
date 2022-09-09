@@ -32,7 +32,6 @@ data:
       "editable": false,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 35,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -102,7 +101,7 @@ data:
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "VWAdWh6Gk"
+            "uid": "tPkKJ2GVz"
           },
           "description": "",
           "fieldConfig": {
@@ -166,19 +165,11 @@ data:
           "pluginVersion": "9.1.1",
           "targets": [
             {
-              "active": true,
-              "annotations": false,
               "datasource": {
                 "type": "camptocamp-prometheus-alertmanager-datasource",
-                "uid": "VWAdWh6Gk"
+                "uid": "tPkKJ2GVz"
               },
-              "expr": "",
-              "labelSelector": "*",
-              "legendFormat": "",
-              "refId": "A",
-              "silenced": false,
-              "target": "Query",
-              "type": "single"
+              "refId": "A"
             }
           ],
           "title": "Total Alerts",
@@ -197,7 +188,7 @@ data:
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "VWAdWh6Gk"
+            "uid": "tPkKJ2GVz"
           },
           "description": "",
           "fieldConfig": {
@@ -262,18 +253,12 @@ data:
           "targets": [
             {
               "active": false,
-              "annotations": false,
               "datasource": {
                 "type": "camptocamp-prometheus-alertmanager-datasource",
-                "uid": "VWAdWh6Gk"
+                "uid": "tPkKJ2GVz"
               },
-              "expr": "",
-              "labelSelector": "*",
-              "legendFormat": "",
               "refId": "A",
-              "silenced": true,
-              "target": "Query",
-              "type": "single"
+              "silenced": true
             }
           ],
           "title": "Total Silenced Alerts",
@@ -292,7 +277,7 @@ data:
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "VWAdWh6Gk"
+            "uid": "tPkKJ2GVz"
           },
           "description": "",
           "fieldConfig": {
@@ -357,18 +342,14 @@ data:
           "targets": [
             {
               "active": true,
-              "annotations": false,
               "datasource": {
                 "type": "camptocamp-prometheus-alertmanager-datasource",
-                "uid": "VWAdWh6Gk"
+                "uid": "tPkKJ2GVz"
               },
-              "expr": "service=~\"IMAP\"",
-              "filters": "service=IMAP",
-              "labelSelector": "*",
-              "legendFormat": "",
+              "filters": "service=~\"IMAP\"",
+              "receiver": "",
               "refId": "A",
-              "target": "Query",
-              "type": "timeserie"
+              "silenced": false
             }
           ],
           "title": "IMAP Alerts",
@@ -387,7 +368,7 @@ data:
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "VWAdWh6Gk"
+            "uid": "tPkKJ2GVz"
           },
           "description": "",
           "fieldConfig": {
@@ -451,19 +432,12 @@ data:
           "pluginVersion": "9.1.1",
           "targets": [
             {
-              "active": true,
-              "annotations": false,
               "datasource": {
                 "type": "camptocamp-prometheus-alertmanager-datasource",
-                "uid": "VWAdWh6Gk"
+                "uid": "tPkKJ2GVz"
               },
-              "expr": "service=~\"DNS DHCP\"",
-              "filters": "service=DNS DHCP",
-              "labelSelector": "*",
-              "legendFormat": "",
-              "refId": "A",
-              "target": "Query",
-              "type": "timeserie"
+              "filters": "service=~\"DNS DHCP\"",
+              "refId": "A"
             }
           ],
           "title": "DNS DHCP Alerts",
@@ -482,7 +456,7 @@ data:
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "VWAdWh6Gk"
+            "uid": "tPkKJ2GVz"
           },
           "description": "",
           "fieldConfig": {
@@ -543,19 +517,13 @@ data:
           "pluginVersion": "9.1.1",
           "targets": [
             {
-              "active": true,
-              "annotations": false,
               "datasource": {
                 "type": "camptocamp-prometheus-alertmanager-datasource",
-                "uid": "VWAdWh6Gk"
+                "uid": "tPkKJ2GVz"
               },
-              "expr": "service=~\"Network\"",
-              "filters": "service=certificate-services",
-              "labelSelector": "*",
-              "legendFormat": "",
-              "refId": "A",
-              "target": "Query",
-              "type": "timeserie"
+              "filters": "service=~\"Network\"",
+              "receiver": "service=certificate-services",
+              "refId": "A"
             }
           ],
           "title": "Certificate Services",
