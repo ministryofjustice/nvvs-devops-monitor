@@ -310,7 +310,15 @@ alertmanager:
   alertmanagerSpec:
     alertmanagerConfigSelector:
       matchLabels:
-        alertmanagerConfig: example-config
+        alertmanagerConfig: alertmanager-config
   config:
     global:
       resolve_timeout: 5m
+      smtp_smarthost: "email-smtp.eu-west-2.amazonaws.com:587"
+      smtp_from: "<from_email>"
+      smtp_require_tls: true
+      smtp_auth_username: "<auth_username>"
+      smtp_auth_password: "<auth_password>"    
+      pagerduty_url: "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+    route:
+      group_by: ['service']
