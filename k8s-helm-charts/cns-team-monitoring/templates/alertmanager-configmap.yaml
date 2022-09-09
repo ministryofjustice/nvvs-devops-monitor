@@ -9,18 +9,28 @@ metadata:
     chart: {{ .Chart.Name }}
     heritage: Helm
     release: {{ .Release.Name }}
-    alertmanagerConfig: example-config
-  name: {{ .Release.Name }}-example-config
+    alertmanagerConfig: alertmanager-config
+  name: alertmanager-config
   namespace: {{ .Release.Namespace }}
 spec:
   route:
-    receiver: example-notification-channels
+    receiver: 'parent_route'
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
-    groupBy:
-    - service
+
+    routes:
+    - matchers:
+      - name: service
+        value: Example
+      receiver: 'example-notification-channels'
+
   receivers:
-  - name: example-notification-channels
+  - name: 'parent_route'
     emailConfigs:
-    - to: 'techops-3ls-euc@justice.gov.uk'
+    - to: "<email_address>"
+
+  - name: 'example-notification-channels'
+    emailConfigs:
+    - to: "<email_address>"
+
