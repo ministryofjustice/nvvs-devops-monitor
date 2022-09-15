@@ -93,6 +93,11 @@ spec:
             optional: false
           channel: '#mojo-ima-platform-alerts-dev-preprod'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: CNS Team - Pagerduty
       pagerdutyConfigs:
         - serviceKey:
@@ -107,6 +112,11 @@ spec:
             optional: false
           channel: '#mojo-staff-infrastructure-certificate-services-alerts'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Team IGS
       slackConfigs:
         - apiURL:
@@ -115,6 +125,11 @@ spec:
             optional: false
           channel: '#mojo-network-alerts'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Team Sec Logging
       slackConfigs:
         - apiURL:
@@ -123,6 +138,11 @@ spec:
             optional: false
           channel: '#mojo-staff-device-logging-infrastructure-alerts'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Network Access Control Pre-Production
       slackConfigs:
         - apiURL:
@@ -131,6 +151,11 @@ spec:
             optional: false
           channel: '#network-access-control-alerts-dev-pre-prod'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Network Access Control Production
       slackConfigs:
         - apiURL:
@@ -139,6 +164,11 @@ spec:
             optional: false
           channel: '#network-access-control-alerts'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Network Access Control Critical
       slackConfigs:
         - apiURL:
@@ -147,6 +177,11 @@ spec:
             optional: false
           channel: '#network-access-control-critical-alerts'
           sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Team Mercury Production
       emailConfigs:
         - to: 'techops-3ls-euc@justice.gov.uk'
