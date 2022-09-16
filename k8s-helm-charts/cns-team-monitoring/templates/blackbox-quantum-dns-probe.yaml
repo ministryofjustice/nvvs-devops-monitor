@@ -1,0 +1,33 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-quantum-dns
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "quantum-dns"
+  module: quantum_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 10.64.16.67
+        - 10.64.141.16
+        - 10.64.141.17
+        - 10.64.141.18
+        - 10.64.141.19
+        - 10.64.141.20
+        - 10.64.141.119
+        - 10.64.141.121
+        - 10.65.1.26
+        - 10.65.1.27
+        - 10.65.1.28
+        - 10.65.1.29
+        - 10.95.41.121
+      relabelingConfigs:
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

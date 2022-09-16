@@ -1,0 +1,49 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-ping-ark
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: blackbox-ping-ark
+  module: icmp
+  targets:
+    staticConfig:
+      static:
+        # Corsham
+        - 172.16.181.1 # MoJ-ARKC-FW02_A (Gateway)
+        - 172.16.181.5 # MOJ-ARKC-SCON01
+        - 172.16.181.6 # MOJ-ARKC-SW03
+        - 172.16.181.7 # MoJ-ARKC-FW02_A
+        - 172.16.181.8 # MoJ-ARKC-FW02_B
+        - 172.16.181.10 # MoJ-ARKC-FW01_A
+        - 172.16.181.11 # MoJ-ARKC-FW01_B
+        - 172.16.181.20 # MOJ-ARKC-SW01
+        - 172.16.181.30 # MOJ-ARKC-SW02
+        - 172.16.181.201 # MoJ-ARKC-ESX01
+        - 172.16.181.202 # MoJ-ARKC-ESX02
+
+        # Farnborough
+        - 172.16.182.1 # MoJ-ARKC-FW02_A (Gateway)
+        - 172.16.182.5 # MOJ-ARKC-SCON01
+        - 172.16.182.6 # MOJ-ARKC-SW03
+        - 172.16.182.7 # MoJ-ARKC-FW02_A
+        - 172.16.182.8 # MoJ-ARKC-FW02_B
+        - 172.16.182.10 # MoJ-ARKC-FW01_A
+        - 172.16.182.11 # MoJ-ARKC-FW01_B
+        - 172.16.182.20 # MOJ-ARKC-SW01
+        - 172.16.182.30 # MOJ-ARKC-SW02
+        - 172.16.182.201 # MoJ-ARKC-ESX01
+        - 172.16.182.202 # MoJ-ARKC-ESX02
+        # External DNS
+        - 1.1.1.1 # Cloudflare
+        - 25.25.25.25 # NCSC PDNS
+        - 25.26.27.28 # NCSC PDNS
+      relabelingConfigs: # <== This comes from the blackbox exporter README
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

@@ -1,0 +1,20 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-internal-network-dns-probe
+  namespace: monitoring
+spec:
+  jobName: "internal.network_dns_probe"
+  module: internal.network_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 10.180.80.60
+        - 10.180.81.60
+      relabelingConfigs:
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

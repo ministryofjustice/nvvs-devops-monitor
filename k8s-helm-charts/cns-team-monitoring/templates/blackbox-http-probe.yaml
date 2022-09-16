@@ -1,0 +1,39 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-http
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "blackbox-http"
+  module: http_2xx # Look for a HTTP 200 response
+  targets:
+    staticConfig:
+      static:
+        # Staff Service URLs
+        - https://dhcp-dns-admin.staff.service.justice.gov.uk
+        - https://dhcp-dns-admin.dev.staff.service.justice.gov.uk
+        - https://dhcp-dns-admin.prep.staff.service.justice.gov.uk
+        - https://monitoring-alerting.staff.service.justice.gov.uk
+        - https://monitoring-alerting.dev.staff.service.justice.gov.uk
+        - https://monitoring-alerting.prep.staff.service.justice.gov.uk
+        # MoJ Service URLs
+        - https://enrolment.certificates.prep.staff.service.justice.gov.uk/csrscep/a0361_user/pkiclient.exe?operation=GetCACaps #MoJO PKI prep
+        - https://enrolment.certificates.staff.service.justice.gov.uk/csrscep/b0361_user/pkiclient.exe?operation=GetCACaps #MoJO PKI prod
+        # MoJ Global Protect
+        - https://portal.vpn.justice.gov.uk #Production
+        - https://portal.prep.vpn.justice.gov.uk #Prep
+        - https://alpha-fw.vpn.justice.gov.uk/ #Alpha VPN
+        # SOP OCI
+        - https://sop.govsharedservices.gov.uk:4450
+        # PA 5260s Firewalls in Farnham and Corsham
+        - https://gateway-c.internal.vpn.justice.gov.uk
+        - https://gateway-f.internal.vpn.justice.gov.uk
+      relabelingConfigs:
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

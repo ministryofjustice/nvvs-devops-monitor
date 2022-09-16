@@ -1,0 +1,29 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-dom1-dns
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "blackbox-dom1-dns"
+  module: dom1_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 10.171.68.147
+        - 10.171.68.148
+        - 10.171.68.149
+        - 10.171.68.150
+        - 10.172.68.147
+        - 10.172.68.148
+        - 10.172.68.149
+        - 10.172.68.150
+      relabelingConfigs:
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"
+        

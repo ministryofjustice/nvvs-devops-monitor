@@ -1,0 +1,23 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-staff-urls
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "blackbox-staff-urls"
+  module: http_slow_sites # Look for a HTTP 200 response timeout set to 30secs
+  targets:
+    staticConfig:
+      static:
+        # PSN Service URLs
+        - https://intranet.noms.gsi.gov.uk/ # There is no routing via PSN so removing
+        - https://www.ppud.gsi.gov.uk/ # There is no routing via PSN so removing
+      relabelingConfigs:
+        - sourceLabels: [__address__]
+          targetLabel: __param_target
+        - sourceLabels: [__param_target]
+          targetLabel: instance
+        - targetLabel: __address__
+          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"
