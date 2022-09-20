@@ -7,6 +7,14 @@ storegateway:
   enabled: true
 compactor:
   enabled: true
+receive:
+  logLevel: debug
+  enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    ingressClassName: nginx
 metrics:
   enabled: true
   serviceMonitor:
