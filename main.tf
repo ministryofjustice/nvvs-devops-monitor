@@ -43,6 +43,8 @@ module "vpc" {
   transit_gateway_id             = var.transit_gateway_id
   transit_gateway_route_table_id = var.transit_gateway_route_table_id
   byoip_pool_id                  = var.byoip_pool_id
+  corsham_mgmt_range             = var.corsham_mgmt_range
+  farnborough_mgmt_range         = var.farnborough_mgmt_range
   tags                           = module.vpc_label.tags
 
   providers = {

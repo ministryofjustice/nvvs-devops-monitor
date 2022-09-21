@@ -44,7 +44,6 @@ resource "aws_flow_log" "vpc_flow_log" {
   vpc_id          = module.vpc.vpc_id
 }
 
-# Create a NAT gateway with an EIP for each private subnet to get internet connectivity
 resource "aws_eip" "gw" {
   vpc              = true
   count            = length(var.available_zones)

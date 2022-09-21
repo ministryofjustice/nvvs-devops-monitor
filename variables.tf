@@ -55,3 +55,11 @@ variable "transit_gateway_route_table_id" {
 variable "byoip_pool_id" {
   type = string
 }
+
+variable "corsham_mgmt_range" {
+  type = string
+}
+
+variable "farnborough_mgmt_range" {
+  type = string
+}
