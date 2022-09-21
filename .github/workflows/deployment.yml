@@ -28,6 +28,10 @@ jobs:
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
       TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
+      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
+      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
+      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
@@ -120,6 +124,10 @@ jobs:
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
       TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
+      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
+      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
+      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
@@ -206,6 +214,10 @@ jobs:
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
       TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
+      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
+      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
+      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
