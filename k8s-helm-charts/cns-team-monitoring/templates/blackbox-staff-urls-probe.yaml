@@ -14,10 +14,3 @@ spec:
         # PSN Service URLs
         - https://intranet.noms.gsi.gov.uk/ # There is no routing via PSN so removing
         - https://www.ppud.gsi.gov.uk/ # There is no routing via PSN so removing
-      relabelingConfigs:
-        - sourceLabels: [__address__]
-          targetLabel: __param_target
-        - sourceLabels: [__param_target]
-          targetLabel: instance
-        - targetLabel: __address__
-          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

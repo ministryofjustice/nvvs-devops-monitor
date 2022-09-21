@@ -1,7 +1,7 @@
 variable "application_name" {
   description = "An URL friendly name of the application. This name would form the application url together with the route53 zone domain name."
   type        = string
-  default     = "mojo-infrastructure-monitoring"
+  default     = "monitoring-alerting"
 }
 
 variable "enabled" {
@@ -36,5 +36,22 @@ variable "db_username" {
 }
 
 variable "db_password" {
+  type = string
+}
+
+variable "enable_transit_gateway" {
+  type    = string
+  default = false
+}
+
+variable "transit_gateway_id" {
+  type = string
+}
+
+variable "transit_gateway_route_table_id" {
+  type = string
+}
+
+variable "byoip_pool_id" {
   type = string
 }

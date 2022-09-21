@@ -12,8 +12,8 @@ data:
           tls_config:
             insecure_skip_verify: true
           basic_auth:
-            username: "{{ .Values.dhcpApiBasicAuthUsername }}"
-            password: "{{ .Values.dhcpApiBasicAuthPassword }}"
+            username: {{ .Values.dhcpApiBasicAuthUsername }}
+            password: {{ .Values.dhcpApiBasicAuthPassword }}
 
         metrics:
           - name: subnet_statistics

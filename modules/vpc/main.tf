@@ -10,6 +10,9 @@ module "vpc" {
   enable_dns_support   = true
   enable_nat_gateway   = true
 
+  reuse_nat_ips       = true
+  external_nat_ip_ids = aws_eip.gw.*.id
+
   private_subnets = [for cidr_block in cidrsubnets(var.cidr, 2, 2, 2) : cidrsubnets(cidr_block, 1, 1)[0]]
   private_subnet_tags = merge(
     { for k, v in var.tags : k => v if k != "Name" },
@@ -31,6 +34,7 @@ module "vpc" {
   private_route_table_tags = { for k, v in var.tags : k => v if k != "Name" }
   public_route_table_tags  = { for k, v in var.tags : k => v if k != "Name" }
 
+  depends_on = [aws_eip.gw]
 }
 
 resource "aws_flow_log" "vpc_flow_log" {
@@ -38,4 +42,13 @@ resource "aws_flow_log" "vpc_flow_log" {
   log_destination = aws_cloudwatch_log_group.vpc_flow_log_group.arn
   traffic_type    = "ALL"
   vpc_id          = module.vpc.vpc_id
+}
+
+# Create a NAT gateway with an EIP for each private subnet to get internet connectivity
+resource "aws_eip" "gw" {
+  vpc              = true
+  count            = length(var.available_zones)
+  public_ipv4_pool = var.byoip_pool_id
+
+  tags = var.tags
 }
