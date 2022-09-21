@@ -34,27 +34,27 @@ prometheus:
           module: [default]
         static_configs:
           - targets:
-            - https://dhcp-dns-admin.dev.staff.service.justice.gov.uk/api/dhcp-stats
-            - https://dhcp-dns-admin.prep.staff.service.justice.gov.uk/api/dhcp-stats
-            - https://dhcp-dns-admin.staff.service.justice.gov.uk/api/dhcp-stats
+              - https://dhcp-dns-admin.dev.staff.service.justice.gov.uk/api/dhcp-stats
+              - https://dhcp-dns-admin.prep.staff.service.justice.gov.uk/api/dhcp-stats
+              - https://dhcp-dns-admin.staff.service.justice.gov.uk/api/dhcp-stats
         relabel_configs:
           - source_labels: [__address__]
             target_label: __param_target
           - source_labels: [__param_target]
             target_label: instance
           - target_label: __address__
-            replacement: 'prometheus-json-exporter.monitoring.svc.cluster.local:7979'
+            replacement: "prometheus-json-exporter.monitoring.svc.cluster.local:7979"
       - job_name: json_exporter
         metrics_path: /metrics
         honor_labels: true
         static_configs:
           - targets:
-            - prometheus-json-exporter.monitoring.svc.cluster.local:7979
+              - prometheus-json-exporter.monitoring.svc.cluster.local:7979
       - job_name: cloudwatch
         honor_labels: true
         static_configs:
           - targets:
-            - cloudwatch-exporter:5000
+              - cloudwatch-exporter:5000
       - job_name: postfix
         metrics_path: /metrics
         honor_labels: true
