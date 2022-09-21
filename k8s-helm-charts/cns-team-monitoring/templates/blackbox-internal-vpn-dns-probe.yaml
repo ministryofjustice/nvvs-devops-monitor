@@ -13,10 +13,3 @@ spec:
       static:
         - 10.180.80.60
         - 10.180.81.60
-      relabelingConfigs:
-        - sourceLabels: [__address__]
-          targetLabel: __param_target
-        - sourceLabels: [__param_target]
-          targetLabel: instance
-        - targetLabel: __address__
-          replacement: "prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115"

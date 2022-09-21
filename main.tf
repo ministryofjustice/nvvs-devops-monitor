@@ -33,13 +33,17 @@ module "vpc_label" {
 }
 
 module "vpc" {
-  count           = var.enabled ? 1 : 0
-  source          = "./modules/vpc"
-  prefix          = module.vpc_label.id
-  cidr            = "10.180.100.0/22"
-  region          = var.aws_region
-  available_zones = data.aws_availability_zones.available_zones[0].zone_ids
-  tags            = module.vpc_label.tags
+  count                          = var.enabled ? 1 : 0
+  source                         = "./modules/vpc"
+  prefix                         = module.vpc_label.id
+  cidr                           = "10.180.100.0/22"
+  region                         = var.aws_region
+  available_zones                = data.aws_availability_zones.available_zones[0].zone_ids
+  enable_transit_gateway         = var.enable_transit_gateway
+  transit_gateway_id             = var.transit_gateway_id
+  transit_gateway_route_table_id = var.transit_gateway_route_table_id
+  byoip_pool_id                  = var.byoip_pool_id
+  tags                           = module.vpc_label.tags
 
   providers = {
     aws = aws.main
