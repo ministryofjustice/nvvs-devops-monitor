@@ -34,6 +34,7 @@ jobs:
       TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
       TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
+      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
@@ -132,6 +133,7 @@ jobs:
       TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
       TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
+      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
@@ -224,6 +226,7 @@ jobs:
       TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
       TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
       TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
+      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
       AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}

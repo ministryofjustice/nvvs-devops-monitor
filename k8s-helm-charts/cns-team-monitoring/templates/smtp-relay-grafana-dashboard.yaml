@@ -34,12 +34,14 @@ data:
       "fiscalYearStartMonth": 0,
       "gnetId": 10013,
       "graphTooltip": 0,
-      "id": 134,
       "links": [],
       "liveNow": false,
       "panels": [
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -117,7 +119,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "postfix_smtpd_messages_processed_total{instance=~\"$instance\",job=\"postfix\"}",
@@ -143,7 +145,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -221,12 +226,12 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "postfix_smtpd_messages_processed_total{instance=~\"$instance\",job=\"postfix\"}",
               "interval": "",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -235,7 +240,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -311,7 +319,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -352,7 +360,10 @@ data:
           "type": "row"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -431,11 +442,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_cleanup_messages_processed_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -444,7 +455,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -522,11 +536,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_cleanup_messages_rejected_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -561,7 +575,10 @@ data:
           "type": "row"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -640,11 +657,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_qmgr_messages_inserted_size_bytes_count{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -653,7 +670,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -732,11 +752,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_qmgr_messages_inserted_size_bytes_sum{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -745,7 +765,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -824,11 +847,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_qmgr_messages_removed_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -863,7 +886,10 @@ data:
           "type": "row"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -942,11 +968,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "postfix_showq_message_size_bytes_count{instance=~\"$instance\"}",
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ $queue }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -955,7 +981,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1034,11 +1063,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "postfix_showq_message_size_bytes_sum{instance=~\"$instance\"}",
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ $queue }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1125,13 +1154,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "avg(postfix_showq_message_age_seconds_count{instance=~\"$instance\"}) by (instance)",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ $queue }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1245,13 +1274,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtp_delivery_delay_seconds_count{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ stage }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1260,7 +1289,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1339,13 +1371,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "(sum(rate(postfix_smtp_delivery_delay_seconds_sum{instance=~\"$instance\"}[5m])) by (stage)) / (sum(rate(postfix_smtp_delivery_delay_seconds_count{instance=~\"$instance\"}[5m])) by (stage))",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $stage }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1450,7 +1482,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1530,13 +1565,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtp_tls_connections_total[5m])",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ protocol }}" }}: {{ "{{ cipher }}" }},{{ "{{ trust }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1571,7 +1606,10 @@ data:
           "type": "row"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1650,11 +1688,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_connects_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1663,7 +1701,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1742,11 +1783,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_disconnects_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1755,7 +1796,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1834,13 +1878,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_connections_lost_total{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ after_stage}}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1849,7 +1893,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1928,13 +1975,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_sasl_authentication_failures_total{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -1943,7 +1990,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2022,11 +2072,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_forward_confirmed_reverse_dns_errors_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -2035,7 +2085,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2114,11 +2167,11 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_messages_processed_total{instance=~\"$instance\"}[5m])",
-              "legendFormat": "{{ "{{ $value }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -2127,7 +2180,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2205,7 +2261,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -2213,7 +2269,7 @@ data:
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ $value }}" }} {{ "{{ code }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -2318,7 +2374,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2398,13 +2457,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eARrzmTnz"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "rate(postfix_smtpd_tls_connections_total[5m])",
               "format": "time_series",
               "intervalFactor": 1,
-              "legendFormat": "{{ "{{ protocol }}" }}: {{ "{{ cipher }}" }},{{ "{{ trust }}" }}",
+              "legendFormat": "",
               "range": true,
               "refId": "A"
             }
@@ -2428,7 +2487,7 @@ data:
             },
             "datasource": {
               "type": "prometheus",
-              "uid": "eARrzmTnz"
+              "uid": "prometheus"
             },
             "definition": "",
             "hide": 0,

@@ -14,13 +14,13 @@ resource "aws_route" "farnborough_mgmt" {
   destination_cidr_block = var.farnborough_mgmt_range
 }
 
-# # Route network services VPC through the TGW
-# resource "aws_route" "network_services" {
-#   count                  = var.enable_transit_gateway ? 1 : 0
-#   route_table_id         = module.vpc.default_route_table_id
-#   gateway_id             = var.transit_gateway_id
-#   destination_cidr_block = var.network_services_cidr_block
-# }
+# Route network services VPC through the TGW
+resource "aws_route" "network_services" {
+  count                  = var.enable_transit_gateway ? 1 : 0
+  route_table_id         = module.vpc.public_route_table_ids[0]
+  gateway_id             = var.transit_gateway_id
+  destination_cidr_block = var.network_services_cidr_block
+}
 
 # # Route MoJO DNS VPC traffic through the TGW
 # resource "aws_route" "mojo_dns_1" {

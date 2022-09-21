@@ -60,7 +60,7 @@ prometheus:
         honor_labels: true
         scheme: http
         dns_sd_configs:
-          - names: ["<fix this later>"]
+          - names: ['production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com']
             type: A
             port: 9154
     storageSpec:

@@ -63,3 +63,7 @@ variable "corsham_mgmt_range" {
 variable "farnborough_mgmt_range" {
   type = string
 }
+
+variable "network_services_cidr_block" {
+  type = string
+}

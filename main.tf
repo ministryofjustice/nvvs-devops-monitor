@@ -45,6 +45,7 @@ module "vpc" {
   byoip_pool_id                  = var.byoip_pool_id
   corsham_mgmt_range             = var.corsham_mgmt_range
   farnborough_mgmt_range         = var.farnborough_mgmt_range
+  network_services_cidr_block    = var.network_services_cidr_block
   tags                           = module.vpc_label.tags
 
   providers = {
