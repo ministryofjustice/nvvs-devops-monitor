@@ -47,7 +47,7 @@ with Diagram("Detailed EKS cluster diagram", show=False, direction="TB"):
   other_prometheus >> Edge(color="darkgreen", style="bold") >> thanos_receive_ingress >> Edge(color="darkgreen", style="bold") >> thanos_receive
 
   thanos_query >> Edge(color="red", style="bold") >> \
-  prometheus >> Edge(color="green", style="bold", label="Stores metrics in") >> \
+  prometheus >> Edge(color="green", style="bold") >> \
   s3_bucket
 
   thanos_query >> Edge(color="red", style="bold") >> \
