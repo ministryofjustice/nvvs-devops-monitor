@@ -6,15 +6,15 @@ from diagrams.aws.general import Client, InternetAlt1
 from diagrams.onprem.monitoring import Prometheus
 from diagrams.onprem.compute import Server
 
-with Diagram("Core network services monitoring architecture diagram", show=False):
+with Diagram("architecture diagram", show=False):
   client = Client("user\naccessing\nGrafana dashboards")
   prometheus = Prometheus("other prometheus\nremotely writes metrics")
-  dns = Route53("dns")
+  dns = Route53("dns\nstaff.service.justice.gov.uk")
   tgw = TransitGateway("tgw")
   int = InternetAlt1("public_internet")
   ark_dc = Server("ark_data_centres")
 
-  with Cluster("vpc"):
+  with Cluster("vpc - 10.180.100.0/22"):
     nlb = NLB("nlb")
 
     with Cluster("private_subnet_eu-west-2"):

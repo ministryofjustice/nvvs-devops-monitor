@@ -28,8 +28,8 @@ destroy:
 	terraform destroy
 
 generate_diagrams:
-	docker run -it --rm -v "${PWD}":/app/ -w /app/diagrams/ mjdk/diagrams scripts/architecture_diagram.py
-	docker run -it --rm -v "${PWD}":/app/ -w /app/diagrams/ mjdk/diagrams scripts/detailed_eks_diagram.py
+	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/architecture_diagram.py
+	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/detailed_eks_diagram.py
 
 .PHONY: init validate plan apply deploy uninstall destroy
 
