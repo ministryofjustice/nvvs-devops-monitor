@@ -1,3 +1,10 @@
+---
+owner_slack: "#mojo-cloud-ops"
+title: NVV DevOps Monitoring - README
+last_reviewed_on: 2022-09-30
+review_in: 3 months
+---
+
 # NVV DevOps Monitoring
 
 [![Deployment](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml/badge.svg)](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml)

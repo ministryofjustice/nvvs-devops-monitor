@@ -1,3 +1,10 @@
+---
+owner_slack: "#mojo-cloud-ops"
+title: NVV DevOps Monitoring - Technical Documentation
+last_reviewed_on: 2022-09-30
+review_in: 3 months
+---
+
 # Technical Documentation
 
 This solution is hosted in a Amazon EKS cluster within the allocated VPC. This VPC has a CIDR block 10.180.100.0/22 and is attached to the MoJO TGW. Please refer to the architecture diagram below for a better understanding.
