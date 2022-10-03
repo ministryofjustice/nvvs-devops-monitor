@@ -141,13 +141,23 @@ spec:
         summary: Missing offer metrics for Production
         description: No metrics recieved for 10m.
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
-    - alert: Prometheus_Build_Info Alert
-      expr: prometheus_build_info{instance="localhost:9090"} > 1
-      for: 1m
+    - alert: Subnet Capacity Usage Warning 
+      expr: subnet_statistics_usage > 80
+      for: 10m
+      labels:
+        severity: warning
+        service: DNS DHCP
+      annotations:
+        summary: The subnet capacity usage has reached 80% for {{ "{{ $cidr_block }}" }}
+        description: The subnet capacity usage for {{ "{{ $cidr_block }}" }} has reached {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/9QAN_V67z
+    - alert: Subnet Capacity Usage Alert 
+      expr: subnet_statistics_usage > 90
+      for: 10m
       labels:
         severity: critical
         service: DNS DHCP
       annotations:
-        summary: Prometheus_build_info is above 0.5
-        description: prometheus_build_info of {{ "{{ $labels.instance }}" }} in {{ "{{ $labels.job }}" }} is currently {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/lux4rd0labs_loki_syslog_aio_01/proto-loki-syslog-overview?orgId=1&refresh=30s
+        summary: The subnet capacity usage has reached 90% for {{ "{{ $cidr_block }}" }}
+        description: The subnet capacity usage for {{ "{{ $cidr_block }}" }} has reached {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/9QAN_V67z
