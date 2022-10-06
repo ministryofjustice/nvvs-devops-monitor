@@ -10,9 +10,6 @@ discovery:
     s3:
       - BucketName
       - StorageType
-    dx:
-      - environment
-      - service
   jobs:
   - type: AWS/EC2
     regions: [eu-west-2]
@@ -75,7 +72,6 @@ discovery:
         statistics: [Average]
         nilToZero: true
   - type: AWS/DX
-    regions: [eu-west-2]
     roles:
       - roleArn: {{ .Values.cloudwatchExporterProductionArn }}
       - roleArn: {{ .Values.cloudwatchExporterPreProductionArn }}
