@@ -10,6 +10,9 @@ discovery:
     s3:
       - BucketName
       - StorageType
+    dx:
+      - environment
+      - service
   jobs:
   - type: AWS/EC2
     regions: [eu-west-2]
