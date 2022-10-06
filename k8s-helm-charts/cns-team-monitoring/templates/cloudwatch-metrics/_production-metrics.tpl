@@ -87,6 +87,9 @@ discovery:
       - name: VirtualInterfaceBpsIngress
         statistics: [Average]
         nilToZero: true
+      - name: ConnectionState
+        statistics: [Average]
+        nilToZero: true
   - type: AWS/RDS
     regions: [eu-west-2]
     roles:

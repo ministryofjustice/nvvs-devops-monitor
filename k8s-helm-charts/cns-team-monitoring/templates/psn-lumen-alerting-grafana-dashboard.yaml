@@ -1,0 +1,393 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: psn-lumen
+  labels:
+    grafana_dashboard: "1"
+data:
+  psn-lumen.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds",
+                "seriesBy": "last"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "scheme",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 19000000
+                  },
+                  {
+                    "color": "orange",
+                    "value": 38000000
+                  },
+                  {
+                    "color": "red",
+                    "value": 50000000
+                  }
+                ]
+              },
+              "unit": "bps"
+            },
+            "overrides": [
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "{__name__=\"aws_dx_virtual_interface_bps_ingress_average\", account_id=\"037161842252\", dimension_ConnectionId=\"dxcon-fhalrran\", dimension_VirtualInterfaceId=\"dxvif-fgswkt5b\", instance=\"cloudwatch-exporter:5000\", job=\"cloudwatch\", name=\"arn:aws:directconnect:eu-west-2:037161842252:dxcon/dxcon-fhalrran\", prometheus=\"monitoring/kube-prometheus-stack-prometheus\", prometheus_replica=\"prometheus-kube-prometheus-stack-prometheus-0\", region=\"eu-west-2\"}"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 19,
+            "x": 0,
+            "y": 0
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "3t_AuaC7k"
+              },
+              "dimensions": {
+                "VirtualInterfaceId": "dxvif-fgswkt5b"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "aws_dx_virtual_interface_bps_ingress_average{dimension_VirtualInterfaceId=\"dxvif-fgswkt5b\"}",
+              "expression": "",
+              "hide": false,
+              "id": "",
+              "instant": false,
+              "interval": "5m",
+              "label": "",
+              "legendFormat": "{{ "{{__name__}}" }}",
+              "matchExact": false,
+              "metricEditorMode": 0,
+              "metricName": "VirtualInterfaceBpsIngress",
+              "metricQueryType": 0,
+              "namespace": "AWS/DX",
+              "period": "5m",
+              "queryMode": "Metrics",
+              "range": true,
+              "refId": "A",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average"
+            },
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "3t_AuaC7k"
+              },
+              "dimensions": {
+                "VirtualInterfaceId": "dxvif-fgxd61hj"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "aws_dx_virtual_interface_bps_egress_average{dimension_VirtualInterfaceId=\"dxvif-fgxd61hj\"}",
+              "expression": "",
+              "hide": false,
+              "id": "",
+              "instant": false,
+              "interval": "5m",
+              "label": "",
+              "legendFormat": "{{ "{{__name__}}" }}",
+              "matchExact": false,
+              "metricEditorMode": 0,
+              "metricName": "VirtualInterfaceBpsEgress",
+              "metricQueryType": 0,
+              "namespace": "AWS/DX",
+              "period": "5m",
+              "queryMode": "Metrics",
+              "range": true,
+              "refId": "B",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average"
+            }
+          ],
+          "title": "Lumen AWS DirectConnects",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 11,
+          "panels": [],
+          "targets": [
+            {
+              "datasource": {
+                "type": "datasource",
+                "uid": "grafana"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "AWS",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "IPsec Firewalls",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 55,
+                "lineWidth": 2,
+                "spanNulls": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.1
+                  },
+                  {
+                    "color": "dark-orange",
+                    "value": 0.5
+                  },
+                  {
+                    "color": "semi-dark-red",
+                    "value": 0.7
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 19,
+            "x": 0,
+            "y": 10
+          },
+          "id": 4,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "mergeValues": true,
+            "rowHeight": 0.88,
+            "showValue": "auto",
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "repeat": "InstanceARN",
+          "repeatDirection": "v",
+          "targets": [
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "3t_AuaC7k"
+              },
+              "dimensions": {
+                "ConnectionId": "dxcon-fgoo1h1g"
+              },
+              "editorMode": "code",
+              "expr": "aws_dx_connection_state_average{dimension_ConnectionId=\"dxcon-fgoo1h1g\"}",
+              "expression": "",
+              "id": "",
+              "label": "",
+              "legendFormat": "dxcon-fgoo1h1g",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "ConnectionState",
+              "metricQueryType": 0,
+              "namespace": "AWS/DX",
+              "period": "",
+              "queryMode": "Metrics",
+              "range": true,
+              "refId": "A",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average"
+            },
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "3t_AuaC7k"
+              },
+              "dimensions": {
+                "ConnectionId": "dxcon-fhalrran"
+              },
+              "editorMode": "code",
+              "expr": "aws_dx_connection_state_average{dimension_ConnectionId=\"dxcon-fhalrran\"}",
+              "expression": "",
+              "hide": false,
+              "id": "",
+              "label": "",
+              "legendFormat": "dxcon-fhalrran",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "ConnectionState",
+              "metricQueryType": 0,
+              "namespace": "AWS/DX",
+              "period": "",
+              "queryMode": "Metrics",
+              "range": true,
+              "refId": "B",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average"
+            }
+          ],
+          "title": "DirectConnect Status",
+          "type": "state-timeline"
+        }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [
+        "psn",
+        "provisioned",
+        "prometheus"
+      ],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-24h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "PSN Lumen Alerting",
+      "uid": "z-UwqJyMz",
+      "version": 3,
+      "weekStart": ""
+    }
