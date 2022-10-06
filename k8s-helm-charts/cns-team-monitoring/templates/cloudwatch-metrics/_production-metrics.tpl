@@ -73,12 +73,9 @@ discovery:
         nilToZero: true
   - type: AWS/DX
     regions: [eu-west-2]
-<<<<<<< Updated upstream
     roles:
       - roleArn: {{ .Values.cloudwatchExporterProductionArn }}
       - roleArn: {{ .Values.cloudwatchExporterPreProductionArn }}
-=======
->>>>>>> Stashed changes
     length: 300
     metrics:
       - name: VirtualInterfaceBpsEgress
