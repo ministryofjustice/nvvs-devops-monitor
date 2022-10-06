@@ -72,6 +72,7 @@ discovery:
         statistics: [Average]
         nilToZero: true
   - type: AWS/DX
+    regions: [eu-west-2]
     roles:
       - roleArn: {{ .Values.cloudwatchExporterProductionArn }}
       - roleArn: {{ .Values.cloudwatchExporterPreProductionArn }}
