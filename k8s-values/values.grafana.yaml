@@ -1,5 +1,19 @@
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
 replicas: 2
 sidecar:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
   skipTlsVerify: true
   datasources:
     enabled: true
