@@ -1,0 +1,43 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: monitoring
+    prometheus-operator-validated: "true"
+  creationTimestamp: "2022-08-25T09:36:30Z"
+  generation: 1
+  labels:
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    heritage: Helm
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}.psn-lumen.rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: psn-lumen.rules
+    rules:
+      - alert: Lumen Ingress Traffic Alert
+        expr: aws_dx_virtual_interface_bps_ingress_average{dimension_VirtualInterfaceId="dxvif-fgswkt5b"} > 40000000
+        for: 10m
+        labels:
+          severity: critical
+          service: Team IGS
+        annotations:
+          summary: PSN Lumen Ingress traffic has reached 80% (40 mb/s).
+          description: Traffic has reached 80% and currently at {{ "{{ $value }}" }}
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/z-UwqJyMz/psn-lumen-alerting
+      - alert: Lumen Egress Traffice Alert
+        expr: aws_dx_virtual_interface_bps_egress_average{dimension_VirtualInterfaceId="dxvif-fgxd61hj"} > 40000000
+        for: 10m
+        labels:
+          severity: critical
+          service: Team IGS
+        annotations:
+          summary: PSN Lumen Egress traffic has reached 80% (40 mb/s)
+          description: ThTraffic has reached 80% and currently at  {{ "{{ $value }}" }}.
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/z-UwqJyMz/psn-lumen-alerting

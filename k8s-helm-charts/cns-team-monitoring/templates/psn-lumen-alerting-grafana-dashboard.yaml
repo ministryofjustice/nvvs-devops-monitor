@@ -103,32 +103,7 @@ data:
               },
               "unit": "bps"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "{__name__=\"aws_dx_virtual_interface_bps_ingress_average\", account_id=\"037161842252\", dimension_ConnectionId=\"dxcon-fhalrran\", dimension_VirtualInterfaceId=\"dxvif-fgswkt5b\", instance=\"cloudwatch-exporter:5000\", job=\"cloudwatch\", name=\"arn:aws:directconnect:eu-west-2:037161842252:dxcon/dxcon-fhalrran\", prometheus=\"monitoring/kube-prometheus-stack-prometheus\", prometheus_replica=\"prometheus-kube-prometheus-stack-prometheus-0\", region=\"eu-west-2\"}"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 9,
@@ -158,7 +133,7 @@ data:
               "dimensions": {
                 "VirtualInterfaceId": "dxvif-fgswkt5b"
               },
-              "editorMode": "code",
+              "editorMode": "builder",
               "exemplar": false,
               "expr": "aws_dx_virtual_interface_bps_ingress_average{dimension_VirtualInterfaceId=\"dxvif-fgswkt5b\"}",
               "expression": "",
@@ -167,7 +142,7 @@ data:
               "instant": false,
               "interval": "5m",
               "label": "",
-              "legendFormat": "{{ "{{__name__}}" }}",
+              "legendFormat": "dxcon-fhalrran dxvif-fgswkt5b VirtualInterfaceBpsIngress",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "VirtualInterfaceBpsIngress",
@@ -189,7 +164,7 @@ data:
               "dimensions": {
                 "VirtualInterfaceId": "dxvif-fgxd61hj"
               },
-              "editorMode": "code",
+              "editorMode": "builder",
               "exemplar": false,
               "expr": "aws_dx_virtual_interface_bps_egress_average{dimension_VirtualInterfaceId=\"dxvif-fgxd61hj\"}",
               "expression": "",
@@ -198,7 +173,7 @@ data:
               "instant": false,
               "interval": "5m",
               "label": "",
-              "legendFormat": "{{ "{{__name__}}" }}",
+              "legendFormat": "dxcon-fgoo1h1g dxvif-fgxd61hj VirtualInterfaceBpsEgress",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "VirtualInterfaceBpsEgress",
@@ -388,6 +363,6 @@ data:
       "timezone": "",
       "title": "PSN Lumen Alerting",
       "uid": "z-UwqJyMz",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
