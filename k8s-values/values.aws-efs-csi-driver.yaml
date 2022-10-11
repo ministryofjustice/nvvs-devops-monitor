@@ -1,6 +1,46 @@
 image:
   repository: 602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/aws-efs-csi-driver
 controller:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
   serviceAccount:
     create: false
     name: aws-efs-csi-driver
+node:
+  resources:
+    limits:
+      cpu: 60m
+      memory: 256Mi
+    requests:
+      cpu: 30m
+      memory: 128Mi
+sidecars:
+  livenessProbe:
+    resources:
+      limits:
+        cpu: 20m
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+  csiProvisioner:
+    resources:
+      limits:
+        cpu: 20m
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+  nodeDriverRegistrar:
+    resources:
+      limits:
+        cpu: 20m
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi

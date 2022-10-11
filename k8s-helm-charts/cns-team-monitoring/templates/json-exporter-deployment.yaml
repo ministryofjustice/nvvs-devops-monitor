@@ -17,20 +17,24 @@ spec:
         app: json-exporter
     spec:
       containers:
-      - name: json-exporter
-        image: quay.io/prometheuscommunity/json-exporter
-        ports:
-        - containerPort: 7979
-        args:
-          - "--config.file=/config/config.yml"
-        volumeMounts:
-        - name: configuration
-          mountPath: "/config"
-          readOnly: true
+        - name: json-exporter
+          image: quay.io/prometheuscommunity/json-exporter
+          resources:
+            requests:
+              cpu: 100m
+              memory: 32Mi
+          ports:
+            - containerPort: 7979
+          args:
+            - "--config.file=/config/config.yml"
+          volumeMounts:
+            - name: configuration
+              mountPath: "/config"
+              readOnly: true
       volumes:
-      - name: configuration
-        configMap:
-          name: prometheus-json-exporter-configmap
-          items:
-          - key: "config.yml"
-            path: "config.yml"
+        - name: configuration
+          configMap:
+            name: prometheus-json-exporter-configmap
+            items:
+              - key: "config.yml"
+                path: "config.yml"

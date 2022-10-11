@@ -13,6 +13,13 @@ grafana:
   defaultDashboardsTimezone: "Europe/London"
 prometheus:
   prometheusSpec:
+    resources:
+      limits:
+        cpu: 400m
+        memory: 2048Mi
+      requests:
+        cpu: 200m
+        memory: 1024Mi
     podMonitorNamespaceSelector: {}
     podMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
@@ -60,7 +67,7 @@ prometheus:
         honor_labels: true
         scheme: http
         dns_sd_configs:
-          - names: ['production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com']
+          - names: ["production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com"]
             type: A
             port: 9154
     storageSpec:
@@ -75,12 +82,42 @@ prometheus:
       objectStorageConfig:
         key: "objstore.yml"
         name: "thanos-objstore-secret"
+      resources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 50m
+          memory: 128Mi
   thanosService:
     enabled: true
   thanosServiceMonitor:
     enabled: true
+prometheusOperator:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  prometheusConfigReloader:
+    resources:
+      limits:
+        cpu: 60m
+        memory: 64Mi
+      requests:
+        cpu: 30m
+        memory: 32Mi
 alertmanager:
   alertmanagerSpec:
+    resources:
+      limits:
+        cpu: 20m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
     alertmanagerConfigSelector:
       matchLabels:
         alertmanagerConfig: alertmanager-config

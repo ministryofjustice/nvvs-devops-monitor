@@ -17,20 +17,27 @@ spec:
         app: blackbox-exporter
     spec:
       containers:
-      - name: blackbox-exporter
-        image: prom/blackbox-exporter
-        ports:
-        - containerPort: 9115
-        args:
-          - "--config.file=/config/config.yml"
-        volumeMounts:
-        - name: configuration
-          mountPath: "/config"
-          readOnly: true
+        - name: blackbox-exporter
+          image: prom/blackbox-exporter
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 50m
+              memory: 32Mi
+          ports:
+            - containerPort: 9115
+          args:
+            - "--config.file=/config/config.yml"
+          volumeMounts:
+            - name: configuration
+              mountPath: "/config"
+              readOnly: true
       volumes:
-      - name: configuration
-        configMap:
-          name: prometheus-blackbox-exporter-configmap
-          items:
-          - key: "config.yml"
-            path: "config.yml"
+        - name: configuration
+          configMap:
+            name: prometheus-blackbox-exporter-configmap
+            items:
+              - key: "config.yml"
+                path: "config.yml"
