@@ -3,10 +3,10 @@ image:
 controller:
   resources:
     limits:
-      cpu: 60m
+      cpu: 200m
       memory: 256Mi
     requests:
-      cpu: 30m
+      cpu: 100m
       memory: 128Mi
   serviceAccount:
     create: false

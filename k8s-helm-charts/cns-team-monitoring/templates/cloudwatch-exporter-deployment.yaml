@@ -21,11 +21,8 @@ spec:
         - name: cloudwatch-exporter
           image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.40.0-alpha
           resources:
-            limits:
-              cpu: 20m
-              memory: 64Mi
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 32Mi
           ports:
             - containerPort: 5000

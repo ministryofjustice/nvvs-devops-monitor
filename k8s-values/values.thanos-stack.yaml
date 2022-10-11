@@ -23,10 +23,10 @@ compactor:
   enabled: true
   resources:
     limits:
-      cpu: 100m
+      cpu: 300m
       memory: 128Mi
     requests:
-      cpu: 50m
+      cpu: 200m
       memory: 64Mi
 receive:
   enabled: true
