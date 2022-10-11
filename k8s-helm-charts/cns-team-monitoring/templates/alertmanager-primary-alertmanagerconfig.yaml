@@ -19,67 +19,89 @@ spec:
     groupInterval: 5m
     repeatInterval: 24h
     groupBy:
-      - 'service'
+      - 'namespace'
+    matchers:
+      - name: namespace
+        value: "monitoring | grafana | external-dns | ingress-nginx"
+        matchType: "=~"
     routes:
       - receiver: CNS Team - Slack
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: IMA
           - name: severity
             value: critical
       - receiver: CNS Team - Pagerduty
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: DNS DHCP
           - name: service
             value: SMTP Relay
       - receiver: Team PKI
-        group_wait: 10s
-        repeat_interval: 7d
+        groupWait: 10s
+        repeatInterval: 7d
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: certificate-services
       - receiver: Team IGS
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Internet Gateway Service
       - receiver: Team Sec Logging
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Security Logging
       - receiver: Network Access Control Pre-Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Network Access Control Pre-Production
       - receiver: Network Access Control Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Network Access Control
           - name: severity
             value: warning
       - receiver: Network Access Control Critical
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Network Access Control
           - name: severity
             value: critical
       - receiver: Team Mercury Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
+        groupBy:
+          - 'service'
         matchers:
           - name: service
             value: Mercury Production
