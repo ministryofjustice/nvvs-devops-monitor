@@ -42,9 +42,8 @@ spec:
           - 'service'
         matchers:
           - name: service
-            value: DNS DHCP
-          - name: service
-            value: SMTP Relay
+            value: "DNS DHCP | SMTP Relay"
+            matchType: "=~"
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
@@ -122,8 +121,8 @@ spec:
           iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: CNS Team - Pagerduty
       pagerdutyConfigs:
-        - serviceKey:
-            key: pagerduty_service_key
+        - routingKey:
+            key: pagerduty_routing_key
             name: alertmanager-secrets
             optional: false
     - name: Team PKI
