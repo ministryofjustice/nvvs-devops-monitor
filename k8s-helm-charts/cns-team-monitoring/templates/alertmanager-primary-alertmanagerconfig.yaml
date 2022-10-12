@@ -148,7 +148,7 @@ spec:
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
-          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}''`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
     - name: Team Sec Logging
