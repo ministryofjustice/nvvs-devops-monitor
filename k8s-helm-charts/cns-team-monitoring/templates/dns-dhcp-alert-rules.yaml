@@ -62,13 +62,13 @@ spec:
         description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP KEA Server Alert
-      expr: aws_kea_dhcp_error_sum > 10 or aws_kea_dhcp_fatal_sum > 10
+      expr: aws_kea_dhcp_error_sum > 10 or aws_kea_dhcp_fatal_sum > 40
       for: 7m
       labels:
         severity: critical
         service: DNS DHCP
       annotations:
-        summary: DHCP KEA Server Alert ERROR or FATAL > 10
+        summary: DHCP KEA Server Alert ERROR or FATAL > 40
         description: The server alert ERROR or FATAL is greater than 10. The current value is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics      
     - alert: DHCP RDS CPU Alert
