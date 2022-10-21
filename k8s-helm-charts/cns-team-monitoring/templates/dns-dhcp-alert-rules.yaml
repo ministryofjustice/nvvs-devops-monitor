@@ -38,7 +38,7 @@ spec:
         severity: critical
         service: DNS DHCP
       annotations:
-        summary: DHCP ECS Task count is below 1 
+        summary: DHCP ECS Task count is below 1
         description: The ECS task count is below 1 for DHCP
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP ECS High CPU/Memory Alert
@@ -58,7 +58,7 @@ spec:
         severity: critical
         service: DNS DHCP
       annotations:
-        summary: KEA DHCP Failed leases > 10 
+        summary: KEA DHCP Failed leases > 10
         description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP KEA Server Alert
@@ -70,7 +70,7 @@ spec:
       annotations:
         summary: DHCP KEA Server Alert ERROR or FATAL > 10
         description: The server alert ERROR or FATAL is greater than 10. The current value is {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics      
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP RDS CPU Alert
       expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="staff-device-production-dhcp-db"} > 60
       for: 5m
@@ -79,8 +79,8 @@ spec:
         service: DNS DHCP
       annotations:
         summary: DHCP RDS CPU is above 60 percent
-        description: The RDS CPU for DHCP has been above 60 percent for 5 minutes. 
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics 
+        description: The RDS CPU for DHCP has been above 60 percent for 5 minutes.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP Subnet Usage Alert
       expr: subnet_statistics_usage > 80
       for: 5m
@@ -89,7 +89,7 @@ spec:
         service: DNS DHCP
       annotations:
         summary: DHCP Subnet utilisation > 80%
-        description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes. 
+        description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes.
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP Subnet Usage Alert
       expr: subnet_statistics_usage > 90
@@ -100,7 +100,7 @@ spec:
       annotations:
         summary: DHCP Subnet utilisation > 90%
         description: The DHCP Subnet utilisation has been above 90 percent for 5 minutes.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics  
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DNS ECS High CPU/Memory Alert
       expr: aws_ecs_cpuutilization_average{dimension_ClusterName="staff-device-production-dns-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="staff-device-production-dns-cluster"} > 60
       for: 5m
@@ -130,7 +130,7 @@ spec:
       annotations:
         summary: Missing request metrics for Production
         description: No metrics recieved for 10m.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics 
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: Missing Offer Metrics for Production
       expr: absent_over_time(aws_kea_dhcp_pkt4_offer_sent_average[10m]) == 1
       for: 10m
