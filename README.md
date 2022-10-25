@@ -1,4 +1,4 @@
-# NVV DevOps Monitoring
+# NVV DevOps Monitor
 
 [![Deployment](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml/badge.svg)](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml)
 
@@ -6,7 +6,7 @@
 
 ## What is it?
 
-Monitoring solution developed by the CNS team (Core Network Service team) to monitor the applications that this team currently manages.
+Monitoring solution developed by the NVVS DevOps team (Network Voice Video Service DevOps team) to monitor the applications that this team currently manages.
 
 ### What applications are being monitored by this solution?
 

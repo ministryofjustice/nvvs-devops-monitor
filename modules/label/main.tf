@@ -13,6 +13,6 @@ module "label" {
     "environment-name" = terraform.workspace
     "is-production"    = terraform.workspace == "production" ? "true" : "false"
     "application"      = var.application_name
-    "source-code"      = "https://github.com/ministryofjustice/mojo-infrastructure-monitoring"
+    "source-code"      = "https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster"
   }
 }

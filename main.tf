@@ -22,13 +22,13 @@ data "aws_availability_zones" "available_zones" {
 
 module "label" {
   source           = "./modules/label"
-  name             = "mojo-ima"
+  name             = "nvvs-devops-monitor"
   application_name = var.application_name
 }
 
 module "vpc_label" {
   source           = "./modules/label"
-  name             = "mojo-ima-vpc"
+  name             = "nvvs-devops-monitor"
   application_name = var.application_name
 }
 
@@ -55,7 +55,7 @@ module "vpc" {
 
 module "eks_label" {
   source           = "./modules/label"
-  name             = "mojo-ima-eks"
+  name             = "nvvs-devops-monitor-eks"
   application_name = var.application_name
 }
 
