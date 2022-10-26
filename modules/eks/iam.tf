@@ -241,6 +241,58 @@ resource "aws_iam_role_policy_attachment" "efs_csi_driver_AWSEFSCSIDriverIAMPoli
   role       = aws_iam_role.aws_efs_csi_driver.name
 }
 
+# IAM role for the AWS EBS CSI Driver
+
+data "aws_iam_policy_document" "aws_ebs_csi_driver_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-ebs-csi-driver"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.this.arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "aws_ebs_csi_driver" {
+  assume_role_policy = data.aws_iam_policy_document.aws_ebs_csi_driver_assume_role_policy.json
+  name               = "${var.prefix}-AWSEBSCSIDriverRole"
+
+  tags = var.tags
+}
+
+data "template_file" "aws_ebs_csi_driver_iam_policy" {
+  template = file("${path.module}/policies/aws_ebs_csi_driver_iam_policy.json")
+}
+
+resource "aws_iam_policy" "aws_ebs_csi_driver_iam_policy" {
+  name        = "${var.prefix}-AWSEBSCSIDriverIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for AWS EBS CSI Driver in EKS Cluster for ${var.prefix}"
+
+  policy = data.template_file.aws_ebs_csi_driver_iam_policy.rendered
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "efs_csi_driver_AWSEBSCSIDriverIAMPolicy" {
+  policy_arn = aws_iam_policy.aws_ebs_csi_driver_iam_policy.arn
+  role       = aws_iam_role.aws_ebs_csi_driver.name
+}
+
 # IAM role for the thanos service account
 
 data "aws_iam_policy_document" "thanos_assume_role_policy" {

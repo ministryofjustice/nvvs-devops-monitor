@@ -22,6 +22,10 @@ output "aws_efs_csi_driver_iam_role_arn" {
   value = aws_iam_role.aws_efs_csi_driver.arn
 }
 
+output "aws_ebs_csi_driver_iam_role_arn" {
+  value = aws_iam_role.aws_ebs_csi_driver.arn
+}
+
 output "efs_file_system_id" {
   value = aws_efs_file_system.this.id
 }

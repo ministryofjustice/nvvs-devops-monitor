@@ -1,5 +1,6 @@
 resource "aws_eks_cluster" "this" {
   name                      = var.prefix
+  version                   = "1.23"
   role_arn                  = aws_iam_role.cluster.arn
   enabled_cluster_log_types = ["api", "audit"]
 
