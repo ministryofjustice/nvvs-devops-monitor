@@ -1,4 +1,4 @@
-# NVV DevOps Monitor
+# NVVS DevOps Monitor
 
 [![Deployment](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml/badge.svg)](https://github.com/ministryofjustice/staff-infrastructure-monitoring-cluster/actions/workflows/deployment.yml)
 
