@@ -42,7 +42,7 @@ spec:
           - 'service'
         matchers:
           - name: service
-            value: "DNS DHCP | SMTP Relay"
+            value: "DNS DHCP | SMTP Relay | certificate-services | Security Logging | Network Access Control"
             matchType: "=~"
       - receiver: Team PKI
         groupWait: 10s
