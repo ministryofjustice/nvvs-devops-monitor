@@ -2,6 +2,8 @@ environment: ""
 dhcpApiBasicAuthUsername: ""
 dhcpApiBasicAuthPassword: ""
 cloudwatch_iam_role: ""
+cloudwatchExporterDevelopmentArn: ""
+cloudwatchExporterPreProductionArn: ""
 alertmanager:
   smtp:
     from: ""

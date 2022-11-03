@@ -23,6 +23,8 @@ jobs:
     env:
       ENV: "development"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
@@ -122,6 +124,8 @@ jobs:
     env:
       ENV: "pre-production"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
@@ -215,6 +219,8 @@ jobs:
     env:
       ENV: "production"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
