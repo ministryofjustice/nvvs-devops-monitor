@@ -31,6 +31,8 @@ set_variables() {
   efs_file_system_id=`echo $terraform_outputs_eks_cluster | jq -r '.efs_file_system_id'`
   thanos_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_iam_role_arn'`
   cloudwatch_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.cloudwatch_exporter_iam_role_arn'`
+  cloudwatch_exporter_development_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.cloudwatch_exporter_development_iam_role_arn'`
+  cloudwatch_exporter_pre_production_iam_role_arn=`echo $terraform_outputs_eks_cluster | jq -r '.cloudwatch_exporter_pre_production_iam_role_arn'`
   thanos_storage_s3_bucket_name=`echo $terraform_outputs_eks_cluster | jq -r '.thanos_storage_s3_bucket_name'`
   kubeconfig_certificate_authority_data=`echo $terraform_outputs | jq -r '.kubeconfig_certificate_authority_data.value'`
   terraform_outputs_certificate=`echo $terraform_outputs | jq -r '.certificate.value'`
@@ -248,6 +250,8 @@ deploy_cns_team_monitoring() {
     --set dhcpApiBasicAuthPassword=$dhcpApiBasicAuthPassword \
     --set environment=$namespace \
     --set cloudwatch_iam_role=$cloudwatch_iam_role_arn \
+    --set cloudwatchExporterDevelopmentArn=$cloudwatch_exporter_development_iam_role_arn \
+    --set cloudwatchExporterPreProductionArn=$cloudwatch_exporter_pre_production_iam_role_arn \
     --set alertmanager.alert_rules.pagerduty_routing_key=`base64_encode $pagerduty_service_key` \
     --set alertmanager.alert_rules.ima_slack_webhook_url=`base64_encode $ima_slack_webhook_url` \
     --set alertmanager.alert_rules.certificate_services_slack_webhook_url=`base64_encode $certificate_services_slack_webhook_url` \

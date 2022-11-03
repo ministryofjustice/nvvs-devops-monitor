@@ -391,13 +391,6 @@ data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy" {
   }
 }
 
-resource "aws_iam_role" "cloudwatch_exporter" {
-  assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy.json
-  name               = "${var.prefix}-CloudwatchExporter"
-
-  tags = var.tags
-}
-
 data "template_file" "cloudwatch_exporter_iam_policy" {
   template = file("${path.module}/policies/cloudwatch_exporter_iam_policy.json")
 }
@@ -412,7 +405,118 @@ resource "aws_iam_policy" "cloudwatch_exporter_iam_policy" {
   tags = var.tags
 }
 
+resource "aws_iam_role" "cloudwatch_exporter" {
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy.json
+  name               = "${var.prefix}-CloudwatchExporter"
+
+  tags = var.tags
+}
+
 resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy" {
   policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy.arn
   role       = aws_iam_role.cloudwatch_exporter.name
+}
+
+# Create and attach a policy to the cloudwatch exporter iam role that allows Cloudwatch exporter to assume roles in other AWS accouts to scrape cloudwatch metrics
+
+resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
+  name        = "other_cloudwatch_exporter_role_allow_assume_policy"
+  path        = "/"
+  description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in other aws accounts"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "Statement",
+          "Effect": "Allow",
+          "Action": "sts:AssumeRole",
+          "Resource": [
+              "${aws_iam_role.cloudwatch_exporter_development.arn}",
+              "${aws_iam_role.cloudwatch_exporter_pre_production.arn}"
+          ]
+      }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "other_cloudwatch_exporter_allow_assume_IAMPolicy" {
+  policy_arn = aws_iam_policy.other_cloudwatch_exporter_role_allow_assume_policy.arn
+  role       = aws_iam_role.cloudwatch_exporter.name
+}
+
+# Prepare a policy document that can be used by iam roles created in other aws accounts that allow cloudwatch exporter to assume the roles
+
+data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy_other_aws_accounts" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+
+    principals {
+      identifiers = [aws_iam_role.cloudwatch_exporter.arn]
+      type        = "AWS"
+    }
+  }
+}
+
+# IAM role for Cloudwatch Exporter in development aws account
+
+resource "aws_iam_role" "cloudwatch_exporter_development" {
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
+  name               = "${var.prefix}-CloudwatchExporter"
+
+  tags = var.tags
+
+  provider = aws.development
+}
+
+resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_development" {
+  name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
+
+  policy = data.template_file.cloudwatch_exporter_iam_policy.rendered
+
+  tags = var.tags
+
+  provider = aws.development
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_development" {
+  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_development.arn
+  role       = aws_iam_role.cloudwatch_exporter_development.name
+
+  provider = aws.development
+}
+
+# IAM role for Cloudwatch Exporter in pre-production aws account
+
+resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
+  name               = "${var.prefix}-CloudwatchExporter"
+
+  tags = var.tags
+
+  provider = aws.pre_production
+}
+
+resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_pre_production" {
+  name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
+  path        = "/"
+  description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
+
+  policy = data.template_file.cloudwatch_exporter_iam_policy.rendered
+
+  tags = var.tags
+
+  provider = aws.pre_production
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_pre_production" {
+  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_pre_production.arn
+  role       = aws_iam_role.cloudwatch_exporter_pre_production.name
+
+  provider = aws.pre_production
 }
