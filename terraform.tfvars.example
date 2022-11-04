@@ -15,3 +15,12 @@ enabled     =
 # Grafana RDS Database Username & Password
 db_username =
 db_password =
+
+byoip_pool_id = <nvvs-devops-monitor/byoip_pool_id in Shared Services Parameter Store>
+
+enable_transit_gateway         = true
+transit_gateway_route_table_id = <Shared Services Parameter Store>
+transit_gateway_id             = <Shared Services Parameter Store>
+corsham_mgmt_range             = <Shared Services Parameter Store>.0/24
+farnborough_mgmt_range         = <Shared Services Parameter Store>.0/24
+network_services_cidr_block    = <CIDR range of staff-infrastructure-production-network-services VPC in Production>
