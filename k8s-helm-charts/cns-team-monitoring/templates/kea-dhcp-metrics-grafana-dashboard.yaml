@@ -72,6 +72,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -128,7 +130,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -142,10 +145,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName=~\".+dhcp.+\"}",
+              "expr": "aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "{{ "{{dimension_ServiceName}}" }}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -163,6 +168,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -219,7 +226,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -233,10 +241,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_networkelb_un_healthy_host_count_average{dimension_TargetGroup=~\".+dhcp.+\"}",
+              "expr": "aws_networkelb_un_healthy_host_count_average{dimension_TargetGroup=~\".+dhcp.+\",account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "{{ "{{dimension_AvailabilityZone}}" }} - {{ "{{dimension_LoadBalancer}}" }}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -255,6 +265,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -311,7 +323,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -325,10 +338,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(aws_rds_read_iops_average)",
+              "expr": "sum(aws_rds_read_iops_average{account_id=\"$account_id\"})",
               "interval": "",
               "legendFormat": "",
+              "range": true,
               "refId": "A"
             },
             {
@@ -336,10 +351,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(aws_rds_write_iops_average)",
+              "expr": "sum(aws_rds_write_iops_average{account_id=\"$account_id\"})",
               "interval": "",
               "legendFormat": "",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -358,6 +375,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -414,7 +433,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -428,102 +448,18 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_networkelb_processed_bytes_average{dimension_LoadBalancer=~\".+dhcp.+\"}",
+              "expr": "aws_networkelb_processed_bytes_average{dimension_LoadBalancer=~\".+dhcp.+\",account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "{{ "{{dimension_LoadBalancer}}" }}",
+              "range": true,
               "refId": "A"
             }
           ],
           "title": "NLB ProcessBytes",
           "transformations": [],
           "type": "timeseries"
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 17
-          },
-          "hiddenSeries": false,
-          "id": 40,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "9.0.5",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "eARrzmTnz"
-              },
-              "exemplar": true,
-              "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+dhcp.+\"}",
-              "interval": "",
-              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "RDS CPU",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
         },
         {
           "datasource": {
@@ -536,6 +472,104 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 17
+          },
+          "id": 40,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.2.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+dhcp.+\",account_id=\"$account_id\"}",
+              "interval": "",
+              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "RDS CPU",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -592,7 +626,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -610,8 +645,9 @@ data:
               "dimensions": {
                 "ClusterName": "staff-device-production-dhcp-cluster"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+dhcp.+\"}",
+              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -622,6 +658,7 @@ data:
               "metricQueryType": 0,
               "namespace": "AWS/ECS",
               "period": "",
+              "range": true,
               "refId": "A",
               "region": "default",
               "statistic": "Average"
@@ -635,8 +672,9 @@ data:
               "dimensions": {
                 "ClusterName": "staff-device-production-dhcp-cluster"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+dhcp.+\"}",
+              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+dhcp.+\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -647,6 +685,7 @@ data:
               "metricQueryType": 0,
               "namespace": "AWS/ECS",
               "period": "",
+              "range": true,
               "refId": "B",
               "region": "default",
               "statistic": "Average"
@@ -692,6 +731,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -748,7 +789,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -762,10 +804,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "aws_kea_dhcp_error_sum",
+              "expr": "aws_kea_dhcp_error_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary Error",
+              "range": true,
               "refId": "A"
             },
             {
@@ -773,10 +817,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_fatal_sum",
+              "expr": "aws_kea_dhcp_fatal_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary Fatal Error",
+              "range": true,
               "refId": "B"
             },
             {
@@ -784,10 +830,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_warn_sum",
+              "expr": "aws_kea_dhcp_warn_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary Warning",
+              "range": true,
               "refId": "C"
             },
             {
@@ -795,10 +843,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_error_sum",
+              "expr": "aws_kea_dhcp_standby_error_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby Error",
+              "range": true,
               "refId": "E"
             },
             {
@@ -806,10 +856,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_fatal_sum",
+              "expr": "aws_kea_dhcp_standby_fatal_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby Fatal",
+              "range": true,
               "refId": "F"
             },
             {
@@ -817,10 +869,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_warn_sum",
+              "expr": "aws_kea_dhcp_standby_warn_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby Warning",
+              "range": true,
               "refId": "G"
             }
           ],
@@ -838,6 +892,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -894,7 +950,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -908,10 +965,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_configuration_successful_sum",
+              "expr": "aws_kea_dhcp_configuration_successful_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - Successful",
+              "range": true,
               "refId": "A"
             },
             {
@@ -919,10 +978,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_config_reload_failed_sum",
+              "expr": "aws_kea_dhcp_config_reload_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - Reload Failed",
+              "range": true,
               "refId": "B"
             },
             {
@@ -930,10 +991,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_configuration_successful_sum",
+              "expr": "aws_kea_dhcp_standby_configuration_successful_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - Successful",
+              "range": true,
               "refId": "C"
             },
             {
@@ -941,10 +1004,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_config_reload_failed_sum",
+              "expr": "aws_kea_dhcp_standby_config_reload_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - Reload Failed",
+              "range": true,
               "refId": "D"
             }
           ],
@@ -962,6 +1027,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1018,7 +1085,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1032,10 +1100,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_ha_sync_failed_sum",
+              "expr": "aws_kea_dhcp_ha_sync_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - HA Sync Failed",
+              "range": true,
               "refId": "A"
             },
             {
@@ -1043,10 +1113,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_ha_heartbeat_communications_failed_sum",
+              "expr": "aws_kea_dhcp_ha_heartbeat_communications_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - HA Heartbeat Communication Failed",
+              "range": true,
               "refId": "B"
             },
             {
@@ -1054,10 +1126,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_ha_sync_failed_sum",
+              "expr": "aws_kea_dhcp_standby_ha_sync_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - HA Sync Failed",
+              "range": true,
               "refId": "C"
             },
             {
@@ -1065,10 +1139,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_ha_heartbeat_communications_failed_sum",
+              "expr": "aws_kea_dhcp_standby_ha_heartbeat_communications_failed_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - HA Heartbeat Communication Failed",
+              "range": true,
               "refId": "D"
             }
           ],
@@ -1086,6 +1162,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1142,7 +1220,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1156,10 +1235,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_error_sum",
+              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_error_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary  - Allocation Error",
+              "range": true,
               "refId": "A"
             },
             {
@@ -1167,10 +1248,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum",
+              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary  - Allocation Fail",
+              "range": true,
               "refId": "B"
             },
             {
@@ -1178,10 +1261,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_classes_sum",
+              "expr": "aws_kea_dhcp_alloc_engine_v4_alloc_fail_classes_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary  - Allocation Fail Classes",
+              "range": true,
               "refId": "C"
             },
             {
@@ -1189,10 +1274,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_error_sum",
+              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_error_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - Allocation Error",
+              "range": true,
               "refId": "D"
             },
             {
@@ -1200,10 +1287,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_sum",
+              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby  - Allocation Fail",
+              "range": true,
               "refId": "E"
             },
             {
@@ -1211,10 +1300,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_classes_sum",
+              "expr": "aws_kea_dhcp_standby_alloc_engine_v4_alloc_fail_classes_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Standby - Allocation Fail Classes",
+              "range": true,
               "refId": "F"
             }
           ],
@@ -1232,6 +1323,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1288,7 +1381,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1302,8 +1396,9 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(aws_kea_dhcp_pkt4_discover_received_average[15m])",
+              "expr": "rate(aws_kea_dhcp_pkt4_discover_received_average{account_id=\"$account_id\"}[15m])",
               "instant": false,
               "interval": "",
               "legendFormat": "Primary",
@@ -1324,6 +1419,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1380,7 +1477,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1394,101 +1492,17 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(aws_kea_dhcp_pkt4_nak_sent_average[15m])",
+              "expr": "rate(aws_kea_dhcp_pkt4_nak_sent_average{account_id=\"$account_id\"}[15m])",
               "interval": "",
               "legendFormat": "Primary",
+              "range": true,
               "refId": "A"
             }
           ],
           "title": "Rate of Offer",
           "type": "timeseries"
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 46
-          },
-          "hiddenSeries": false,
-          "id": 14,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "9.0.5",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "eARrzmTnz"
-              },
-              "exemplar": true,
-              "expr": "rate(aws_kea_dhcp_pkt4_request_received_average[15m])  ",
-              "interval": "",
-              "legendFormat": "Primary",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Rate of Request",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
         },
         {
           "datasource": {
@@ -1501,6 +1515,104 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 46
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.2.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "rate(aws_kea_dhcp_pkt4_request_received_average{account_id=\"$account_id\"}[15m])",
+              "interval": "",
+              "legendFormat": "Primary",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Rate of Request",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1557,7 +1669,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1571,10 +1684,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(aws_kea_dhcp_pkt4_ack_sent_average[15m])",
+              "expr": "rate(aws_kea_dhcp_pkt4_ack_sent_average{account_id=\"$account_id\"}[15m])",
               "interval": "",
               "legendFormat": "Primary",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -1592,6 +1707,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1648,7 +1765,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1662,10 +1780,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_pkt4_nak_sent_average",
+              "expr": "aws_kea_dhcp_pkt4_nak_sent_average{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - pkt4-nak-sent",
+              "range": true,
               "refId": "A"
             },
             {
@@ -1673,10 +1793,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_pkt4_nak_received_average",
+              "expr": "aws_kea_dhcp_pkt4_nak_received_average{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - pkt4-nak-received",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -1694,6 +1816,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1750,7 +1874,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1764,10 +1889,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_kea_dhcp_pkt4_decline_received_average",
+              "expr": "aws_kea_dhcp_pkt4_decline_received_average{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Primary - Decline Received",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -1890,14 +2017,48 @@ data:
         }
       ],
       "refresh": "1m",
-      "schemaVersion": 36,
+      "schemaVersion": 37,
       "style": "dark",
       "tags": [
         "Kea",
         "DHCP"
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "Production",
+              "value": "037161842252"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Environment",
+            "multi": false,
+            "name": "account_id",
+            "options": [
+              {
+                "selected": false,
+                "text": "Production",
+                "value": "037161842252"
+              },
+              {
+                "selected": false,
+                "text": "Pre-Production",
+                "value": "473630360727"
+              },
+              {
+                "selected": true,
+                "text": "Development",
+                "value": "068084030754"
+              }
+            ],
+            "query": "037161842252,473630360727,068084030754",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          }
+        ]
       },
       "time": {
         "from": "now-6h",
