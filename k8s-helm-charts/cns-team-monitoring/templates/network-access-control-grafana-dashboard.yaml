@@ -1459,7 +1459,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "{{dimension_DBInstanceIdentifier}} - Read",
+              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }} - Read",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "ReadIOPS",
@@ -1484,7 +1484,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "{{dimension_DBInstanceIdentifier}} - Write",
+              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }} - Write",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "WriteIOPS",
@@ -1582,7 +1582,7 @@ data:
               "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-int-mojo-production-nac/.*\"}",
               "instant": false,
               "interval": "",
-              "legendFormat": "Internal {{dimension_AvailabilityZone}} {{dimension_TargetGroup}}",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
               "refId": "A"
             },
             {
@@ -1595,11 +1595,11 @@ data:
               "hide": false,
               "instant": false,
               "interval": "",
-              "legendFormat": "Internal {{dimension_AvailabilityZone}} {{dimension_TargetGroup}}",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
               "refId": "B"
             }
           ],
-          "title": "Unealthy host count",
+          "title": "Unhealthy host count",
           "transformations": [],
           "type": "timeseries"
         }
