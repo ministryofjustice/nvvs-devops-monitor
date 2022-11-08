@@ -800,7 +800,7 @@ data:
               "dimensions": {},
               "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_all_other_errors_sum",
+              "expr": "aws_mojo_nac_requests_all_errors_sum",
               "expression": "",
               "id": "",
               "interval": "",
