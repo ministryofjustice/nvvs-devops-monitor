@@ -15,10 +15,10 @@ prometheus:
   prometheusSpec:
     resources:
       limits:
-        cpu: 400m
+        cpu: 1000m
         memory: 2048Mi
       requests:
-        cpu: 200m
+        cpu: 500m
         memory: 1024Mi
     podMonitorNamespaceSelector: {}
     podMonitorSelector: {}
@@ -96,10 +96,10 @@ prometheus:
 prometheusOperator:
   resources:
     limits:
-      cpu: 200m
+      cpu: 1000m
       memory: 512Mi
     requests:
-      cpu: 100m
+      cpu: 500m
       memory: 256Mi
   prometheusConfigReloader:
     resources:
