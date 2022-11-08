@@ -399,7 +399,7 @@
     nilToZero: true
     period: 300
     length: 300
-  - name: "error"
+  - name: "All other errors"
     statistics: [Sum]
     nilToZero: true
     period: 300
