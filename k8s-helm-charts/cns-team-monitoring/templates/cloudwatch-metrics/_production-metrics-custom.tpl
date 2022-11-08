@@ -399,7 +399,7 @@
     nilToZero: true
     period: 300
     length: 300
-  - name: "Error"
+  - name: "error"
     statistics: [Sum]
     nilToZero: true
     period: 300
@@ -487,7 +487,7 @@
     statistics: [Average]
     nilToZero: true
     period: 300
-    length: 300 
+    length: 300
 - namespace: GP_PORTAL_VMseries
   name: "GP_PORTAL_VMseries"
   regions: [eu-west-2]
@@ -546,5 +546,5 @@
     statistics: [Average]
     nilToZero: true
     period: 300
-    length: 300 
+    length: 300
 {{ end }}
