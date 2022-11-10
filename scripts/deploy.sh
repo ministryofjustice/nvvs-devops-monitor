@@ -48,7 +48,7 @@ set_variables() {
   alertmanager_smtp_user=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/smtp_user" --with-decryption  --query Parameter.Value --output text`
   alertmanager_smtp_password=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/smtp_password" --with-decryption  --query Parameter.Value --output text`
   pagerduty_routing_key=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/pagerduty_routing_key" --with-decryption --query Parameter.Value --output text`
-  ima_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/production/mojo-ima-platform-alerts_slack_webhook_url" --with-decryption --query Parameter.Value --output text`
+  ima_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/development/mojo-ima-platform-alerts_slack_webhook_url" --with-decryption --query Parameter.Value --output text`
   certificate_services_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/pki-alerts" --with-decryption --query Parameter.Value --output text`
   networks_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/mojdt-network-alerts" --with-decryption --query Parameter.Value --output text`
   ost_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/production/ost_slack_webhook_url" --with-decryption --query Parameter.Value --output text`

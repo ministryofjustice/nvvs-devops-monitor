@@ -19,17 +19,11 @@ spec:
     groupInterval: 5m
     repeatInterval: 24h
     groupBy:
-      - 'namespace'
-    matchers:
-      - name: namespace
-        value: "monitoring | grafana | external-dns | ingress-nginx"
-        matchType: "=~"
+      - 'service'
     routes:
       - receiver: NVVS DevOps - Slack
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: IMA
@@ -38,8 +32,6 @@ spec:
       - receiver: NVVS DevOps - Pagerduty
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: "DNS DHCP | SMTP Relay | certificate-services | Security Logging | Network Access Control"
@@ -47,40 +39,30 @@ spec:
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: certificate-services
       - receiver: Team IGS
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Internet Gateway Service
       - receiver: Team Sec Logging
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Security Logging
       - receiver: Network Access Control Pre-Production
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Network Access Control Pre-Production
       - receiver: Network Access Control Production
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Network Access Control
@@ -89,8 +71,6 @@ spec:
       - receiver: Network Access Control Critical
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Network Access Control
@@ -99,8 +79,6 @@ spec:
       - receiver: Team Mercury Production
         groupWait: 10s
         repeatInterval: 24h
-        groupBy:
-          - 'service'
         matchers:
           - name: service
             value: Mercury Production
@@ -118,7 +96,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: NVVS DevOps - Pagerduty
       pagerdutyConfigs:
         - routingKey:
@@ -137,7 +115,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Team IGS
       slackConfigs:
         - apiURL:
@@ -150,7 +128,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Team Sec Logging
       slackConfigs:
         - apiURL:
@@ -163,7 +141,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Pre-Production
       slackConfigs:
         - apiURL:
@@ -176,7 +154,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Production
       slackConfigs:
         - apiURL:
@@ -189,7 +167,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Critical
       slackConfigs:
         - apiURL:
@@ -202,7 +180,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Team Mercury Production
       emailConfigs:
         - to: 'techops-3ls-euc@justice.gov.uk'

@@ -111,6 +111,7 @@ prometheusOperator:
         memory: 32Mi
 alertmanager:
   alertmanagerSpec:
+    logLevel: debug
     resources:
       limits:
         cpu: 20m
@@ -136,7 +137,6 @@ alertmanager:
       - name: "null"
   templateFiles:
     slack-alerts-templates.tmpl: |-
-      {{`
       {{ define "__alert_severity_prefix_title" -}}
         {{ if ne .Status "firing" -}}
         :lgtm:
@@ -178,9 +178,12 @@ alertmanager:
             #439FE0
           {{- end -}}
         {{ else -}}
-        good
+          good
         {{- end }}
       {{- end }}
-      {{ define "slack.alerts.icon_emoji" }}:prometheus:{{ end }}
-      {{ define "slack.alerts.username" }}{{ .CommonLabels.service }} - Monitoring `}}[{{ .Values.environment }}]{{`{{ end }}
-      `}}
+      {{ define "slack.alerts.icon_emoji" }}
+        :prometheus:
+      {{ end }}
+      {{ define "slack.alerts.username" }}
+        {{ .CommonLabels.service }} - Monitoring
+      {{ end }}
