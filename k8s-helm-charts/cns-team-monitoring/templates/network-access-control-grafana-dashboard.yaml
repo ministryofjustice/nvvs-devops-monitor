@@ -118,7 +118,7 @@ data:
               "exemplar": true,
               "expr": "aws_mojo_nac_requests_health_check_ok_sum",
               "interval": "",
-              "legendFormat": "",
+              "legendFormat": "Healthchecks from {{ "{{account_id}}" }}",
               "refId": "A"
             }
           ],
@@ -216,7 +216,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Login Errors",
+              "legendFormat": "Login Errors from {{ "{{account_id}}" }}",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "Login incorrect",
@@ -319,7 +319,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Logins",
+              "legendFormat": "Logins from {{ "{{account_id}}" }}",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "Login OK",
@@ -421,7 +421,7 @@ data:
               "hide": false,
               "instant": false,
               "interval": "",
-              "legendFormat": "Ignored Requests to EAP",
+              "legendFormat": "Ignored Requests to EAP from {{ "{{account_id}}" }}",
               "refId": "IgnoredRequestsEAP"
             }
           ],
@@ -511,7 +511,7 @@ data:
               "exemplar": true,
               "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_proto_tcp_address_sum",
               "interval": "",
-              "legendFormat": "Ignored Requests to RADSEC",
+              "legendFormat": "Ignored Requests to RADSEC from {{ "{{account_id}}" }}",
               "refId": "A"
             }
           ],
@@ -600,7 +600,7 @@ data:
               "exemplar": true,
               "expr": "aws_mojo_nac_requests_unknown_ca_sum",
               "interval": "",
-              "legendFormat": "Unknown CA",
+              "legendFormat": "Unknown CA from {{ "{{account_id}}" }}",
               "refId": "UnknownCA"
             }
           ],
@@ -696,7 +696,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Shared Secret Incorrect",
+              "legendFormat": "Shared Secret Incorrect from {{ "{{account_id}}" }}",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "Shared secret is incorrect",
@@ -804,7 +804,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Errors",
+              "legendFormat": "All Errors from {{ "{{account_id}}" }}",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "Error",
@@ -902,7 +902,7 @@ data:
               "exemplar": true,
               "expr": "aws_mojo_nac_requests_authorized_macs_users_matched_entry_sum",
               "interval": "",
-              "legendFormat": "MAB Accepts",
+              "legendFormat": "MAB Accepts from {{ "{{account_id}}" }}",
               "refId": "MAB"
             }
           ],
@@ -1000,7 +1000,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Errors",
+              "legendFormat": "Python Errors from {{ "{{account_id}}" }}",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "Error python",
@@ -1068,7 +1068,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Count",
+              "legendFormat": "Count from {{ "{{account_id}}" }}",
               "matchExact": true,
               "metricEditorMode": 0,
               "metricName": "Error post_auth - Failed to find attribute",
@@ -1202,7 +1202,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Public - CPU",
+              "legendFormat": "Public - CPU from {{ "{{account_id}}" }}",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "CPUUtilization",
@@ -1227,7 +1227,7 @@ data:
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Public - Memory",
+              "legendFormat": "Public - Memory from {{ "{{account_id}}" }}",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "MemoryUtilization",

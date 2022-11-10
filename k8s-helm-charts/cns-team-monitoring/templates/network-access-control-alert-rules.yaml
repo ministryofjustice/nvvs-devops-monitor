@@ -82,7 +82,7 @@ spec:
         description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: All Errors
-      expr: aws_mojo_nac_requests_error_sum > 0
+      expr: aws_mojo_nac_requests_all_errors_sum > 0
       for: 1m
       labels:
         severity: warning
