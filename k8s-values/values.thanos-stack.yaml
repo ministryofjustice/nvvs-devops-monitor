@@ -1,39 +1,14 @@
 query:
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
   stores:
     - "dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local"
 queryFrontend:
   enabled: false
 storegateway:
   enabled: true
-  resources:
-    limits:
-      cpu: 100m
-      memory: 256Mi
-    requests:
-      cpu: 50m
-      memory: 128Mi
 compactor:
   enabled: true
-  resources:
-    limits:
-      cpu: 300m
-      memory: 128Mi
-    requests:
-      cpu: 200m
-      memory: 64Mi
 receive:
   enabled: true
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
   ingress:
     enabled: true
     ingressClassName: nginx

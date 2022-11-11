@@ -19,10 +19,6 @@ spec:
       containers:
         - name: json-exporter
           image: quay.io/prometheuscommunity/json-exporter
-          resources:
-            requests:
-              cpu: 100m
-              memory: 32Mi
           ports:
             - containerPort: 7979
           args:

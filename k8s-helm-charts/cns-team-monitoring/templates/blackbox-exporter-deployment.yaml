@@ -19,13 +19,6 @@ spec:
       containers:
         - name: blackbox-exporter
           image: prom/blackbox-exporter
-          resources:
-            limits:
-              cpu: 100m
-              memory: 64Mi
-            requests:
-              cpu: 50m
-              memory: 32Mi
           ports:
             - containerPort: 9115
           args:
