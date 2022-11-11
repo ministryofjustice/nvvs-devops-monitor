@@ -13,13 +13,6 @@ grafana:
   defaultDashboardsTimezone: "Europe/London"
 prometheus:
   prometheusSpec:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 2048Mi
-      requests:
-        cpu: 500m
-        memory: 1024Mi
     podMonitorNamespaceSelector: {}
     podMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
@@ -82,43 +75,13 @@ prometheus:
       objectStorageConfig:
         key: "objstore.yml"
         name: "thanos-objstore-secret"
-      resources:
-        limits:
-          cpu: 100m
-          memory: 256Mi
-        requests:
-          cpu: 50m
-          memory: 128Mi
   thanosService:
     enabled: true
   thanosServiceMonitor:
     enabled: true
-prometheusOperator:
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 512Mi
-    requests:
-      cpu: 500m
-      memory: 256Mi
-  prometheusConfigReloader:
-    resources:
-      limits:
-        cpu: 60m
-        memory: 64Mi
-      requests:
-        cpu: 30m
-        memory: 32Mi
 alertmanager:
   alertmanagerSpec:
     logLevel: debug
-    resources:
-      limits:
-        cpu: 20m
-        memory: 128Mi
-      requests:
-        cpu: 10m
-        memory: 64Mi
     alertmanagerConfigSelector:
       matchLabels:
         alertmanagerConfig: alertmanager-config
