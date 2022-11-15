@@ -27,6 +27,7 @@ spec:
       labels:
         severity: warning
         service: certificate-services
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: "SSL certificate will expire soon on (instance {{ "{{ $labels.instance }}" }})"
         description: "The SSL certificate expires in {{ "{{ $value | humanizeDuration }}" }}"

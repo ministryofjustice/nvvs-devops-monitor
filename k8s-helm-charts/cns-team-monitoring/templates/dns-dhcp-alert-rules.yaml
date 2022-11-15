@@ -27,6 +27,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: The configuration reload has failed
         description: The {{ "{{ $labels.name }}" }} Configuration reload has failed {{ "{{ $value }}" }} time(s).
@@ -37,6 +38,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP ECS Task count is below 1
         description: The ECS task count is below 1 for DHCP
@@ -47,6 +49,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
@@ -57,6 +60,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: KEA DHCP Failed leases > 10
         description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
@@ -67,6 +71,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP KEA Server Alert ERROR or FATAL > 10
         description: The server alert ERROR or FATAL is greater than 10. The current value is {{ "{{ $value }}" }}
@@ -77,6 +82,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP RDS CPU is above 60 percent
         description: The RDS CPU for DHCP has been above 60 percent for 5 minutes.
@@ -87,6 +93,7 @@ spec:
       labels:
         severity: warning
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP Subnet utilisation > 80%
         description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes.
@@ -97,6 +104,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP Subnet utilisation > 90%
         description: The DHCP Subnet utilisation has been above 90 percent for 5 minutes.
@@ -107,6 +115,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DNS ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
@@ -117,6 +126,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: DNS ECS Task count is below 1
         description: The ECS task count has fallen below 1 for DNS.
@@ -127,6 +137,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Missing request metrics for Production
         description: No metrics recieved for 10m.
@@ -137,6 +148,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Missing offer metrics for Production
         description: No metrics recieved for 10m.
@@ -147,6 +159,7 @@ spec:
       labels:
         severity: critical
         service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Prometheus_build_info is above 0.5
         description: prometheus_build_info of {{ "{{ $labels.instance }}" }} in {{ "{{ $labels.job }}" }} is currently {{ "{{ $value }}" }}

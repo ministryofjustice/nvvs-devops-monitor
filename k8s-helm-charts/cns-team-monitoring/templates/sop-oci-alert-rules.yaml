@@ -27,6 +27,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: A device has been rebooted
           description: "{{ "{{ $labels.instance }}" }} has been rebooted."
@@ -38,6 +39,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: A device has not responded to ping for 5 minutes
           description: "{{ "{{ $labels.instance }}" }} A device at ARK is showing as DOWN for >5m"
@@ -49,6 +51,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Palo Alto CPU Load alert
           description: "{{ "{{ $labels.instance }}" }} A PA firewall at ARK Corsham has CPU Load >80% for more than 5 minutes."
@@ -60,6 +63,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Palo Alto CPU Load alert
           description: "{{ "{{ $labels.instance }}" }} A PA firewall at ARK Farnborough has CPU Load >80% for more than 5 minutes."
@@ -71,6 +75,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Juniper CPU Load alert
           description: "{{ "{{ $labels.instance }}" }} A Juniper Corsham switch has CPU Load >80% for more than 5 minutes."
@@ -82,6 +87,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary:  Juniper CPU Load alert
           description: "{{ "{{ $labels.instance }}" }} A Juniper Farnborough switch has CPU Load >80% for more than 5 minutes."
@@ -93,6 +99,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Operating Temperature of Juniper Switch alert
           description: "{{ "{{ $labels.instance }}" }} Operating Temperature of a Juniper Switch at ARK Corsham is above 47.5c for 5 minutes."
@@ -104,6 +111,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Operating Temperature of Juniper Switch alert
           description: "{{ "{{ $labels.instance }}" }} Operating Temperature of a Juniper Switch at ARK Farnborough is above 47.5c for 5 minutes."
@@ -115,6 +123,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Buffer (memory) Utilisation alert
           description: "{{ "{{ $labels.instance }}" }} A Juniper device in ARK Corsham is experiencing buffering of above 70% for >5 minutes."
@@ -126,6 +135,7 @@ spec:
         labels:
           severity: warning
           service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: Buffer (memory) Utilisation alert
           description: "{{ "{{ $labels.instance }}" }} A Juniper device in ARK Farnborough is experiencing buffering of above 70% for >5 minutes."

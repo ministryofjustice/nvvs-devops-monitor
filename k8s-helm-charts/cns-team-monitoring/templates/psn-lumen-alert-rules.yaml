@@ -27,6 +27,7 @@ spec:
         labels:
           severity: critical
           service: Team IGS
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: PSN Lumen Ingress traffic has reached 80% (40 mb/s).
           description: Traffic has reached 80% and currently at {{ "{{ $value }}" }}
@@ -37,6 +38,7 @@ spec:
         labels:
           severity: critical
           service: Team IGS
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: PSN Lumen Egress traffic has reached 80% (40 mb/s)
           description: ThTraffic has reached 80% and currently at  {{ "{{ $value }}" }}.
