@@ -21,7 +21,7 @@ spec:
     groupInterval: 5m
     repeatInterval: 24h
     routes:
-      - receiver: NVVS DevOps critical
+      - receiver: NVVS DevOps Critical
         groupWait: 10s
         repeatInterval: 24h
         matchers:
