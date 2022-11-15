@@ -266,15 +266,15 @@ main() {
   set_variables
   set_kubeconfig
   deploy_kube-prometheus-stack
-  # deploy_thanos_stack
-  # deploy_shared_resources_helm_chart
-  # annotate_service_account
-  # deploy_aws_lb_controller
-  # deploy_aws_efs_csi_driver
-  # deploy_aws_ebs_csi_driver
-  # deploy_external_dns
-  # deploy_ingress_nginx
-  # deploy_grafana
+  deploy_thanos_stack
+  deploy_shared_resources_helm_chart
+  annotate_service_account
+  deploy_aws_lb_controller
+  deploy_aws_efs_csi_driver
+  deploy_aws_ebs_csi_driver
+  deploy_external_dns
+  deploy_ingress_nginx
+  deploy_grafana
   deploy_cns_team_monitoring
 }
 
