@@ -11,7 +11,7 @@ alertmanager:
     password: ""
   alert_rules:
     ima_slack_webhook_url: ""
-    pagerduty_service_key: ""
+    pagerduty_routing_key: ""
     certificate_services_slack_webhook_url: ""
     networks_slack_webhook_url: ""
     ost_slack_webhook_url: ""

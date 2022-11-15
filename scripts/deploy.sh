@@ -58,7 +58,7 @@ set_variables() {
 }
 
 base64_encode() {
-  echo $1 | openssl base64 -A
+  echo -n $1 | openssl base64 -A
 }
 
 set_kubeconfig() {
@@ -116,7 +116,7 @@ deploy_kube-prometheus-stack() {
     --set prometheus.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$thanos_iam_role_arn \
     --set alertmanager.config.global.resolve_timeout="5m" \
     --set alertmanager.config.global.smtp_smarthost="email-smtp.eu-west-2.amazonaws.com:587" \
-    --set alertmanager.config.global.smtp_from="AlertManager@alerts.monitoring-alerting.staff.service.justice.gov.uk" \
+    --set alertmanager.config.global.smtp_from="AlertManager@staff.service.justice.gov.uk" \
     --set alertmanager.config.global.smtp_require_tls="true" \
     --set alertmanager.config.global.smtp_auth_username=$alertmanager_smtp_user \
     --set alertmanager.config.global.smtp_auth_password=$alertmanager_smtp_password \
@@ -252,7 +252,7 @@ deploy_cns_team_monitoring() {
     --set cloudwatch_iam_role=$cloudwatch_iam_role_arn \
     --set cloudwatchExporterDevelopmentArn=$cloudwatch_exporter_development_iam_role_arn \
     --set cloudwatchExporterPreProductionArn=$cloudwatch_exporter_pre_production_iam_role_arn \
-    --set alertmanager.alert_rules.pagerduty_routing_key=`base64_encode $pagerduty_service_key` \
+    --set alertmanager.alert_rules.pagerduty_routing_key=`base64_encode $pagerduty_routing_key` \
     --set alertmanager.alert_rules.ima_slack_webhook_url=`base64_encode $ima_slack_webhook_url` \
     --set alertmanager.alert_rules.certificate_services_slack_webhook_url=`base64_encode $certificate_services_slack_webhook_url` \
     --set alertmanager.alert_rules.networks_slack_webhook_url=`base64_encode $networks_slack_webhook_url` \

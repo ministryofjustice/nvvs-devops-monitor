@@ -27,6 +27,7 @@ spec:
       labels:
         severity: warning
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Reject Requests
         description: Access Reject count is {{ "{{ $value }}" }}
@@ -37,6 +38,7 @@ spec:
       labels:
         severity: warning
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Ignored Requests to EAP
         description: Ignored Requests to EAP count is {{ "{{ $value }}" }}
@@ -47,6 +49,7 @@ spec:
       labels:
         severity: warning
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Incorrect Shared Secret to EAP
         description: Incorrect Shared Secret to EAP count is {{ "{{ $value }}" }}
@@ -57,6 +60,7 @@ spec:
       labels:
         severity: warning
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Unknown Certificate Authority
         description: Unknown Certificate Authority errors count is {{ "{{ $value }}" }}
@@ -67,6 +71,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Python Errors in Policy Engine
         description: Python errors in Policy Engine count is {{ "{{ $value }}" }}
@@ -77,6 +82,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Failed to Find Attribute
         description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
@@ -87,6 +93,7 @@ spec:
       labels:
         severity: warning
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: All Errors in NACS
         description: Errors reported by NACS count is {{ "{{ $value }}" }}
@@ -97,6 +104,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: Failed to start task
         description: An unhealthy container has been released, failed to start task count is {{ "{{ $value }}" }}
@@ -107,6 +115,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: FreeRadius Container Health Check Alert
         description: Zero healthy NACS containers running
@@ -117,6 +126,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: NACS RDS CPU is above 60 percent
         description: The RDS CPU for NACS has been above 60 percent for 5 minutes.
@@ -127,6 +137,7 @@ spec:
       labels:
         severity: critical
         service: Network Access Control
+        namespace: {{ .Release.Namespace }}
       annotations:
         summary: NACS ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently is {{ "{{ $value }}" }}

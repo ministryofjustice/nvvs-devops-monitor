@@ -14,14 +14,14 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   route:
-    receiver: NVVS DevOps - Slack
+    receiver: NVVS DevOps
+    groupBy:
+    - 'service'
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
-    groupBy:
-      - 'service'
     routes:
-      - receiver: NVVS DevOps - Slack
+      - receiver: NVVS DevOps
         groupWait: 10s
         repeatInterval: 24h
         matchers:
@@ -29,13 +29,6 @@ spec:
             value: IMA
           - name: severity
             value: critical
-      - receiver: NVVS DevOps - Pagerduty
-        groupWait: 10s
-        repeatInterval: 24h
-        matchers:
-          - name: service
-            value: "DNS DHCP | SMTP Relay | certificate-services | Security Logging | Network Access Control"
-            matchType: "=~"
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
@@ -84,7 +77,7 @@ spec:
             value: Mercury Production
 
   receivers:
-    - name: NVVS DevOps - Slack
+    - name: NVVS DevOps
       slackConfigs:
         - apiURL:
             key: ima_slack_webhook_url
@@ -97,12 +90,10 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-    - name: NVVS DevOps - Pagerduty
       pagerdutyConfigs:
         - routingKey:
             key: pagerduty_routing_key
-            name: alertmanager-secrets
-            optional: false
+            name: slack-webhooks
     - name: Team PKI
       slackConfigs:
         - apiURL:
@@ -116,6 +107,10 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+      pagerdutyConfigs:
+        - routingKey:
+            key: pagerduty_routing_key
+            name: slack-webhooks
     - name: Team IGS
       slackConfigs:
         - apiURL:
@@ -181,6 +176,11 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+      pagerdutyConfigs:
+        - routingKey:
+            key: pagerduty_routing_key
+            name: slack-webhooks
+            optional: false
     - name: Team Mercury Production
       emailConfigs:
         - to: 'techops-3ls-euc@justice.gov.uk'
