@@ -163,12 +163,6 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-      pagerdutyConfigs:
-        - sendResolved: true
-          routingKey:
-            key: pagerduty_routing_key
-            name: slack-webhooks
-            optional: false
     - name: Network Access Control Critical
       slackConfigs:
         - apiURL:
