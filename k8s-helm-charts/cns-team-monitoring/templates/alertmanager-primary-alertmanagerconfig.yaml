@@ -14,21 +14,29 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   route:
-    receiver: NVVS DevOps
+    receiver: Master Route
     groupBy:
     - 'service'
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
     routes:
+      - receiver: NVVS DevOps critical
+        groupWait: 10s
+        repeatInterval: 24h
+        matchers:
+          - name: service
+            value: DNS DHCP
+          - name: severity
+            value: critical
       - receiver: NVVS DevOps
         groupWait: 10s
         repeatInterval: 24h
         matchers:
           - name: service
-            value: IMA
+            value: DNS DHCP
           - name: severity
-            value: critical
+            value: warning
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
@@ -77,13 +85,39 @@ spec:
             value: Mercury Production
 
   receivers:
-    - name: NVVS DevOps
+    - name: Master Route
       slackConfigs:
         - apiURL:
             key: ima_slack_webhook_url
             name: slack-webhooks
             optional: false
           channel: '#mojo-ima-platform-alerts-dev-preprod'
+          sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+    - name: NVVS DevOps
+      slackConfigs:
+        - apiURL:
+            key: dhcp_dns_slack_webhook_url
+            name: slack-webhooks
+            optional: false
+          channel: '#mojo-staff-device-dhcp-dns-alerts'
+          sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+    - name: NVVS DevOps Critical
+      slackConfigs:
+        - apiURL:
+            key: dhcp_dns_slack_webhook_url
+            name: slack-webhooks
+            optional: false
+          channel: '#mojo-staff-device-dhcp-dns-alerts'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
