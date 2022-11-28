@@ -440,11 +440,21 @@ resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
   ]
 }
 POLICY
+
+  depends_on = [
+    aws_iam_role.cloudwatch_exporter_development,
+    aws_iam_role.cloudwatch_exporter_pre_production,
+  ]
 }
 
 resource "aws_iam_role_policy_attachment" "other_cloudwatch_exporter_allow_assume_IAMPolicy" {
   policy_arn = aws_iam_policy.other_cloudwatch_exporter_role_allow_assume_policy.arn
   role       = aws_iam_role.cloudwatch_exporter.name
+
+  depends_on = [
+    aws_iam_role.cloudwatch_exporter_development,
+    aws_iam_role.cloudwatch_exporter_pre_production,
+  ]
 }
 
 # Prepare a policy document that can be used by iam roles created in other aws accounts that allow cloudwatch exporter to assume the roles
