@@ -433,7 +433,7 @@ resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
           "Sid": "Statement",
           "Effect": "Allow",
           "Action": "sts:AssumeRole",
-          "Resource": ["${local.constructed_resources}"]
+          "Resource": ${local.constructed_resources}
       }
   ]
 }
