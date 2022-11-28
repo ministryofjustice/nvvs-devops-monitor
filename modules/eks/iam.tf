@@ -434,8 +434,8 @@ resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
           "Effect": "Allow",
           "Action": "sts:AssumeRole",
           "Resource": [
-              "${terraform.workspace != "development" ? aws_iam_role.cloudwatch_exporter_development[0].arn : null}",
-              "${terraform.workspace != "pre-production" ? aws_iam_role.cloudwatch_exporter_pre_production.arn : null}"
+              "${terraform.workspace != "development" ? aws_iam_role.cloudwatch_exporter_development[0].arn : ""}",
+              "${terraform.workspace != "pre-production" ? aws_iam_role.cloudwatch_exporter_pre_production.arn : ""}"
           ]
       }
   ]
