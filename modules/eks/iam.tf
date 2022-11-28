@@ -95,7 +95,7 @@ data "aws_iam_policy_document" "aws_load_balancer_assume_role_policy" {
 
 resource "aws_iam_role" "aws_load_balancer_controller" {
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_assume_role_policy.json
-  name               = "${var.prefix}-AWSLoadBalancerControllerRole"
+  name               = "${var.prefix}-NLB-ControllerRole"
 
   tags = var.tags
 }
