@@ -435,7 +435,7 @@ resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
           "Action": "sts:AssumeRole",
           "Resource": [
               "${terraform.workspace != "development" ? aws_iam_role.cloudwatch_exporter_development[0].arn : ""}",
-              "${terraform.workspace != "pre-production" ? aws_iam_role.cloudwatch_exporter_pre_production.arn : ""}"
+              "${terraform.workspace != "pre-production" ? aws_iam_role.cloudwatch_exporter_pre_production[0].arn : ""}"
           ]
       }
   ]
@@ -508,6 +508,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_develop
 # IAM role for Cloudwatch Exporter in pre-production aws account
 
 resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
+  count              = terraform.workspace == "pre-production" ? 0 : 1
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
   name               = "${var.prefix}-CloudwatchExporter"
 
@@ -517,6 +518,7 @@ resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
 }
 
 resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_pre_production" {
+  count       = terraform.workspace == "pre-production" ? 0 : 1
   name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
   path        = "/"
   description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
@@ -529,8 +531,9 @@ resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_pre_production" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_pre_production" {
-  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_pre_production.arn
-  role       = aws_iam_role.cloudwatch_exporter_pre_production.name
+  count      = terraform.workspace == "pre-production" ? 0 : 1
+  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_pre_production[0].arn
+  role       = aws_iam_role.cloudwatch_exporter_pre_production[0].name
 
   provider = aws.pre_production
 }

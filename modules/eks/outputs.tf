@@ -51,7 +51,7 @@ output "cloudwatch_exporter_development_iam_role_arn" {
 }
 
 output "cloudwatch_exporter_pre_production_iam_role_arn" {
-  value = aws_iam_role.cloudwatch_exporter_pre_production.arn
+  value = aws_iam_role.cloudwatch_exporter_pre_production != [] ? aws_iam_role.cloudwatch_exporter_pre_production[0].arn : ""
 }
 
 output "db_endpoint" {
