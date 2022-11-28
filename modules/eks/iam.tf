@@ -418,6 +418,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy" {
 }
 
 # Create and attach a policy to the cloudwatch exporter iam role that allows Cloudwatch exporter to assume roles in other AWS accouts to scrape cloudwatch metrics
+# Depends on added to avoid infinite loop of depencies
 
 resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
   name        = "other_cloudwatch_exporter_role_allow_assume_policy"
