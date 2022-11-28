@@ -464,6 +464,7 @@ data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy_other_aws
 # IAM role for Cloudwatch Exporter in development aws account
 
 resource "aws_iam_role" "cloudwatch_exporter_development" {
+  count              = terraform.workspace == "development" ? 0 : 1
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
   name               = "${var.prefix}-CloudwatchExporter"
 
@@ -473,6 +474,7 @@ resource "aws_iam_role" "cloudwatch_exporter_development" {
 }
 
 resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_development" {
+  count       = terraform.workspace == "development" ? 0 : 1
   name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
   path        = "/"
   description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
@@ -485,8 +487,9 @@ resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_development" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_development" {
-  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_development.arn
-  role       = aws_iam_role.cloudwatch_exporter_development.name
+  count      = terraform.workspace == "development" ? 0 : 1
+  policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_development[0].arn
+  role       = aws_iam_role.cloudwatch_exporter_development[0].name
 
   provider = aws.development
 }
