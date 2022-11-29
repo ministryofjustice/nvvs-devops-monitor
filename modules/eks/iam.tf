@@ -501,7 +501,7 @@ resource "aws_iam_role_policy_attachment" "development_cloudwatch_exporter_allow
   ]
 }
 
-# IAM role for Cloudwatch Exporter in pre-production aws account
+# IAM role for Cloudwatch Exporter in pre-production AWS account
 
 resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
   count              = terraform.workspace == "pre-production" ? 0 : 1
