@@ -492,7 +492,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "development_cloudwatch_exporter_allow_assume_IAMPolicy" {
-  count       = terraform.workspace == "development" ? 0 : 1
+  count      = terraform.workspace == "development" ? 0 : 1
   policy_arn = aws_iam_policy.development_cloudwatch_exporter_role_allow_assume_policy[0].arn
   role       = aws_iam_role.cloudwatch_exporter.name
 
@@ -562,7 +562,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "pre_production_cloudwatch_exporter_allow_assume_IAMPolicy" {
-  count       = terraform.workspace == "pre-production" ? 0 : 1
+  count      = terraform.workspace == "pre-production" ? 0 : 1
   policy_arn = aws_iam_policy.pre_production_cloudwatch_exporter_role_allow_assume_policy[0].arn
   role       = aws_iam_role.cloudwatch_exporter.name
 
