@@ -417,47 +417,6 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy" {
   role       = aws_iam_role.cloudwatch_exporter.name
 }
 
-# Create and attach a policy to the cloudwatch exporter iam role that allows Cloudwatch exporter to assume roles in other AWS accouts to scrape cloudwatch metrics
-# Depends on added to avoid infinite loop of depencies
-
-resource "aws_iam_policy" "other_cloudwatch_exporter_role_allow_assume_policy" {
-  name        = "other_cloudwatch_exporter_role_allow_assume_policy"
-  path        = "/"
-  description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in other aws accounts"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-      {
-          "Sid": "Statement",
-          "Effect": "Allow",
-          "Action": "sts:AssumeRole",
-          "Resource": [
-              "${terraform.workspace != "development" ? aws_iam_role.cloudwatch_exporter_development[0].arn : ""}",
-              "${terraform.workspace != "pre-production" ? aws_iam_role.cloudwatch_exporter_pre_production[0].arn : ""}"
-          ]
-      }
-  ]
-}
-POLICY
-
-  depends_on = [
-    aws_iam_role.cloudwatch_exporter_development,
-    aws_iam_role.cloudwatch_exporter_pre_production,
-  ]
-}
-
-resource "aws_iam_role_policy_attachment" "other_cloudwatch_exporter_allow_assume_IAMPolicy" {
-  policy_arn = aws_iam_policy.other_cloudwatch_exporter_role_allow_assume_policy.arn
-  role       = aws_iam_role.cloudwatch_exporter.name
-
-  depends_on = [
-    aws_iam_role.cloudwatch_exporter_development,
-    aws_iam_role.cloudwatch_exporter_pre_production,
-  ]
-}
-
 # Prepare a policy document that can be used by iam roles created in other aws accounts that allow cloudwatch exporter to assume the roles
 
 data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy_other_aws_accounts" {
@@ -505,7 +464,44 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_develop
   provider = aws.development
 }
 
-# IAM role for Cloudwatch Exporter in pre-production aws account
+resource "aws_iam_policy" "development_cloudwatch_exporter_role_allow_assume_policy" {
+  count       = terraform.workspace == "development" ? 0 : 1
+  name        = "development_cloudwatch_exporter_role_allow_assume_policy"
+  path        = "/"
+  description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in development AWS account"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "Statement",
+          "Effect": "Allow",
+          "Action": "sts:AssumeRole",
+          "Resource": [
+            "${aws_iam_role.cloudwatch_exporter_development[0].arn}"
+          ]
+      }
+  ]
+}
+POLICY
+
+  depends_on = [
+    aws_iam_role.cloudwatch_exporter_development
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "development_cloudwatch_exporter_allow_assume_IAMPolicy" {
+  count      = terraform.workspace == "development" ? 0 : 1
+  policy_arn = aws_iam_policy.development_cloudwatch_exporter_role_allow_assume_policy[0].arn
+  role       = aws_iam_role.cloudwatch_exporter.name
+
+  depends_on = [
+    aws_iam_policy.development_cloudwatch_exporter_role_allow_assume_policy
+  ]
+}
+
+# IAM role for Cloudwatch Exporter in pre-production AWS account
 
 resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
   count              = terraform.workspace == "pre-production" ? 0 : 1
@@ -536,4 +532,41 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_pre_pro
   role       = aws_iam_role.cloudwatch_exporter_pre_production[0].name
 
   provider = aws.pre_production
+}
+
+resource "aws_iam_policy" "pre_production_cloudwatch_exporter_role_allow_assume_policy" {
+  count       = terraform.workspace == "pre-production" ? 0 : 1
+  name        = "pre_production_cloudwatch_exporter_role_allow_assume_policy"
+  path        = "/"
+  description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in pre-production AWS account"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "Statement",
+          "Effect": "Allow",
+          "Action": "sts:AssumeRole",
+          "Resource": [
+            "${aws_iam_role.cloudwatch_exporter_pre_production[0].arn}"
+          ]
+      }
+  ]
+}
+POLICY
+
+  depends_on = [
+    aws_iam_role.cloudwatch_exporter_pre_production
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "pre_production_cloudwatch_exporter_allow_assume_IAMPolicy" {
+  count      = terraform.workspace == "pre-production" ? 0 : 1
+  policy_arn = aws_iam_policy.pre_production_cloudwatch_exporter_role_allow_assume_policy[0].arn
+  role       = aws_iam_role.cloudwatch_exporter.name
+
+  depends_on = [
+    aws_iam_policy.pre_production_cloudwatch_exporter_role_allow_assume_policy
+  ]
 }
