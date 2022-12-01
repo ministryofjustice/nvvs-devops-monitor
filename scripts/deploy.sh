@@ -56,6 +56,9 @@ set_variables() {
   network_access_control_production_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/network-access-control-network" --with-decryption --query Parameter.Value --output text`
   network_access_control_pre_production_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/pre-production/slack_webhook_url/network-access-control-network" --with-decryption --query Parameter.Value --output text`
   network_access_control_critical_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/network-access-control-critical" --with-decryption --query Parameter.Value --output text`
+  production_account_id=`aws ssm get-parameter --name "/codebuild/production/account_id" --with-decryption --query Parameter.Value --output text`
+  pre_production_account_id=`aws ssm get-parameter --name "/codebuild/pre-production/account_id" --with-decryption --query Parameter.Value --output text`
+  development_account_id=`aws ssm get-parameter --name "/codebuild/development/account_id" --with-decryption --query Parameter.Value --output text`
 }
 
 base64_encode() {
@@ -250,6 +253,9 @@ deploy_cns_team_monitoring() {
     --set dhcpApiBasicAuthUsername=$dhcpApiBasicAuthUsername \
     --set dhcpApiBasicAuthPassword=$dhcpApiBasicAuthPassword \
     --set environment=$namespace \
+    --set production_account_id=$production_account_id \
+    --set pre_production_account_id=$pre_production_account_id \
+    --set development_account_id=$development_account_id \
     --set cloudwatch_iam_role=$cloudwatch_iam_role_arn \
     --set cloudwatchExporterDevelopmentArn=$cloudwatch_exporter_development_iam_role_arn \
     --set cloudwatchExporterPreProductionArn=$cloudwatch_exporter_pre_production_iam_role_arn \
