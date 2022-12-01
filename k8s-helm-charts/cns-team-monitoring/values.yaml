@@ -1,4 +1,7 @@
 environment: ""
+production_account_id: ""
+pre_production_account_id: ""
+development_account_id: ""
 dhcpApiBasicAuthUsername: ""
 dhcpApiBasicAuthPassword: ""
 cloudwatch_iam_role: ""

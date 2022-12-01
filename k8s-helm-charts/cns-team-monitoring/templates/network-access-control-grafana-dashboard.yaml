@@ -32,6 +32,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
+      "id": 1474,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -116,7 +117,7 @@ data:
                 "uid": "eARrzmTnz"
               },
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_health_check_ok_sum",
+              "expr": "aws_mojo_nac_requests_health_check_ok_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Healthchecks from {{ "{{account_id}}" }}",
               "refId": "A"
@@ -211,8 +212,9 @@ data:
                 "uid": "eARrzmTnz"
               },
               "dimensions": {},
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_sent_access_reject_sum",
+              "expr": "aws_mojo_nac_requests_sent_access_reject_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -223,6 +225,7 @@ data:
               "metricQueryType": 0,
               "namespace": "mojo-nac-requests",
               "period": "",
+              "range": true,
               "refId": "LoginErrors",
               "region": "eu-west-2",
               "statistic": "Sum"
@@ -232,7 +235,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -314,8 +320,9 @@ data:
                 "uid": "eARrzmTnz"
               },
               "dimensions": {},
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_sent_access_accept_sum",
+              "expr": "aws_mojo_nac_requests_sent_access_accept_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -327,6 +334,7 @@ data:
               "namespace": "mojo-nac-requests",
               "period": "",
               "queryMode": "Metrics",
+              "range": true,
               "refId": "A",
               "region": "eu-west-2",
               "statistic": "Sum"
@@ -336,7 +344,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -416,8 +427,9 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_address_sum",
+              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id=\"$account_id\"}",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -430,7 +442,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -508,10 +523,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_proto_tcp_address_sum",
+              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_proto_tcp_address_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Ignored Requests to RADSEC from {{ "{{account_id}}" }}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -519,7 +536,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -597,10 +617,12 @@ data:
                 "type": "prometheus",
                 "uid": "eARrzmTnz"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_unknown_ca_sum",
+              "expr": "aws_mojo_nac_requests_unknown_ca_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "Unknown CA from {{ "{{account_id}}" }}",
+              "range": true,
               "refId": "UnknownCA"
             }
           ],
@@ -692,7 +714,7 @@ data:
               },
               "dimensions": {},
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_shared_secret_is_incorrect_sum",
+              "expr": "aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -800,7 +822,7 @@ data:
               "dimensions": {},
               "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_all_errors_sum",
+              "expr": "aws_mojo_nac_requests_all_errors_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -900,7 +922,7 @@ data:
                 "uid": "eARrzmTnz"
               },
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_authorized_macs_users_matched_entry_sum",
+              "expr": "aws_mojo_nac_requests_authorized_macs_users_matched_entry_sum{account_id=\"$account_id\"}",
               "interval": "",
               "legendFormat": "MAB Accepts from {{ "{{account_id}}" }}",
               "refId": "MAB"
@@ -996,7 +1018,7 @@ data:
               },
               "dimensions": {},
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_error_python_sum",
+              "expr": "aws_mojo_nac_requests_error_python_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -1016,45 +1038,83 @@ data:
           "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": {},
-          "fill": 1,
-          "fillGradient": 0,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
             "y": 40
           },
-          "hiddenSeries": false,
           "id": 18,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "connected",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "9.2.3",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "9.2.5",
           "targets": [
             {
               "alias": "Sum of Failed Attributes",
@@ -1063,8 +1123,9 @@ data:
                 "uid": "eARrzmTnz"
               },
               "dimensions": {},
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum",
+              "expr": "aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -1075,45 +1136,20 @@ data:
               "metricQueryType": 0,
               "namespace": "mojo-nac-requests",
               "period": "",
+              "range": true,
               "refId": "A",
               "region": "eu-west-2",
               "statistic": "Sum"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Failed Attributes",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:670",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:671",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1197,18 +1233,20 @@ data:
               "dimensions": {
                 "ClusterName": "mojo-production-nac-cluster"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=\"mojo-production-nac-cluster\",dimension_ServiceName=\"public\"}",
+              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"public\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Public - CPU from {{ "{{account_id}}" }}",
+              "legendFormat": "Public - CPU",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "CPUUtilization",
               "metricQueryType": 0,
               "namespace": "AWS/ECS",
               "period": "",
+              "range": true,
               "refId": "A",
               "region": "default",
               "statistic": "Average"
@@ -1222,18 +1260,20 @@ data:
               "dimensions": {
                 "ClusterName": "mojo-production-nac-cluster"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=\"mojo-production-nac-cluster\",dimension_ServiceName=\"public\"}",
+              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"public\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
-              "legendFormat": "Public - Memory from {{ "{{account_id}}" }}",
+              "legendFormat": "Public - Memory",
               "matchExact": false,
               "metricEditorMode": 0,
               "metricName": "MemoryUtilization",
               "metricQueryType": 0,
               "namespace": "AWS/ECS",
               "period": "",
+              "range": true,
               "refId": "B",
               "region": "default",
               "statistic": "Average"
@@ -1244,7 +1284,7 @@ data:
                 "uid": "eARrzmTnz"
               },
               "exemplar": true,
-              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=\"mojo-production-nac-cluster\",dimension_ServiceName=\"internal\"}",
+              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"internal\",account_id=\"$account_id\"}",
               "hide": false,
               "interval": "",
               "legendFormat": "Internal - CPU",
@@ -1256,7 +1296,7 @@ data:
                 "uid": "eARrzmTnz"
               },
               "exemplar": true,
-              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=\"mojo-production-nac-cluster\",dimension_ServiceName=\"internal\"}",
+              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"internal\",account_id=\"$account_id\"}",
               "hide": false,
               "interval": "",
               "legendFormat": "Internal - Memory",
@@ -1267,7 +1307,10 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "description": "This shows the CPU utilisation of the Read Replica DB as a percent.",
           "fieldConfig": {
             "defaults": {
@@ -1275,6 +1318,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1307,7 +1352,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1349,8 +1395,9 @@ data:
               "dimensions": {
                 "DBInstanceIdentifier": "mojo-production-nac-admin-read-replica"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=\"mojo-production-nac-admin-read-replica\"}",
+              "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -1361,6 +1408,7 @@ data:
               "metricQueryType": 0,
               "namespace": "AWS/RDS",
               "period": "",
+              "range": true,
               "refId": "A",
               "region": "eu-west-2",
               "statistic": "Average"
@@ -1380,6 +1428,117 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 48
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-int-.+-nac/.*\",account_id=\"$account_id\"}",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-radius-lb-.+/.*\",account_id=\"$account_id\"}",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
+              "refId": "B"
+            }
+          ],
+          "title": "Unhealthy host count",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1412,7 +1571,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1454,8 +1614,9 @@ data:
               "dimensions": {
                 "DBInstanceIdentifier": "mojo-production-nac-admin-read-replica"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_rds_read_iops_average{dimension_DBInstanceIdentifier=\"mojo-production-nac-admin-read-replica\"}",
+              "expr": "aws_rds_read_iops_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -1466,6 +1627,7 @@ data:
               "metricQueryType": 0,
               "namespace": "AWS/RDS",
               "period": "",
+              "range": true,
               "refId": "A",
               "region": "default",
               "statistic": "Average"
@@ -1479,8 +1641,9 @@ data:
               "dimensions": {
                 "DBInstanceIdentifier": "mojo-production-nac-db"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "aws_rds_write_iops_average{dimension_DBInstanceIdentifier=\"mojo-production-nac-admin-read-replica\"}",
+              "expr": "aws_rds_write_iops_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
               "expression": "",
               "id": "",
               "interval": "",
@@ -1491,116 +1654,13 @@ data:
               "metricQueryType": 0,
               "namespace": "AWS/RDS",
               "period": "",
+              "range": true,
               "refId": "B",
               "region": "default",
               "statistic": "Average"
             }
           ],
           "title": "RDS IOPS",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 63
-          },
-          "id": 34,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "eARrzmTnz"
-              },
-              "exemplar": true,
-              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-int-mojo-production-nac/.*\"}",
-              "instant": false,
-              "interval": "",
-              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "eARrzmTnz"
-              },
-              "exemplar": true,
-              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-radius-lb-production/.*\"}",
-              "hide": false,
-              "instant": false,
-              "interval": "",
-              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}}" }} {{ "{{dimension_TargetGroup}}" }}",
-              "refId": "B"
-            }
-          ],
-          "title": "Unhealthy host count",
-          "transformations": [],
           "type": "timeseries"
         }
       ],
@@ -1609,16 +1669,49 @@ data:
       "style": "dark",
       "tags": [],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "Production",
+              "value": "{{ .Values.production_account_id }}"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Environment",
+            "multi": false,
+            "name": "account_id",
+            "options": [
+              {
+                "selected": false,
+                "text": "Production",
+                "value": "{{ .Values.production_account_id }}"
+              },
+              {
+                "selected": false,
+                "text": "Pre-Production",
+                "value": "{{ .Values.pre_production_account_id }}"
+              },
+              {
+                "selected": true,
+                "text": "Development",
+                "value": "{{ .Values.development_account_id }}"
+              }
+            ],
+            "query": "Production,Pre-Production,Development",
+            "skipUrlSync": false,
+            "type": "custom"
+          }
+        ]
       },
       "time": {
-        "from": "now-5m",
+        "from": "now-1h",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "",
       "title": "Network Access Control",
       "uid": "CFhQiFxnk",
-      "version": 1,
+      "version": 3,
       "weekStart": ""
     }

@@ -2038,22 +2038,22 @@ data:
             "name": "account_id",
             "options": [
               {
-                "selected": false,
+                "selected": true,
                 "text": "Production",
-                "value": "037161842252"
+                "value": "{{ .Values.production_account_id }}"
               },
               {
                 "selected": false,
                 "text": "Pre-Production",
-                "value": "473630360727"
+                "value": "{{ .Values.pre_production_account_id }}"
               },
               {
-                "selected": true,
+                "selected": false,
                 "text": "Development",
-                "value": "068084030754"
+                "value": "{{ .Values.development_account_id }}"
               }
             ],
-            "query": "037161842252,473630360727,068084030754",
+            "query": "Production,Pre-Production,Development",
             "queryValue": "",
             "skipUrlSync": false,
             "type": "custom"
