@@ -590,8 +590,8 @@ data:
         "list": []
       },
       "time": {
-        "from": "2022-12-01T14:23:15.450Z",
-        "to": "2022-12-01T14:43:15.450Z"
+        "from": "now-15m",
+        "to": "now""
       },
       "timepicker": {},
       "timezone": "",
