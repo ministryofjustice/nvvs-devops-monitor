@@ -4,6 +4,9 @@ metadata:
   name: network-access-control
   labels:
     grafana_dashboard: "1"
+    grafana_dashboards: "true"
+  annotations:
+    k8s-sidecar-target-directory: "/var/lib/grafana/dashboards/nacs"
 data:
   network-access-control.json: |-
     {
@@ -1710,7 +1713,7 @@ data:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "Network Access Control",
+      "title": "Network Access Control Monitoring",
       "uid": "CFhQiFxnk",
       "version": 3,
       "weekStart": ""

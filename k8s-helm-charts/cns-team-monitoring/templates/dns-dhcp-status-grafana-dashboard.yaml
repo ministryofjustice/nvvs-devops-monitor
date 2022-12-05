@@ -4,6 +4,9 @@ metadata:
   name: dns-dhcp-status
   labels:
     grafana_dashboard: "1"
+    grafana_dashboards: "true"
+  annotations:
+    k8s-sidecar-target-directory: "/var/lib/grafana/dashboards/dns-dhcp"
 data:
   dns-dhcp-status.json: |-
     {

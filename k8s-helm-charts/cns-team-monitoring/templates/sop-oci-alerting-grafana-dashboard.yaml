@@ -4,6 +4,9 @@ metadata:
   name: sop-oci
   labels:
     grafana_dashboard: "1"
+    grafana_dashboards: "true"
+  annotations:
+    k8s-sidecar-target-directory: "/var/lib/grafana/dashboards/provisioned"
 data:
   sop-oci.json: |-
     {

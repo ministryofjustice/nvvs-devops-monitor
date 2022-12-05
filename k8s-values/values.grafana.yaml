@@ -1,4 +1,40 @@
 replicas: 2
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'provisioned'
+      orgId: 1
+      folder: 'Provisioned'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /var/lib/grafana/dashboards/provisioned
+    - name: 'DNS DHCP'
+      orgId: 1
+      folder: 'DNS DHCP'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /var/lib/grafana/dashboards/dns-dhcp
+    - name: 'SMTP'
+      orgId: 1
+      folder: 'SMTP'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /var/lib/grafana/dashboards/smtp
+    - name: 'NACS'
+      orgId: 1
+      folder: 'Network Access Control'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /var/lib/grafana/dashboards/nacs
 sidecar:
   skipTlsVerify: true
   datasources:
@@ -6,9 +42,10 @@ sidecar:
     searchNamespace: ALL
   dashboards:
     enabled: true
+    SCProvider: false
+    label: grafana_dashboards
     searchNamespace: ALL
-    provider:
-      folder: "Provisioned"
+    folder: /var/lib/grafana/dashboards
 grafana.ini:
   analytics:
     check_for_updates: true
