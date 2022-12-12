@@ -499,7 +499,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "count(ALERTS{service=\"Certificate Services\"})",
+              "expr": "count(ALERTS{service=\"certificate-services\"})",
               "filters": "service=~\"Network\"",
               "legendFormat": "__auto",
               "range": true,
