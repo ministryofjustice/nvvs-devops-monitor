@@ -43,9 +43,11 @@ This is a high level list of metrics which are monitored, if a metric is not men
   - Bandwidth / Network
 
 ### Where do we send alerts to?
+
 Alerts are sent to various slack channels and pagerduty.
 
 ### How it works?
+
 This solution consists of [Prometheus](https://github.com/prometheus/prometheus), [Thanos](https://github.com/thanos-io/thanos), [Grafana](https://github.com/grafana/grafana) and other exporters. Exporters enable Prometheus to scrape metrics from different sources and Grafana produces dashboards with those metrics. Thanos leverages the Prometheus storage format to cost-efficiently store historical metric data in a S3 bucket while retaining fast query latencies. Additionally, it provides a global query view across all Prometheus installations. This means Prometheus instances running elsewhere can remotely write metrics to this system, Grafana can then visualise them and metrics are stored in the central storage.
 
 Helm charts used in this solution:
