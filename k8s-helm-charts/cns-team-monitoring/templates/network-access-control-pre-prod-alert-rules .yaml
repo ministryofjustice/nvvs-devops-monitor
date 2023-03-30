@@ -1,0 +1,133 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: monitoring
+    prometheus-operator-validated: "true"
+  creationTimestamp: "2022-08-25T09:36:30Z"
+  generation: 1
+  labels:
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    heritage: Helm
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}.network-access-control-pre-production.rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: network-access-control-pre-production.rules
+    rules:
+    - alert: Reject Requests Alert
+      expr: aws_mojo_nac_requests_sent_access_reject_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Reject Requests
+        description: Access Reject count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Ignored Requests Alert
+      expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Ignored Requests to EAP
+        description: Ignored Requests to EAP count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Incorrect Shared Secret
+      expr: aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Incorrect Shared Secret to EAP
+        description: Incorrect Shared Secret to EAP count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Unknown Certificate Authority
+      expr: aws_mojo_nac_requests_unknown_ca_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Unknown Certificate Authority
+        description: Unknown Certificate Authority errors count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Python Errors
+      expr: aws_mojo_nac_requests_error_python_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Python Errors in Policy Engine
+        description: Python errors in Policy Engine count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Failed Attribute
+      expr: aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Failed to Find Attribute
+        description: Failed to find attribute errors in Policy Engine count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: All Errors
+      expr: aws_mojo_nac_requests_error_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: All Errors in NACS
+        description: Errors reported by NACS count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: Failed to start task Pre-Production
+      expr: aws_mojo_nac_requests_failed_to_start_task_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Failed to start task
+        description: An unhealthy container has been released, failed to start task count is {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: FreeRadius Container Health Check Alert
+      expr: aws_mojo_nac_requests_health_check_ok_sum{account_id="{{ .Values.pre_production_account_id }}" } < 1
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: FreeRadius Container Health Check Alert
+        description: Zero healthy NACS containers running
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: NACS Read Replica RDS CPU Alert
+      expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="mojo-pre-production-nac-admin-read-replica"} > 60
+      for: 5m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: NACS RDS CPU is above 60 percent
+        description: The RDS CPU for NACS has been above 60 percent for 5 minutes.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+    - alert: NACS ECS High CPU/Memory Alert
+      expr: aws_ecs_cpuutilization_average{dimension_ClusterName="mojo-pre-production-nac-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="mojo-pre-production-nac-cluster"} > 60
+      for: 5m
+      labels:
+        severity: critical
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: NACS ECS CPU or MemoryUtilization is above 60 percent
+        description: The Memory or CPU is currently {{ $value }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control

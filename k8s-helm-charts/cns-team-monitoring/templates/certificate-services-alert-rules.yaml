@@ -31,5 +31,4 @@ spec:
       annotations:
         summary: "SSL certificate will expire soon on (instance {{ "{{ $labels.instance }}" }})"
         description: "The SSL certificate expires in {{ "{{ $value | humanizeDuration }}" }}"
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/r8eWoHpGz/proto-certificate-monitor?orgId=1
-        
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/r8eWoHpGz/proto-certificate-monitor
