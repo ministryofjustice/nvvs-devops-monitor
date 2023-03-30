@@ -29,7 +29,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Reject Requests
-        description: Access Reject count is {{ $value }}
+        description: Access Reject count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Ignored Requests Alert
       expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -39,7 +39,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Ignored Requests to EAP
-        description: Ignored Requests to EAP count is {{ $value }}
+        description: Ignored Requests to EAP count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Incorrect Shared Secret
       expr: aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -49,7 +49,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Incorrect Shared Secret to EAP
-        description: Incorrect Shared Secret to EAP count is {{ $value }}
+        description: Incorrect Shared Secret to EAP count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Unknown Certificate Authority
       expr: aws_mojo_nac_requests_unknown_ca_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -59,7 +59,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Unknown Certificate Authority
-        description: Unknown Certificate Authority errors count is {{ $value }}
+        description: Unknown Certificate Authority errors count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Python Errors
       expr: aws_mojo_nac_requests_error_python_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -69,7 +69,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Python Errors in Policy Engine
-        description: Python errors in Policy Engine count is {{ $value }}
+        description: Python errors in Policy Engine count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Failed Attribute
       expr: aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -79,7 +79,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Failed to Find Attribute
-        description: Failed to find attribute errors in Policy Engine count is {{ $value }}
+        description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: All Errors
       expr: aws_mojo_nac_requests_error_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -89,7 +89,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: All Errors in NACS
-        description: Errors reported by NACS count is {{ $value }}
+        description: Errors reported by NACS count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: Failed to start task Pre-Production
       expr: aws_mojo_nac_requests_failed_to_start_task_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
@@ -99,7 +99,7 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: Failed to start task
-        description: An unhealthy container has been released, failed to start task count is {{ $value }}
+        description: An unhealthy container has been released, failed to start task count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
     - alert: FreeRadius Container Health Check Alert
       expr: aws_mojo_nac_requests_health_check_ok_sum{account_id="{{ .Values.pre_production_account_id }}" } < 1
@@ -129,5 +129,5 @@ spec:
         service: Network Access Control Pre-Production
       annotations:
         summary: NACS ECS CPU or MemoryUtilization is above 60 percent
-        description: The Memory or CPU is currently {{ $value }}
+        description: The Memory or CPU is currently {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
