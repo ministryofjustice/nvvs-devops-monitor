@@ -22,7 +22,7 @@ spec:
   - name: dns-dhcp.rules
     rules:
     - alert: DHCP KEA Configuration Reload Failed
-      expr: aws_kea_dhcp_config_reload_failed_sum > 0
+      expr: aws_kea_dhcp_config_reload_failed_sum{account_id="{{ .Values.production_account_id }}" } > 0
       for: 1m
       labels:
         severity: critical
@@ -55,7 +55,7 @@ spec:
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP KEA Failed Leases
-      expr: aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum > 10
+      expr: aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum{account_id="{{ .Values.production_account_id }}" } > 10
       for: 10m
       labels:
         severity: critical
@@ -66,7 +66,7 @@ spec:
         description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP KEA Server Alert
-      expr: aws_kea_dhcp_error_sum > 100 or aws_kea_dhcp_fatal_sum > 100
+      expr: aws_kea_dhcp_error_sum{account_id="{{ .Values.production_account_id }}" } > 100 or aws_kea_dhcp_fatal_sum{account_id="{{ .Values.production_account_id }}" } > 100
       for: 7m
       labels:
         severity: critical
@@ -132,7 +132,7 @@ spec:
         description: The ECS task count has fallen below 1 for DNS.
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
     - alert: Missing Request Metrics for Production
-      expr: absent_over_time(aws_kea_dhcp_pkt4_request_received_average[10m]) == 1
+      expr: absent_over_time(aws_kea_dhcp_pkt4_request_received_average{account_id="{{ .Values.production_account_id }}" }[10m]) == 1
       for: 10m
       labels:
         severity: critical
@@ -143,7 +143,7 @@ spec:
         description: No metrics recieved for 10m.
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: Missing Offer Metrics for Production
-      expr: absent_over_time(aws_kea_dhcp_pkt4_offer_sent_average[10m]) == 1
+      expr: absent_over_time(aws_kea_dhcp_pkt4_offer_sent_average{account_id="{{ .Values.production_account_id }}" }[10m]) == 1
       for: 10m
       labels:
         severity: critical
