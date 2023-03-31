@@ -142,3 +142,14 @@ spec:
         summary: NACS ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
+    - alert: NACS Certificate Expiry Warning
+      expr: aws_mojo_nac_requests_certificate_expiry_warning_maximum{account_id="{{ .Values.production_account_id }}" } > 1
+      for: 5m
+      labels:
+        severity: warning
+        service: NACS Certificate Expiry Warning
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: A NACS Certificate is due to expire.
+        description: Please log onto NAC's and check for expiring certificates https://admin.network-access-control.service.justice.gov.uk/certificates
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
