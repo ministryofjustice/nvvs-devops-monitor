@@ -49,3 +49,24 @@ variable "network_services_cidr_block" {
 variable "tags" {
   type = map(string)
 }
+
+variable "map_public_ip_on_launch" {
+  description = "Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is `true`"
+  type        = bool
+  default     = true
+}
+variable "manage_default_network_acl" {
+  description = "Should be true to adopt and manage Default Network ACL"
+  type        = bool
+  default     = false
+}
+variable "manage_default_security_group" {
+  description = "Should be true to adopt and manage default security group"
+  type        = bool
+  default     = false
+}
+variable "manage_default_route_table" {
+  description = "Should be true to manage default route table"
+  type        = bool
+  default     = false
+}
