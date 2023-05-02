@@ -6,15 +6,15 @@ module "vpc" {
   cidr = var.cidr
   azs  = var.available_zones
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-  enable_nat_gateway   = true
-  map_public_ip_on_launch = var.map_public_ip_on_launch
-  manage_default_network_acl = var.manage_default_network_acl
+  enable_dns_hostnames          = true
+  enable_dns_support            = true
+  enable_nat_gateway            = true
+  map_public_ip_on_launch       = var.map_public_ip_on_launch
+  manage_default_network_acl    = var.manage_default_network_acl
   manage_default_security_group = var.manage_default_security_group
-  manage_default_route_table = var.manage_default_route_table
-  reuse_nat_ips       = true
-  external_nat_ip_ids = aws_eip.gw.*.id
+  manage_default_route_table    = var.manage_default_route_table
+  reuse_nat_ips                 = true
+  external_nat_ip_ids           = aws_eip.gw.*.id
 
   private_subnets = [for cidr_block in cidrsubnets(var.cidr, 2, 2, 2) : cidrsubnets(cidr_block, 1, 1)[0]]
   private_subnet_tags = merge(
