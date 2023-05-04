@@ -21,16 +21,27 @@ spec:
   groups:
   - name: network-access-control.rules
     rules:
-    - alert: Reject Requests Alert
-      expr: aws_mojo_nac_requests_sent_access_reject_sum{account_id="{{ .Values.production_account_id }}" } > 0
+    - alert: Ethernet Reject Requests Alert
+      expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.production_account_id }}" } > 0
       for: 1m
       labels:
         severity: warning
         service: Network Access Control
         namespace: {{ .Release.Namespace }}
       annotations:
-        summary: Reject Requests
-        description: Access Reject count is {{ "{{ $value }}" }}
+        summary: Ethernet Reject Requests
+        description: Ethernet Access Reject count is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
+    - alert: Wireless Reject Requests Alert
+      expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: Wireless Reject Requests
+        description: Wireless Access Reject count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: Ignored Requests Alert
       expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.production_account_id }}" } > 0

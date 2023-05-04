@@ -21,16 +21,26 @@ spec:
   groups:
   - name: network-access-control-pre-production.rules
     rules:
-    - alert: Reject Requests Alert
-      expr: aws_mojo_nac_requests_sent_access_reject_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+    - alert: Ethernet Reject Requests Alert
+      expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
       for: 1m
       labels:
         severity: warning
         service: Network Access Control Pre-Production
       annotations:
-        summary: Reject Requests
-        description: Access Reject count is {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/network-access-control
+        summary: Ethernet Reject Requests
+        description: Ethernet Access Reject count is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
+    - alert: Wireless Reject Requests Alert
+      expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: warning
+        service: Network Access Control Pre-Production
+      annotations:
+        summary: Wireless Reject Requests
+        description: Wireless Access Reject count is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: Ignored Requests Alert
       expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0
       for: 1m
