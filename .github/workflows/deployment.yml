@@ -47,6 +47,7 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
 
     steps:
+
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
@@ -84,7 +85,7 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace
@@ -179,7 +180,7 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace
@@ -275,7 +276,7 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace
