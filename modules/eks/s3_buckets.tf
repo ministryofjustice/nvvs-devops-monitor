@@ -5,8 +5,8 @@ resource "aws_s3_bucket" "thanos_storage" {
 }
 
 resource "aws_s3_bucket_acl" "thanos_storage_acl" {
-  bucket = aws_s3_bucket.thanos_storage.id
-  acl    = "private"
+  bucket     = aws_s3_bucket.thanos_storage.id
+  acl        = "private"
   depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
 }
 
