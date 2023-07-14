@@ -7,6 +7,16 @@ resource "aws_s3_bucket" "thanos_storage" {
 resource "aws_s3_bucket_acl" "thanos_storage_acl" {
   bucket = aws_s3_bucket.thanos_storage.id
   acl    = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+}
+
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+# AWS Reference https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
+  bucket = aws_s3_bucket.thanos_storage.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_thanos_storage_gateway" {
