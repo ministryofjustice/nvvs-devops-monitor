@@ -444,6 +444,11 @@
     nilToZero: true
     period: 300
     length: 300
+  - name: "EAP TLS OCSP Error"
+    statistics: [Sum]
+    nilToZero: true
+    period: 300
+    length: 300
 - namespace: GP_GATEWAY_VMseries
   name: "GP_GATEWAY_VMseries"
   regions: [eu-west-2]
