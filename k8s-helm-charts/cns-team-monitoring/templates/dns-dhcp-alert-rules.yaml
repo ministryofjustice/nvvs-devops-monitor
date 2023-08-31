@@ -120,6 +120,17 @@ spec:
         summary: DNS ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+    - alert: DNS ECS Unhealthy container Alert
+      expr: aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\".+dns.+\",account_id="{{ .Values.production_account_id }}"} > 0
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DNS ECS Unhealthy container is above 0
+        description: Unhealthy container count is currently {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics    
     - alert: DNS ECS Task Count
       expr: aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName="staff-device-production-dns-cluster"} < 1
       for: 5m
