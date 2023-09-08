@@ -54,7 +54,7 @@ jobs:
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
+      uses: aws-actions/configure-aws-credentials@v3.0.2
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
@@ -155,7 +155,7 @@ jobs:
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
+      uses: aws-actions/configure-aws-credentials@v3.0.2
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
@@ -251,7 +251,7 @@ jobs:
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
+      uses: aws-actions/configure-aws-credentials@v3.0.2
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
