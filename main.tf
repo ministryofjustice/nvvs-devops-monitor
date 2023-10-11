@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket         = "staff-infrastructure-monitoring-cluster-tf-state"
-    dynamodb_table = "staff-infrastructure-monitoring-cluster-tf-lock-table"
+    bucket         = "staff-ci-infrastructure-client-monitoring-cluster-tf-state"
+    dynamodb_table = "staff-ci-infrastructure-client-monitoring-cluster-tf-lock-table"
     region         = "eu-west-2"
   }
 }
