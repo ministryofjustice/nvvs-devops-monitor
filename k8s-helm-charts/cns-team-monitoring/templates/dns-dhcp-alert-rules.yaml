@@ -121,8 +121,8 @@ spec:
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
     - alert: DNS ECS Unhealthy Container Alert
-      expr: aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~".+dns.+",account_id="{{ .Values.production_account_id }}"} > 0
-      for: 5m
+      expr: aws_networkelb_un_healthy_host_count_minimum{dimension_LoadBalancer=~".+dns.+",account_id="{{ .Values.production_account_id }}"} > 0
+      for: 1m
       labels:
         severity: critical
         service: DNS DHCP
