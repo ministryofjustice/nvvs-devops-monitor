@@ -78,7 +78,7 @@ jobs:
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
@@ -173,7 +173,7 @@ jobs:
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
@@ -269,7 +269,7 @@ jobs:
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
