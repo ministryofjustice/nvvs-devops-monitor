@@ -7,7 +7,7 @@ module "acm_label" {
 module "acm" {
   count   = var.enabled ? 1 : 0
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 4.3"
+  version = "~> 5.0"
 
   domain_name = var.domain_name
   zone_id     = var.zone_id
