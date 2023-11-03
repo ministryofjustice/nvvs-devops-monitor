@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket         = "staff-infrastructure-monitoring-cluster-tf-state"
-    dynamodb_table = "staff-infrastructure-monitoring-cluster-tf-lock-table"
+    bucket         = "staff-ci-infrastructure-client-monitoring-cluster-tf-state"
+    dynamodb_table = "staff-ci-infrastructure-client-monitoring-cluster-tf-lock-table"
     region         = "eu-west-2"
   }
 }
@@ -15,6 +15,24 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  region = var.aws_region
+  alias  = "development"
+
+  assume_role {
+    role_arn = var.assume_role_development
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+  alias  = "pre_production"
+
+  assume_role {
+    role_arn = var.assume_role_pre_production
+  }
+}
+
 data "aws_availability_zones" "available_zones" {
   count = var.enabled ? 1 : 0
   state = "available"
@@ -22,13 +40,13 @@ data "aws_availability_zones" "available_zones" {
 
 module "label" {
   source           = "./modules/label"
-  name             = "mojo-ima"
+  name             = "nvvs-devops-monitor"
   application_name = var.application_name
 }
 
 module "vpc_label" {
   source           = "./modules/label"
-  name             = "mojo-ima-vpc"
+  name             = "nvvs-devops-monitor"
   application_name = var.application_name
 }
 
@@ -55,7 +73,7 @@ module "vpc" {
 
 module "eks_label" {
   source           = "./modules/label"
-  name             = "mojo-ima-eks"
+  name             = "nvvs-devops-monitor-eks"
   application_name = var.application_name
 }
 
@@ -72,6 +90,8 @@ module "eks" {
   tags = module.eks_label.tags
 
   providers = {
-    aws = aws.main
+    aws                = aws.main
+    aws.development    = aws.development
+    aws.pre_production = aws.pre_production
   }
 }

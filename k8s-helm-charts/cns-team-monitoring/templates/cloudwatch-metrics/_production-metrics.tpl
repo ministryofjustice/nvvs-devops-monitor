@@ -73,6 +73,9 @@ discovery:
         nilToZero: true
   - type: AWS/DX
     regions: [eu-west-2]
+    searchTags:
+      - key: environment
+        value: production
     roles:
       - roleArn: {{ .Values.cloudwatchExporterProductionArn }}
       - roleArn: {{ .Values.cloudwatchExporterPreProductionArn }}
@@ -82,6 +85,9 @@ discovery:
         statistics: [Average]
         nilToZero: true
       - name: VirtualInterfaceBpsIngress
+        statistics: [Average]
+        nilToZero: true
+      - name: ConnectionState
         statistics: [Average]
         nilToZero: true
   - type: AWS/RDS

@@ -399,7 +399,7 @@
     nilToZero: true
     period: 300
     length: 300
-  - name: "Error"
+  - name: "All errors"
     statistics: [Sum]
     nilToZero: true
     period: 300
@@ -425,6 +425,26 @@
     period: 300
     length: 300
   - name: "Failed to start task"
+    statistics: [Sum]
+    nilToZero: true
+    period: 300
+    length: 300
+  - name: "Certificate Expiry Warning"
+    statistics: [Maximum]
+    nilToZero: true
+    period: 300
+    length: 300
+  - name: "reject Ethernet"
+    statistics: [Sum]
+    nilToZero: true
+    period: 300
+    length: 300
+  - name: "reject Wireless-802.11"
+    statistics: [Sum]
+    nilToZero: true
+    period: 300
+    length: 300
+  - name: "EAP TLS OCSP Error"
     statistics: [Sum]
     nilToZero: true
     period: 300
@@ -487,7 +507,7 @@
     statistics: [Average]
     nilToZero: true
     period: 300
-    length: 300 
+    length: 300
 - namespace: GP_PORTAL_VMseries
   name: "GP_PORTAL_VMseries"
   regions: [eu-west-2]
@@ -546,5 +566,5 @@
     statistics: [Average]
     nilToZero: true
     period: 300
-    length: 300 
+    length: 300
 {{ end }}

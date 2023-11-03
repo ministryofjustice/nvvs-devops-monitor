@@ -5,17 +5,13 @@ resource "aws_eks_node_group" "green" {
   subnet_ids      = var.private_subnets
 
   scaling_config {
-    desired_size = 2
+    desired_size = 3
     max_size     = 4
-    min_size     = 1
+    min_size     = 2
   }
 
   update_config {
     max_unavailable = 2
-  }
-
-  lifecycle {
-    ignore_changes = [scaling_config[0].desired_size]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
@@ -25,4 +21,6 @@ resource "aws_eks_node_group" "green" {
     aws_iam_role_policy_attachment.node_group_AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.node_group_AmazonEC2ContainerRegistryReadOnly,
   ]
+
+  tags = var.tags
 }
