@@ -1,0 +1,1808 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: network-access-control
+  labels:
+    grafana_dashboard: "1"
+data:
+  network-access-control.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 38,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "aws_mojo_nac_requests_reject_ethernet_sum{account_id=\"$account_id\"}",
+              "legendFormat": "Ethernet Rejects",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id=\"$account_id\"}",
+              "hide": false,
+              "legendFormat": "Wireless Rejects",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "NAC Rejects",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {},
+          "description": "Server Health Check Output For Freeradius Servers",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 36,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_health_check_ok_sum{account_id=\"$account_id\"}",
+              "interval": "",
+              "legendFormat": "Healthchecks from {{ "{{account_id}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Freeradius Health Check",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line+area"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "id": 16,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id=\"$account_id\"}",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "Ignored Requests to EAP from {{ "{{account_id}}" }}",
+              "refId": "IgnoredRequestsEAP"
+            }
+          ],
+          "thresholds": [],
+          "title": "Ignored Requests EAP",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.0.5",
+          "targets": [
+            {
+              "alias": "Sum of Accepts",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {},
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_sent_access_accept_sum{account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Logins from {{ "{{account_id}}" }}",
+              "matchExact": false,
+              "metricEditorMode": 0,
+              "metricName": "Login OK",
+              "metricQueryType": 0,
+              "namespace": "mojo-nac-requests",
+              "period": "",
+              "queryMode": "Metrics",
+              "range": true,
+              "refId": "A",
+              "region": "eu-west-2",
+              "statistic": "Sum"
+            }
+          ],
+          "title": "Accept Requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "id": 30,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_unknown_ca_sum{account_id=\"$account_id\"}",
+              "interval": "",
+              "legendFormat": "Unknown CA from {{ "{{account_id}}" }}",
+              "range": true,
+              "refId": "UnknownCA"
+            }
+          ],
+          "thresholds": [],
+          "title": "Unknown Certificate Authority",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 24
+          },
+          "id": 28,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_ignoring_request_to_auth_proto_tcp_address_sum{account_id=\"$account_id\"}",
+              "interval": "",
+              "legendFormat": "Ignored Requests to RADSEC from {{ "{{account_id}}" }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Ignored Requests RADSEC",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "This panel displays all the errors.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 24
+          },
+          "id": 22,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.0.5",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {},
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_all_errors_sum{account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "All Errors from {{ "{{account_id}}" }}",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "Error",
+              "metricQueryType": 0,
+              "namespace": "mojo-nac-requests",
+              "period": "",
+              "range": true,
+              "refId": "A",
+              "region": "default",
+              "statistic": "Sum"
+            }
+          ],
+          "title": "All Errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {},
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 32
+          },
+          "id": 26,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.0.5",
+          "targets": [
+            {
+              "alias": "Shared secret is incorrect Sum",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {},
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Shared Secret Incorrect from {{ "{{account_id}}" }}",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "Shared secret is incorrect",
+              "metricQueryType": 0,
+              "namespace": "mojo-nac-requests",
+              "period": "",
+              "refId": "A",
+              "region": "default",
+              "statistic": "Sum"
+            }
+          ],
+          "title": "Incorrect shared secret",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {},
+          "description": "This panels displays all the errors related to the Python module for the policy engine.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "noValue": "-",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 32
+          },
+          "id": 20,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.3",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {},
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_error_python_sum{account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Python Errors from {{ "{{account_id}}" }}",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "Error python",
+              "metricQueryType": 0,
+              "namespace": "mojo-nac-requests",
+              "period": "",
+              "refId": "A",
+              "region": "default",
+              "statistic": "Sum"
+            }
+          ],
+          "title": "Python Errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {},
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 40
+          },
+          "id": 32,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_authorized_macs_users_matched_entry_sum{account_id=\"$account_id\"}",
+              "interval": "",
+              "legendFormat": "MAB Accepts from {{ "{{account_id}}" }}",
+              "refId": "MAB"
+            }
+          ],
+          "title": "MAC Authentication Bypass Results",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line+area"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 50
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 40
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {
+                "ClusterName": "mojo-production-nac-cluster"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"public\",account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Public - CPU",
+              "matchExact": false,
+              "metricEditorMode": 0,
+              "metricName": "CPUUtilization",
+              "metricQueryType": 0,
+              "namespace": "AWS/ECS",
+              "period": "",
+              "range": true,
+              "refId": "A",
+              "region": "default",
+              "statistic": "Average"
+            },
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {
+                "ClusterName": "mojo-production-nac-cluster"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"public\",account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Public - Memory",
+              "matchExact": false,
+              "metricEditorMode": 0,
+              "metricName": "MemoryUtilization",
+              "metricQueryType": 0,
+              "namespace": "AWS/ECS",
+              "period": "",
+              "range": true,
+              "refId": "B",
+              "region": "default",
+              "statistic": "Average"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "exemplar": true,
+              "expr": "aws_ecs_cpuutilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"internal\",account_id=\"$account_id\"}",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Internal - CPU",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "exemplar": true,
+              "expr": "aws_ecs_memory_utilization_average{dimension_ClusterName=~\".+nac-cluster\",dimension_ServiceName=\"internal\",account_id=\"$account_id\"}",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Internal - Memory",
+              "refId": "D"
+            }
+          ],
+          "title": "Cluster Memory & CPU",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 48
+          },
+          "id": 18,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.2.5",
+          "targets": [
+            {
+              "alias": "Sum of Failed Attributes",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {},
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Count from {{ "{{account_id}}" }}",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "Error post_auth - Failed to find attribute",
+              "metricQueryType": 0,
+              "namespace": "mojo-nac-requests",
+              "period": "",
+              "range": true,
+              "refId": "A",
+              "region": "eu-west-2",
+              "statistic": "Sum"
+            }
+          ],
+          "title": "Failed Attributes",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 48
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-int-.+-nac/.*\",account_id=\"$account_id\"}",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}} }} {{ {{dimension_TargetGroup}}" }}",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_networkelb_un_healthy_host_count_sum{dimension_LoadBalancer=~\"net/nac-radius-lb-.+/.*\",account_id=\"$account_id\"}",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "Internal {{ "{{dimension_AvailabilityZone}} }} {{ {{dimension_TargetGroup}}" }}",
+              "refId": "B"
+            }
+          ],
+          "title": "Unhealthy host count",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "This shows the CPU utilisation of the Read Replica DB as a percent.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line+area"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 65
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 56
+          },
+          "id": 24,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {
+                "DBInstanceIdentifier": "mojo-production-nac-admin-read-replica"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "Read Replica CPU",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "CPUUtilization",
+              "metricQueryType": 0,
+              "namespace": "AWS/RDS",
+              "period": "",
+              "range": true,
+              "refId": "A",
+              "region": "eu-west-2",
+              "statistic": "Average"
+            }
+          ],
+          "title": "RDS CPU",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 56
+          },
+          "id": 6,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.0.5",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {
+                "DBInstanceIdentifier": "mojo-production-nac-admin-read-replica"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_rds_read_iops_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }} - Read",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "ReadIOPS",
+              "metricQueryType": 0,
+              "namespace": "AWS/RDS",
+              "period": "",
+              "range": true,
+              "refId": "A",
+              "region": "default",
+              "statistic": "Average"
+            },
+            {
+              "alias": "",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "eARrzmTnz"
+              },
+              "dimensions": {
+                "DBInstanceIdentifier": "mojo-production-nac-db"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "aws_rds_write_iops_average{dimension_DBInstanceIdentifier=~\".+nac-admin-read-replica\",account_id=\"$account_id\"}",
+              "expression": "",
+              "id": "",
+              "interval": "",
+              "legendFormat": "{{ "{{dimension_DBInstanceIdentifier}}" }} - Write",
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "WriteIOPS",
+              "metricQueryType": 0,
+              "namespace": "AWS/RDS",
+              "period": "",
+              "range": true,
+              "refId": "B",
+              "region": "default",
+              "statistic": "Average"
+            }
+          ],
+          "title": "RDS IOPS",
+          "type": "timeseries"
+        },
+         {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "This panels displays all the errors related EAP TLS OCSP Checks.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id=\"$account_id\"}",
+          "instant": true,
+          "key": "Q-a7937d13-19ce-45ce-9e53-c09413a2ee59-0",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "EAP TLS OCSP Error",
+      "type": "timeseries"
+    }
+    ],
+      "refresh": "1m",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "Production",
+              "value": "{{ .Values.production_account_id }}"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Environment",
+            "multi": false,
+            "name": "account_id",
+            "options": [
+              {
+                "selected": true,
+                "text": "Production",
+                "value": "{{ .Values.production_account_id }}"
+              },
+              {
+                "selected": false,
+                "text": "Pre-Production",
+                "value": "{{ .Values.pre_production_account_id }}"
+              },
+              {
+                "selected": false,
+                "text": "Development",
+                "value": "{{ .Values.development_account_id }}"
+              }
+            ],
+            "query": "Production,Pre-Production,Development",
+            "queryValue": "",
+            "skipUrlSync": false,
+            "type": "custom"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Network Access Control",
+      "uid": "CFhQiFxnk",
+      "version": 2,
+      "weekStart": ""
+    }

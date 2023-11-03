@@ -1,0 +1,15 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "psn-dns-probe"
+  module: psn_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 51.33.255.42
+        - 51.33.255.58

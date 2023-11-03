@@ -1,0 +1,16 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-http-pki
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "blackbox-http-pki"
+  interval: 300s
+  module: http_get_pki # Look for a HTTP post
+  targets:
+    staticConfig:
+      static:
+        - https://enrolment.certificates.prep.staff.service.justice.gov.uk/csrscep/a0361_user/pkiclient.exe?operation=GetCACaps
+        - https://enrolment.certificates.staff.service.justice.gov.uk/csrscep/b0361_user/pkiclient.exe?operation=GetCACaps

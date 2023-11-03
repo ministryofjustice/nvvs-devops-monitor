@@ -5,14 +5,16 @@ module "acm_label" {
 }
 
 module "acm" {
+  count   = var.enabled ? 1 : 0
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 3.0"
+  version = "~> 4.3"
 
   domain_name = var.domain_name
   zone_id     = var.zone_id
 
   subject_alternative_names = [
-    "*.${var.application_name}.${var.domain_name}",
+    "${var.application_name}.${var.domain_name}",
+    "*.${var.application_name}.${var.domain_name}"
   ]
 
   wait_for_validation = true

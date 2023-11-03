@@ -1,0 +1,20 @@
+query:
+  stores:
+    - "dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local"
+queryFrontend:
+  enabled: false
+storegateway:
+  enabled: true
+compactor:
+  enabled: true
+receive:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+  prometheusRule:
+    enabled: true

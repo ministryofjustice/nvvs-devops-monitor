@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
+  name: cloudwatch-exporter
+  labels:
+    app: cloudwatch-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-exporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-exporter
+    spec:
+      serviceAccountName: cloudwatch-exporter
+      containers:
+        - name: cloudwatch-exporter
+          image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.40.0-alpha
+          ports:
+            - containerPort: 5000
+          args:
+            - "--config.file=/config/config.yml"
+            - "--debug=false"
+          volumeMounts:
+            - name: configuration
+              mountPath: "/config"
+              readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: cloudwatch-exporter-configmap
+            items:
+              - key: "config.yml"
+                path: "config.yml"

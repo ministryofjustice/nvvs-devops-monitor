@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-blackbox-exporter-configmap
+data:
+  config.yml: |+
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 15s
+        http:
+          method: GET
+          valid_status_codes: []
+          no_follow_redirects: false
+          preferred_ip_protocol: ip4 # defaults to "ip6"
+          tls_config:
+            insecure_skip_verify: true
+          ip_protocol_fallback: false # no fallback to "ip6"
+
+      http_slow_sites:
+        prober: http
+        timeout: 30s
+        http:
+          method: GET
+          valid_status_codes: []
+          no_follow_redirects: false
+          preferred_ip_protocol: ip4 # defaults to "ip6"
+          tls_config:
+            insecure_skip_verify: true
+          ip_protocol_fallback: false # no fallback to "ip6"
+          
+      http_get_pki: # job to check status of enrollment URL
+        prober: http
+        timeout: 5s
+        http:
+          method: GET
+          fail_if_body_not_matches_regexp:
+              - "POSTPKIOperation" # the presence of this shows enrollment is working
+          tls_config:
+            insecure_skip_verify: true
+      icmp:
+        prober: icmp
+        icmp:
+          preferred_ip_protocol: ip4
+
+      dom1_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "dom1.infra.int"
+          query_type: A
+
+      quantum_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "noms.root"
+          query_type: A
+
+      psn_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "gsi.gov.uk"
+          query_type: A
+
+      lexlive_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "lexlive.internal"
+          query_type: A
+
+      internal_vpn_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "internal.vpn.justice.gov.uk"
+          query_type: A
+
+      internal.network_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "internal.network.justice.gov.uk"
+          query_type: A
+          
+      protective_dns_probe:
+        prober: dns
+        dns:
+          transport_protocol: "udp" # defaults to "udp"
+          preferred_ip_protocol: "ip4" # defaults to "ip6"
+          query_name: "www.gov.uk"
+          query_type: A
