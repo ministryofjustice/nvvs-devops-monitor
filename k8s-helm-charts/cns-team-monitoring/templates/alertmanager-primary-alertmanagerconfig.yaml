@@ -83,6 +83,14 @@ spec:
         matchers:
           - name: service
             value: Mercury Production
+      - receiver: mojnetworks-alerts
+        groupWait: 10s
+        repeatInterval: 7d
+        matchers:
+          - name: service
+            value: NACS Certificate Expiry Warning
+          - name: severity
+            value: warning
 
   receivers:
     - name: Master Route
@@ -141,10 +149,6 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-      pagerdutyConfigs:
-        - routingKey:
-            key: pagerduty_routing_key
-            name: slack-webhooks
     - name: Team IGS
       slackConfigs:
         - apiURL:
@@ -218,3 +222,6 @@ spec:
     - name: Team Mercury Production
       emailConfigs:
         - to: 'techops-3ls-euc@justice.gov.uk'
+    - name: mojnetworks-alerts
+      emailConfigs:
+        - to: 'e8y8j3c1v0d2l4b8@mojdt.slack.com'
