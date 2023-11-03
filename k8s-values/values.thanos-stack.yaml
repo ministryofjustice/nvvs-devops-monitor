@@ -8,7 +8,6 @@ storegateway:
 compactor:
   enabled: true
 receive:
-  logLevel: debug
   enabled: true
   ingress:
     enabled: true

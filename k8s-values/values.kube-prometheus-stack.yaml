@@ -60,7 +60,7 @@ prometheus:
         honor_labels: true
         scheme: http
         dns_sd_configs:
-          - names: ['production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com']
+          - names: ["production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com"]
             type: A
             port: 9154
     storageSpec:
@@ -81,15 +81,25 @@ prometheus:
     enabled: true
 alertmanager:
   alertmanagerSpec:
+    logLevel: debug
     alertmanagerConfigSelector:
       matchLabels:
         alertmanagerConfig: alertmanager-config
   config:
     route:
-      group_by: ["service"]
+      group_by: ['namespace']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 24h
+      receiver: "null"
+      routes:
+        - receiver: "null"
+          matchers:
+            - alertname =~ "InfoInhibitor | Watchdog"
+    receivers:
+      - name: "null"
   templateFiles:
     slack-alerts-templates.tmpl: |-
-      {{`
       {{ define "__alert_severity_prefix_title" -}}
         {{ if ne .Status "firing" -}}
         :lgtm:
@@ -131,9 +141,12 @@ alertmanager:
             #439FE0
           {{- end -}}
         {{ else -}}
-        good
+          good
         {{- end }}
       {{- end }}
-      {{ define "slack.alerts.icon_emoji" }}:prometheus:{{ end }}
-      {{ define "slack.alerts.username" }}{{ .CommonLabels.service }} - Monitoring `}}[{{ .Values.environment }}]{{`{{ end }}
-      `}}
+      {{ define "slack.alerts.icon_emoji" }}
+        :prometheus:
+      {{ end }}
+      {{ define "slack.alerts.username" }}
+        {{ .CommonLabels.service }} - Monitoring
+      {{ end }}

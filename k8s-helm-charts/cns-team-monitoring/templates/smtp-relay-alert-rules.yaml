@@ -27,6 +27,7 @@ spec:
         labels:
           severity: critical
           service: SMTP Relay
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: SMTP Relay CPU or MemoryUtilization is above 60 percent
           description: The Memory or CPU is currently {{ "{{ $value }}" }}
@@ -37,6 +38,7 @@ spec:
         labels:
           severity: critical
           service: SMTP Relay
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: SMTP Relay ECS Task count is below 1
           description: The ECS task count has fallen below 1 for SMTP.
@@ -47,6 +49,7 @@ spec:
         labels:
           severity: critical
           service: SMTP Relay
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: SMTP Rejection ratio is above 0.
           description: The SMTP rejection ratio has increased above 0.
@@ -57,6 +60,7 @@ spec:
         labels:
           severity: critical
           service: SMTP Relay
+          namespace: {{ .Release.Namespace }}
         annotations:
           summary: SMTP Rate of change in deferred status count is above 0.0200
           description: The SMTP deferred rate of change has increased above 0.0200

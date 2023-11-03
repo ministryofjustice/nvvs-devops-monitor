@@ -23,6 +23,8 @@ jobs:
     env:
       ENV: "development"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
@@ -45,13 +47,14 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
 
     steps:
+
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2.2.0
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
@@ -59,12 +62,12 @@ jobs:
 
     # Install Kubectl and Helm CLI
     - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      uses: yokawasa/action-setup-kube-tools@v0.9.3
       with:
         setup-tools: |
           kubectl
           helm
-        kubectl: '1.22.12'
+        kubectl: '1.25.6'
         helm: '3.8.0'
 
     # Create environment variables from AWS SSM parameters values
@@ -75,14 +78,14 @@ jobs:
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2.0.0
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace
@@ -122,6 +125,8 @@ jobs:
     env:
       ENV: "pre-production"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
@@ -150,7 +155,7 @@ jobs:
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2.2.0
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
@@ -158,24 +163,24 @@ jobs:
 
     # Install Kubectl and Helm CLI
     - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      uses: yokawasa/action-setup-kube-tools@v0.9.3
       with:
         setup-tools: |
           kubectl
           helm
-        kubectl: '1.22.12'
+        kubectl: '1.25.6'
         helm: '3.8.0'
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2.0.0
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace
@@ -215,6 +220,8 @@ jobs:
     env:
       ENV: "production"
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
       TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
@@ -244,7 +251,7 @@ jobs:
 
     # Configure AWS credentials
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2.2.0
       with:
         aws-region: eu-west-2
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
@@ -252,24 +259,24 @@ jobs:
 
     # Install Kubectl and Helm CLI
     - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      uses: yokawasa/action-setup-kube-tools@v0.9.3
       with:
         setup-tools: |
           kubectl
           helm
-        kubectl: '1.22.12'
+        kubectl: '1.25.6'
         helm: '3.8.0'
 
     # Install Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2.0.0
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.2.0
         terraform_wrapper: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -reconfigure --backend-config="key=terraform.$ENV.state"
+      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
 
     # Select or create and then select a Terraform workspace
     - name: Terraform Workspace

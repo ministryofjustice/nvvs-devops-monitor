@@ -14,78 +14,86 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   route:
-    receiver: CNS Team - Slack
+    receiver: Master Route
+    groupBy:
+    - 'service'
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 24h
-    groupBy:
-      - 'service'
     routes:
-      - receiver: CNS Team - Slack
-        group_wait: 10s
-        repeat_interval: 24h
-        matchers:
-          - name: service
-            value: IMA
-          - name: severity
-            value: critical
-      - receiver: CNS Team - Pagerduty
-        group_wait: 10s
-        repeat_interval: 24h
+      - receiver: NVVS DevOps Critical
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: DNS DHCP
+          - name: severity
+            value: critical
+      - receiver: NVVS DevOps
+        groupWait: 10s
+        repeatInterval: 24h
+        matchers:
           - name: service
-            value: SMTP Relay
+            value: DNS DHCP
+          - name: severity
+            value: warning
       - receiver: Team PKI
-        group_wait: 10s
-        repeat_interval: 7d
+        groupWait: 10s
+        repeatInterval: 7d
         matchers:
           - name: service
             value: certificate-services
       - receiver: Team IGS
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Internet Gateway Service
       - receiver: Team Sec Logging
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Security Logging
       - receiver: Network Access Control Pre-Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Network Access Control Pre-Production
       - receiver: Network Access Control Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Network Access Control
           - name: severity
             value: warning
       - receiver: Network Access Control Critical
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Network Access Control
           - name: severity
             value: critical
       - receiver: Team Mercury Production
-        group_wait: 10s
-        repeat_interval: 24h
+        groupWait: 10s
+        repeatInterval: 24h
         matchers:
           - name: service
             value: Mercury Production
+      - receiver: mojnetworks-alerts
+        groupWait: 10s
+        repeatInterval: 7d
+        matchers:
+          - name: service
+            value: NACS Certificate Expiry Warning
+          - name: severity
+            value: warning
 
   receivers:
-    - name: CNS Team - Slack
+    - name: Master Route
       slackConfigs:
         - apiURL:
             key: ima_slack_webhook_url
@@ -97,13 +105,37 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
-    - name: CNS Team - Pagerduty
-      pagerdutyConfigs:
-        - serviceKey:
-            key: pagerduty_service_key
-            name: alertmanager-secrets
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+    - name: NVVS DevOps
+      slackConfigs:
+        - apiURL:
+            key: dhcp_dns_slack_webhook_url
+            name: slack-webhooks
             optional: false
+          channel: '#mojo-staff-device-dhcp-dns-alerts'
+          sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+    - name: NVVS DevOps Critical
+      slackConfigs:
+        - apiURL:
+            key: dhcp_dns_slack_webhook_url
+            name: slack-webhooks
+            optional: false
+          channel: '#mojo-staff-device-dhcp-dns-alerts'
+          sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+      pagerdutyConfigs:
+        - routingKey:
+            key: pagerduty_routing_key
+            name: slack-webhooks
     - name: Team PKI
       slackConfigs:
         - apiURL:
@@ -116,7 +148,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Team IGS
       slackConfigs:
         - apiURL:
@@ -129,7 +161,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Team Sec Logging
       slackConfigs:
         - apiURL:
@@ -142,7 +174,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Pre-Production
       slackConfigs:
         - apiURL:
@@ -155,7 +187,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Production
       slackConfigs:
         - apiURL:
@@ -168,7 +200,7 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Critical
       slackConfigs:
         - apiURL:
@@ -181,7 +213,15 @@ spec:
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.iconEmoji" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+      pagerdutyConfigs:
+        - routingKey:
+            key: pagerduty_routing_key
+            name: slack-webhooks
+            optional: false
     - name: Team Mercury Production
       emailConfigs:
         - to: 'techops-3ls-euc@justice.gov.uk'
+    - name: mojnetworks-alerts
+      emailConfigs:
+        - to: 'e8y8j3c1v0d2l4b8@mojdt.slack.com'

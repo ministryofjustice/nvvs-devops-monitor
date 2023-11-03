@@ -22,6 +22,10 @@ output "aws_efs_csi_driver_iam_role_arn" {
   value = aws_iam_role.aws_efs_csi_driver.arn
 }
 
+output "aws_ebs_csi_driver_iam_role_arn" {
+  value = aws_iam_role.aws_ebs_csi_driver.arn
+}
+
 output "efs_file_system_id" {
   value = aws_efs_file_system.this.id
 }
@@ -40,6 +44,14 @@ output "thanos_storage_s3_bucket_name" {
 
 output "cloudwatch_exporter_iam_role_arn" {
   value = aws_iam_role.cloudwatch_exporter.arn
+}
+
+output "cloudwatch_exporter_development_iam_role_arn" {
+  value = aws_iam_role.cloudwatch_exporter_development != [] ? aws_iam_role.cloudwatch_exporter_development[0].arn : ""
+}
+
+output "cloudwatch_exporter_pre_production_iam_role_arn" {
+  value = aws_iam_role.cloudwatch_exporter_pre_production != [] ? aws_iam_role.cloudwatch_exporter_pre_production[0].arn : ""
 }
 
 output "db_endpoint" {
