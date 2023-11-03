@@ -16,12 +16,53 @@ prometheus:
     podMonitorNamespaceSelector: {}
     podMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
+    probeNamespaceSelector: {}
+    probeSelector: {}
+    probeSelectorNilUsesHelmValues: false
     ruleNamespaceSelector: {}
     ruleSelector: {}
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+      - job_name: dhcp_portal_api
+        scrape_interval: 120s
+        scrape_timeout: 65s
+        metrics_path: /probe
+        params:
+          module: [default]
+        static_configs:
+          - targets:
+              - https://dhcp-dns-admin.dev.staff.service.justice.gov.uk/api/dhcp-stats
+              - https://dhcp-dns-admin.prep.staff.service.justice.gov.uk/api/dhcp-stats
+              - https://dhcp-dns-admin.staff.service.justice.gov.uk/api/dhcp-stats
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: "prometheus-json-exporter.monitoring.svc.cluster.local:7979"
+      - job_name: json_exporter
+        metrics_path: /metrics
+        honor_labels: true
+        static_configs:
+          - targets:
+              - prometheus-json-exporter.monitoring.svc.cluster.local:7979
+      - job_name: cloudwatch
+        honor_labels: true
+        static_configs:
+          - targets:
+              - cloudwatch-exporter:5000
+      - job_name: postfix
+        metrics_path: /metrics
+        honor_labels: true
+        scheme: http
+        dns_sd_configs:
+          - names: ["production-smtp-relay-exprtr-619da8f487656a3c.elb.eu-west-2.amazonaws.com"]
+            type: A
+            port: 9154
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -38,3 +79,74 @@ prometheus:
     enabled: true
   thanosServiceMonitor:
     enabled: true
+alertmanager:
+  alertmanagerSpec:
+    logLevel: debug
+    alertmanagerConfigSelector:
+      matchLabels:
+        alertmanagerConfig: alertmanager-config
+  config:
+    route:
+      group_by: ['namespace']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 24h
+      receiver: "null"
+      routes:
+        - receiver: "null"
+          matchers:
+            - alertname =~ "InfoInhibitor | Watchdog"
+    receivers:
+      - name: "null"
+  templateFiles:
+    slack-alerts-templates.tmpl: |-
+      {{ define "__alert_severity_prefix_title" -}}
+        {{ if ne .Status "firing" -}}
+        :lgtm:
+        {{- else if eq .CommonLabels.severity "critical" -}}
+        :fire:
+        {{- else if eq .CommonLabels.severity "warning" -}}
+        :warning:
+        {{- else if eq .CommonLabels.severity "info" -}}
+        :information_source:
+        {{- else -}}
+        :question:
+        {{- end }}
+      {{- end }}
+      {{ define "slack.alerts.title" -}}
+        [{{ .Status | toUpper -}}
+        {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+        ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
+      {{- end}}
+      {{ define "slack.alerts.text" }}
+        {{- range .Alerts }}
+          {{ if .Annotations.summary -}}
+            {{ .Annotations.summary }} - *{{ .Labels.severity }}*
+          {{- end }}
+          {{ if .Annotations.description -}}
+            {{ .Annotations.description }}
+          {{- end }}
+          {{ if .Annotations.grafana_dashboard_url -}}
+            <{{ .Annotations.grafana_dashboard_url }}|Link to Grafana dashboard>
+          {{- end }}
+        {{- end }}
+      {{ end }}
+      {{ define "slack.alerts.color" -}}
+        {{ if eq .Status "firing" -}}
+          {{ if eq .CommonLabels.severity "warning" -}}
+            warning
+          {{- else if eq .CommonLabels.severity "critical" -}}
+            danger
+          {{- else -}}
+            #439FE0
+          {{- end -}}
+        {{ else -}}
+          good
+        {{- end }}
+      {{- end }}
+      {{ define "slack.alerts.icon_emoji" }}
+        :prometheus:
+      {{ end }}
+      {{ define "slack.alerts.username" }}
+        {{ .CommonLabels.service }} - Monitoring
+      {{ end }}

@@ -18,6 +18,10 @@ variable "tags" {
   type = map(string)
 }
 
-variable "create" {
-  type = bool
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
 }

@@ -1,24 +1,30 @@
 resource "aws_s3_bucket" "thanos_storage" {
-  count  = var.create ? 1 : 0
   bucket = "${var.prefix}-thanos-storage"
 
   tags = var.tags
 }
 
 resource "aws_s3_bucket_acl" "thanos_storage_acl" {
-  count  = var.create ? 1 : 0
-  bucket = aws_s3_bucket.thanos_storage[count.index].id
-  acl    = "private"
+  bucket     = aws_s3_bucket.thanos_storage.id
+  acl        = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+}
+
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+# AWS Reference https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
+  bucket = aws_s3_bucket.thanos_storage.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_thanos_storage_gateway" {
-  count  = var.create ? 1 : 0
-  bucket = aws_s3_bucket.thanos_storage[count.index].id
-  policy = data.aws_iam_policy_document.thanos_storage_s3_bucket_policy_document[count.index].json
+  bucket = aws_s3_bucket.thanos_storage.id
+  policy = data.aws_iam_policy_document.thanos_storage_s3_bucket_policy_document.json
 }
 
 data "aws_iam_policy_document" "thanos_storage_s3_bucket_policy_document" {
-  count = var.create ? 1 : 0
   statement {
     sid = "Stmt1660659393829"
 
@@ -32,8 +38,8 @@ data "aws_iam_policy_document" "thanos_storage_s3_bucket_policy_document" {
     effect = "Allow"
 
     resources = [
-      "arn:aws:s3:::${aws_s3_bucket.thanos_storage[count.index].id}/*",
-      "arn:aws:s3:::${aws_s3_bucket.thanos_storage[count.index].id}"
+      "arn:aws:s3:::${aws_s3_bucket.thanos_storage.id}/*",
+      "arn:aws:s3:::${aws_s3_bucket.thanos_storage.id}"
     ]
 
     condition {

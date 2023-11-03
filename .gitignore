@@ -11,3 +11,5 @@ terraform.tfstate
 *.crt
 *.tfvars
 *.tfstate.*
+.infracost/
+.terraform-version

@@ -1,0 +1,15 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-internal-vpn-dns
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "internal_vpn_dns_probe"
+  module: internal_vpn_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 10.180.80.60
+        - 10.180.81.60

@@ -1,0 +1,17 @@
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: blackbox-lexlive-dns-probe
+  namespace: monitoring
+spec:
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  jobName: "lexlive_dns_probe"
+  module: lexlive_dns_probe
+  targets:
+    staticConfig:
+      static:
+        - 10.171.68.145
+        - 10.171.68.146
+        - 10.172.68.146
+        - 10.172.68.145

@@ -1,0 +1,142 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: monitoring
+    prometheus-operator-validated: "true"
+  creationTimestamp: "2022-08-25T09:36:30Z"
+  generation: 1
+  labels:
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    heritage: Helm
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}.sop-oci.rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: sop-oci.rules
+    rules:
+      - alert: System uptime physical devices
+        expr: sysUpTime < sysUpTime offset 1m
+        for: 1m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: A device has been rebooted
+          description: "{{ "{{ $labels.instance }}" }} has been rebooted."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: ping of physical devices
+        expr: probe_success{job="blackbox-ping-ark"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: A device has not responded to ping for 5 minutes
+          description: "{{ "{{ $labels.instance }}" }} A device at ARK is showing as DOWN for >5m"
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: CPU load of Palo Alto Firewall Corsham
+        expr: hrProcessorLoad{job="paloalto_corsh"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Palo Alto CPU Load alert
+          description: "{{ "{{ $labels.instance }}" }} A PA firewall at ARK Corsham has CPU Load >80% for more than 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: CPU load of Palo Alto Firewall Farnborough
+        expr: hrProcessorLoad{job="paloalto_farn"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Palo Alto CPU Load alert
+          description: "{{ "{{ $labels.instance }}" }} A PA firewall at ARK Farnborough has CPU Load >80% for more than 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: CPU load of Juniper Corsham switch
+        expr: jnxOperatingCPU{instance!="172.16.181.6",job="juniper_corsh"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Juniper CPU Load alert
+          description: "{{ "{{ $labels.instance }}" }} A Juniper Corsham switch has CPU Load >80% for more than 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: CPU load of Juniper Farnborough switch
+        expr: jnxOperatingCPU{instance!="172.16.182.6",job="juniper_farn"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary:  Juniper CPU Load alert
+          description: "{{ "{{ $labels.instance }}" }} A Juniper Farnborough switch has CPU Load >80% for more than 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: Operating Temperature of Juniper Corsham switch
+        expr: jnxOperatingTemp{job="juniper_corsh"} > 47.5
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Operating Temperature of Juniper Switch alert
+          description: "{{ "{{ $labels.instance }}" }} Operating Temperature of a Juniper Switch at ARK Corsham is above 47.5c for 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: Operating Temperature of Juniper Farnborough switch
+        expr: jnxOperatingTemp{job="juniper_farn"} > 47.5
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Operating Temperature of Juniper Switch alert
+          description: "{{ "{{ $labels.instance }}" }} Operating Temperature of a Juniper Switch at ARK Farnborough is above 47.5c for 5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: Juniper Switches ARK Corsham Buffer (memory) Utilisation alert
+        expr: jnxOperatingBuffer{job="juniper_corsh"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Buffer (memory) Utilisation alert
+          description: "{{ "{{ $labels.instance }}" }} A Juniper device in ARK Corsham is experiencing buffering of above 70% for >5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1
+
+      - alert: Juniper Switches ARK Farnborough Buffer (memory) Utilisation alert
+        expr: jnxOperatingBuffer{job="juniper_farn"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: Internet Gateway Service
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: Buffer (memory) Utilisation alert
+          description: "{{ "{{ $labels.instance }}" }} A Juniper device in ARK Farnborough is experiencing buffering of above 70% for >5 minutes."
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/4kxM0WJMz/physical-device-alerting?orgId=1

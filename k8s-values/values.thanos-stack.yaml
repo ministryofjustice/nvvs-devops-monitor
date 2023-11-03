@@ -7,6 +7,11 @@ storegateway:
   enabled: true
 compactor:
   enabled: true
+receive:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
 metrics:
   enabled: true
   serviceMonitor:

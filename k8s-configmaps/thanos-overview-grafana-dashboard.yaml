@@ -34,7 +34,6 @@ data:
       "fiscalYearStartMonth": 0,
       "gnetId": 12937,
       "graphTooltip": 0,
-      "id": 81,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -54,7 +53,7 @@ data:
             "content": "![logo](https://repository-images.githubusercontent.com/109162639/97e49180-661b-11e9-9882-fdc44b74debd)",
             "mode": "markdown"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
@@ -108,7 +107,7 @@ data:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
@@ -122,6 +121,18 @@ data:
               "interval": "",
               "legendFormat": "{{app_kubernetes_io_component}}",
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "count by(container) (kube_pod_container_info{container=\"receive\"})",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "E"
             },
             {
               "datasource": {
@@ -187,6 +198,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -278,7 +291,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -322,6 +336,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -413,7 +429,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -493,16 +510,18 @@ data:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "kube_pod_container_status_last_terminated_reason{pod=~\"prometheus-kube-prometheus-stack-prometheus-0\"} != 0",
+              "editorMode": "code",
+              "expr": "sum(kube_pod_container_status_terminated{pod=\"prometheus-kube-prometheus-stack-prometheus-0\"}) by (pod)",
               "interval": "",
               "legendFormat": "{{reason}} - {{pod}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -511,28 +530,15 @@ data:
         },
         {
           "collapsed": false,
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 14
           },
-          "id": 8,
+          "id": 46,
           "panels": [],
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "refId": "A"
-            }
-          ],
-          "title": "Thanos / Query",
+          "title": "Thanos / Receive",
           "type": "row"
         },
         {
@@ -546,6 +552,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -599,7 +607,7 @@ data:
                   {
                     "id": "color",
                     "value": {
-                      "fixedColor": "#F2495C",
+                      "fixedColor": "dark-red",
                       "mode": "fixed"
                     }
                   },
@@ -631,30 +639,29 @@ data:
             "x": 0,
             "y": 15
           },
-          "id": 14,
-          "interval": "1m",
+          "id": 48,
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
               "sort": "none"
             }
           },
-          "pluginVersion": "8.3.3",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(container_spec_cpu_shares{container=\"query\"}) by (pod) / 1000",
-              "hide": false,
-              "interval": "",
-              "legendFormat": "{{pod}} limit",
+              "editorMode": "code",
+              "expr": "sum(container_spec_cpu_shares{container=\"receive\"}) by (pod) / 1000",
+              "legendFormat": "__auto",
+              "range": true,
               "refId": "A"
             },
             {
@@ -662,10 +669,11 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"query\"}[$__interval])) by (pod)",
+              "editorMode": "code",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{container=\"receive\"}[$__rate_interval])) by (pod)",
               "hide": false,
-              "interval": "",
-              "legendFormat": "{{container}}",
+              "legendFormat": "__auto",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -683,6 +691,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -768,13 +778,14 @@ data:
             "x": 10,
             "y": 15
           },
-          "id": 12,
+          "id": 49,
           "interval": "1m",
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -788,11 +799,12 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "exemplar": true,
-              "expr": "max(container_spec_memory_limit_bytes{pod=~\"thanos-query-.*\", pod!~\"thanos-query-frontend.*\"}) by (pod)",
+              "editorMode": "code",
+              "expr": "max(container_spec_memory_limit_bytes{container=~\"receive\"}) by (pod)",
               "hide": false,
               "interval": "",
               "legendFormat": "{{pod}} (limit)",
+              "range": true,
               "refId": "A"
             },
             {
@@ -800,9 +812,11 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(max_over_time(container_memory_working_set_bytes{container=\"query\"}[$__interval])) by (pod)",
+              "editorMode": "code",
+              "expr": "sum(max_over_time(container_memory_working_set_bytes{container=~\"receive\"}[$__interval])) by (pod)",
               "interval": "",
               "legendFormat": "{{pod}}",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -839,8 +853,7 @@ data:
             "x": 20,
             "y": 15
           },
-          "id": 26,
-          "links": [],
+          "id": 50,
           "options": {
             "colorMode": "value",
             "graphMode": "area",
@@ -848,7 +861,7 @@ data:
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
-                "lastNotNull"
+                "mean"
               ],
               "fields": "",
               "values": false
@@ -856,16 +869,18 @@ data:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "kube_pod_container_status_last_terminated_reason{pod=~\"thanos-query-*\"} != 0",
+              "editorMode": "code",
+              "expr": "kube_pod_container_status_terminated{pod=\"thanos-receive-0\"}",
               "interval": "",
               "legendFormat": "{{reason}} - {{pod}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -884,7 +899,7 @@ data:
             "x": 0,
             "y": 23
           },
-          "id": 7,
+          "id": 8,
           "panels": [],
           "targets": [
             {
@@ -895,7 +910,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Thanos / Compact",
+          "title": "Thanos / Query",
           "type": "row"
         },
         {
@@ -909,6 +924,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -994,13 +1011,14 @@ data:
             "x": 0,
             "y": 24
           },
-          "id": 15,
+          "id": 14,
           "interval": "1m",
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1014,9 +1032,12 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(container_spec_cpu_shares{container=\"compactor\"}) by (pod) / 1000",
+              "editorMode": "code",
+              "expr": "sum(container_spec_cpu_shares{container=\"query\"}) by (container) / 1000",
+              "hide": false,
               "interval": "",
               "legendFormat": "{{pod}} limit",
+              "range": true,
               "refId": "A"
             },
             {
@@ -1024,9 +1045,12 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"compactor\"}[$__interval])) by (container)",
+              "editorMode": "code",
+              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"query\"}[$__interval])) by (container)",
+              "hide": false,
               "interval": "",
               "legendFormat": "{{container}}",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -1044,6 +1068,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1085,7 +1111,7 @@ data:
                   }
                 ]
               },
-              "unit": "short"
+              "unit": "bytes"
             },
             "overrides": [
               {
@@ -1129,13 +1155,14 @@ data:
             "x": 10,
             "y": 24
           },
-          "id": 43,
+          "id": 12,
           "interval": "1m",
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1149,9 +1176,13 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(container_spec_cpu_shares{container=\"compactor\"}) by (pod) / 1000",
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "max(container_spec_memory_limit_bytes{pod=~\"thanos-query-.*\", pod!~\"thanos-query-frontend.*\"}) by (container)",
+              "hide": false,
               "interval": "",
-              "legendFormat": "{{pod}} limit",
+              "legendFormat": "{{pod}} (limit)",
+              "range": true,
               "refId": "A"
             },
             {
@@ -1159,13 +1190,15 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"compactor\"}[$__interval])) by (container)",
+              "editorMode": "code",
+              "expr": "sum(max_over_time(container_memory_working_set_bytes{container=\"query\"}[$__interval])) by (container)",
               "interval": "",
-              "legendFormat": "{{container}}",
+              "legendFormat": "{{pod}}",
+              "range": true,
               "refId": "B"
             }
           ],
-          "title": "CPU Core Usage vs. Requested",
+          "title": "Memory Usage v. Limit",
           "type": "timeseries"
         },
         {
@@ -1198,7 +1231,8 @@ data:
             "x": 20,
             "y": 24
           },
-          "id": 28,
+          "id": 26,
+          "links": [],
           "options": {
             "colorMode": "value",
             "graphMode": "area",
@@ -1206,7 +1240,7 @@ data:
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
-                "mean"
+                "lastNotNull"
               ],
               "fields": "",
               "values": false
@@ -1214,16 +1248,18 @@ data:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "kube_pod_container_status_last_terminated_reason{pod=~\"thanos-compact.*\"} != 0",
+              "editorMode": "code",
+              "expr": "kube_pod_container_status_terminated{pod=~\"thanos-query-*\"}",
               "interval": "",
               "legendFormat": "{{reason}} - {{pod}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -1242,7 +1278,7 @@ data:
             "x": 0,
             "y": 32
           },
-          "id": 6,
+          "id": 7,
           "panels": [],
           "targets": [
             {
@@ -1253,7 +1289,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Thanos / Store",
+          "title": "Thanos / Compact",
           "type": "row"
         },
         {
@@ -1267,6 +1303,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1352,13 +1390,378 @@ data:
             "x": 0,
             "y": 33
           },
+          "id": 15,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(container_spec_cpu_shares{container=\"compactor\"}) by (pod) / 1000",
+              "interval": "",
+              "legendFormat": "{{pod}} limit",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"compactor\"}[$__interval])) by (container)",
+              "interval": "",
+              "legendFormat": "{{container}}",
+              "refId": "B"
+            }
+          ],
+          "title": "CPU Core Usage vs. Requested",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/limit/"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#F2495C",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [
+                        10,
+                        10
+                      ],
+                      "fill": "dash"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 10,
+            "x": 10,
+            "y": 33
+          },
+          "id": 43,
+          "interval": "1m",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(container_spec_cpu_shares{container=\"compactor\"}) by (pod) / 1000",
+              "interval": "",
+              "legendFormat": "{{pod}} limit",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(irate(container_cpu_usage_seconds_total{container=\"compactor\"}[$__interval])) by (container)",
+              "interval": "",
+              "legendFormat": "{{container}}",
+              "refId": "B"
+            }
+          ],
+          "title": "CPU Core Usage vs. Requested",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 4,
+            "x": 20,
+            "y": 33
+          },
+          "id": 28,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.1.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "kube_pod_container_status_last_terminated_reason{pod=~\"thanos-compact.*\"} != 0",
+              "interval": "",
+              "legendFormat": "{{reason}} - {{pod}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Last Terminated Reason",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 41
+          },
+          "id": 6,
+          "panels": [],
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "Thanos / Store",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/limit/"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#F2495C",
+                      "mode": "fixed"
+                    }
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "dash": [
+                        10,
+                        10
+                      ],
+                      "fill": "dash"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 10,
+            "x": 0,
+            "y": 42
+          },
           "id": 17,
           "interval": "1m",
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1402,6 +1805,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1485,7 +1890,7 @@ data:
             "h": 8,
             "w": 10,
             "x": 10,
-            "y": 33
+            "y": 42
           },
           "id": 18,
           "interval": "1m",
@@ -1493,7 +1898,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1555,7 +1961,7 @@ data:
             "h": 8,
             "w": 4,
             "x": 20,
-            "y": 33
+            "y": 42
           },
           "id": 27,
           "options": {
@@ -1573,7 +1979,7 @@ data:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
@@ -1601,6 +2007,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1650,14 +2058,15 @@ data:
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 41
+            "y": 50
           },
           "id": 37,
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1691,6 +2100,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1740,14 +2151,15 @@ data:
             "h": 8,
             "w": 7,
             "x": 8,
-            "y": 41
+            "y": 50
           },
           "id": 35,
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1781,6 +2193,8 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -1830,14 +2244,15 @@ data:
             "h": 8,
             "w": 9,
             "x": 15,
-            "y": 41
+            "y": 50
           },
           "id": 39,
           "options": {
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1862,7 +2277,7 @@ data:
         }
       ],
       "refresh": "1m",
-      "schemaVersion": 36,
+      "schemaVersion": 37,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -1888,6 +2303,6 @@ data:
       "timezone": "Europe/London",
       "title": "Thanos / Overview",
       "uid": "xhXVFwJ7z",
-      "version": 18,
+      "version": 1,
       "weekStart": "monday"
     }

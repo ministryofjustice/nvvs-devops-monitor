@@ -5,6 +5,68 @@ ORANGE='\033[1;33m'
 PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
 
+set_variables() {
+  printf "\n${ORANGE}############# ${PURPLE}Setting up local variables ${ORANGE}#############${NC}\n"
+  region=`terraform output aws_region`
+  aws_assume_role=`terraform output assume_role`
+  terraform_outputs_eks_cluster=`terraform output -json eks_cluster`
+  eks_cluster_name=`echo $terraform_outputs_eks_cluster | jq -r '.name'`
+  eks_cluster_endpoint=`echo $terraform_outputs_eks_cluster | jq -r '.endpoint'`
+  kubeconfig_certificate_authority_data=`terraform output -raw kubeconfig_certificate_authority_data`
+}
+
+set_kubeconfig() {
+  printf "\n${ORANGE}############# ${PURPLE}Setting up kubeconfig ${ORANGE}#############${NC}\n"
+  # Set a user entry in kubeconfig
+  if [ -z $AWS_PROFILE ]; then
+  kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
+    --exec-arg=eks \
+    --exec-arg=get-token \
+    --exec-arg=--region \
+    --exec-arg=$region \
+    --exec-arg=--cluster-name \
+    --exec-arg=$eks_cluster_name \
+    --exec-arg=--role \
+    --exec-arg=$aws_assume_role
+  else
+  kubectl config set-credentials $eks_cluster_name --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=aws \
+    --exec-arg=eks \
+    --exec-arg=get-token \
+    --exec-arg=--region \
+    --exec-arg=$region \
+    --exec-arg=--cluster-name \
+    --exec-arg=$eks_cluster_name \
+    --exec-arg=--role \
+    --exec-arg=$aws_assume_role \
+    --exec-env=AWS_PROFILE=$AWS_PROFILE
+  fi
+
+  # Create a temporary kubernetes certificate authority cert file
+  cat > temp_kubernetes_ca.crt << EOL
+$kubeconfig_certificate_authority_data
+EOL
+
+  # Set a cluster entry in kubeconfig and use the cert file in it
+  kubectl config set-cluster $eks_cluster_name --server=$eks_cluster_endpoint --embed-certs=true --certificate-authority=./temp_kubernetes_ca.crt
+
+  # Remove the temporary cert file
+  rm ./temp_kubernetes_ca.crt
+
+  # Set a context entry in kubeconfig
+  kubectl config set-context $eks_cluster_name --cluster=$eks_cluster_name --user=$eks_cluster_name --namespace=$namespace
+
+  # Set the current-context in a kubeconfig file
+  kubectl config use-context $eks_cluster_name
+}
+
+uninstall_cns_team_monitoring() {
+  # Delete manually created configmaps
+  kubectl delete configmaps -n monitoring kea-dhcp-metrics-grafana-dashboard
+  kubectl delete configmaps -n dhcp-lease-statistics-grafana-dashboard
+  # Uninstall the helm chart
+  helm uninstall cns-team-monitoring -n monitoring
+}
+
 uninstall_grafana() {
   helm uninstall grafana -n grafana
   helm repo remove grafana
@@ -43,8 +105,10 @@ uninstall_shared_resources_helm_chart() {
 }
 
 uninstall_thanos_stack() {
-  kubectl delete configmap thanos-query-datasource -n monitoring
   helm uninstall thanos -n monitoring
+  # Clean up the dashboard and datasource configmaps as it was manually created:
+  kubectl delete configmap thanos-overview -n monitoring
+  kubectl delete configmap thanos-query-grafana-datasource -n monitoring
   helm repo remove bitnami
 }
 
@@ -66,6 +130,8 @@ uninstall_kube-prometheus-stack() {
 }
 
 main() {
+  set_variables
+  set_kubeconfig
   uninstall_grafana
   uninstall_ingress_nginx
   uninstall_external_dns
@@ -76,9 +142,9 @@ main() {
   uninstall_kube-prometheus-stack
 }
 
-if `terraform output eks_enabled`; then
-  printf "\n${ORANGE}############# ${PURPLE}Uninstalling shared helm charts from the EKS Cluster ${ORANGE}#############${NC}\n"
+if `terraform output enabled`; then
+  printf "\n${ORANGE}############# ${PURPLE}Uninstalling all deployments in `terraform output -raw terraform_workspace` ${ORANGE}#############${NC}\n"
   main
 else
-  printf "\n${ORANGE}############# ${PURPLE}Nothing to uninstall as EKS is not enabled ${ORANGE}#############${NC}\n"
+  printf "\n${ORANGE}############# ${PURPLE}Nothing to uninstall as environment: `terraform output -raw terraform_workspace` is not enabled ${ORANGE}#############${NC}\n"
 fi
