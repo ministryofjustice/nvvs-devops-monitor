@@ -73,8 +73,9 @@ prometheus:
               storage: 8Gi
     thanos:
       objectStorageConfig:
-        key: "objstore.yml"
-        name: "thanos-objstore-secret"
+        existingSecret:
+          key: "objstore.yml"
+          name: "thanos-objstore-secret"
   thanosService:
     enabled: true
   thanosServiceMonitor:
