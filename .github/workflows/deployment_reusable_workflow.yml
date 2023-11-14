@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  deploy-development:
+  deploy-environment:
     name: 'Deploy ${{ inputs.config-path }}'
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENV }}

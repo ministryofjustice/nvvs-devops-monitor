@@ -15,6 +15,16 @@ variable "assume_role" {
   type        = string
 }
 
+variable "assume_role_development" {
+  description = "The role to assume in development aws account"
+  type        = string
+}
+
+variable "assume_role_pre_production" {
+  description = "The role to assume in pre-production aws account"
+  type        = string
+}
+
 variable "aws_region" {
   description = "The AWS region to create things in"
   type        = string
@@ -66,14 +76,4 @@ variable "farnborough_mgmt_range" {
 
 variable "network_services_cidr_block" {
   type = string
-}
-
-variable "assume_role_development" {
-  description = "The role to assume in development aws account"
-  type        = string
-}
-
-variable "assume_role_pre_production" {
-  description = "The role to assume in pre-production aws account"
-  type        = string
 }

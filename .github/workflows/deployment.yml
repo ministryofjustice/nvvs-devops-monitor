@@ -6,7 +6,7 @@ on:
       - "main"
   push:
     branches:
-      - "montoring-impovements"
+      - "main"
 
 permissions:
   id-token: write
