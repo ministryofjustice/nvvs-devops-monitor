@@ -15,6 +15,24 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  region = var.aws_region
+  alias  = "development"
+
+  assume_role {
+    role_arn = var.assume_role_development
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+  alias  = "pre_production"
+
+  assume_role {
+    role_arn = var.assume_role_pre_production
+  }
+}
+
 data "aws_availability_zones" "available_zones" {
   count = var.enabled ? 1 : 0
   state = "available"
@@ -73,7 +91,7 @@ module "eks" {
 
   providers = {
     aws = aws.main
-    #    aws.development    = aws.development
-    #    aws.pre_production = aws.pre_production
+        aws.development    = aws.development
+        aws.pre_production = aws.pre_production
   }
 }
