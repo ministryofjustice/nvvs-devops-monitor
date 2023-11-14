@@ -72,3 +72,9 @@ generate_diagrams:
 .PHONY:
 	fmt init workspace-list workspace-select validate plan-out plan \
 	refresh output apply state-list show destroy clean tfenv
+
+
+.PHONY: lock
+lock: ## terraform providers lock (reset hashes after upgrades prior to commit)
+	rm .terraform.lock.hcl
+	$(DOCKER_RUN) terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
