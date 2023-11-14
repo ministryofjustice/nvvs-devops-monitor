@@ -102,12 +102,6 @@ jobs:
           kubectl: '1.25.6'
           helm: '3.8.0'
 
-      # Create environment variables from AWS SSM parameters values
-      - name: Create environment variables from AWS SSM
-        run: |
-          export dhcpApiBasicAuthUsername=`aws ssm get-parameter --name /codebuild/dhcp/admin/api/basic_auth_username --query Parameter.Value --with-decryption --output text`
-          export dhcpApiBasicAuthPassword=`aws ssm get-parameter --name /codebuild/dhcp/admin/api/basic_auth_password --query Parameter.Value --with-decryption --output text`
-
       # Install Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
