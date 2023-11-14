@@ -36,20 +36,18 @@ output "certificate" {
 
 output "eks_cluster" {
   value = var.enabled ? {
-    issuer                                          = module.eks[0].issuer
-    name                                            = module.eks[0].cluster_name
-    endpoint                                        = module.eks[0].endpoint
-    aws_load_balancer_controller_iam_role_arn       = module.eks[0].aws_load_balancer_controller_iam_role_arn
-    external_dns_iam_role_arn                       = module.eks[0].external_dns_iam_role_arn
-    aws_efs_csi_driver_iam_role_arn                 = module.eks[0].aws_efs_csi_driver_iam_role_arn
-    aws_ebs_csi_driver_iam_role_arn                 = module.eks[0].aws_ebs_csi_driver_iam_role_arn
-    efs_file_system_id                              = module.eks[0].efs_file_system_id
-    thanos_iam_role_arn                             = module.eks[0].thanos_iam_role_arn
-    thanos_storage_s3_bucket_name                   = module.eks[0].thanos_storage_s3_bucket_name
-    cloudwatch_exporter_iam_role_arn                = module.eks[0].cloudwatch_exporter_iam_role_arn
-    cloudwatch_exporter_development_iam_role_arn    = module.eks[0].cloudwatch_exporter_development_iam_role_arn
-    cloudwatch_exporter_pre_production_iam_role_arn = module.eks[0].cloudwatch_exporter_pre_production_iam_role_arn
-    db_endpoint                                     = module.eks[0].db_endpoint
+    issuer                                    = module.eks[0].issuer
+    name                                      = module.eks[0].cluster_name
+    endpoint                                  = module.eks[0].endpoint
+    aws_load_balancer_controller_iam_role_arn = module.eks[0].aws_load_balancer_controller_iam_role_arn
+    external_dns_iam_role_arn                 = module.eks[0].external_dns_iam_role_arn
+    aws_efs_csi_driver_iam_role_arn           = module.eks[0].aws_efs_csi_driver_iam_role_arn
+    aws_ebs_csi_driver_iam_role_arn           = module.eks[0].aws_ebs_csi_driver_iam_role_arn
+    efs_file_system_id                        = module.eks[0].efs_file_system_id
+    thanos_iam_role_arn                       = module.eks[0].thanos_iam_role_arn
+    thanos_storage_s3_bucket_name             = module.eks[0].thanos_storage_s3_bucket_name
+    cloudwatch_exporter_iam_role_arn          = module.eks[0].cloudwatch_exporter_iam_role_arn
+    db_endpoint                               = module.eks[0].db_endpoint
   } : null
   sensitive = true
 }
