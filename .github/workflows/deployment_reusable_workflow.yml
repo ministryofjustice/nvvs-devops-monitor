@@ -4,45 +4,9 @@ on:
       ENV:
         required: true
         type: string
-#    secrets:
-#      ASSUME_ROLE_DEVELOPMENT:
-#        required: true
-#      DOMAIN_NAME:
-#        required: true
-#      ENABLED:
-#        required: true
-#      ZONE_ID:
-#        required: true
-#      DB_USERNAME:
-#        required: true
-#      DB_PASSWORD:
-#        required: true
-#      ENABLE_TRANSIT_GATEWAY:
-#        required: true
-#      TRANSIT_GATEWAY_ID:
-#        required: true
-#      TRANSIT_GATEWAY_ROUTE_TABLE_ID:
-#        required: true
-#      BYOIP_POOL_ID:
-#        required: true
-#      CORSHAM_MGMT_RANGE:
-#        required: true
-#      FARNBOROUGH_MGMT_RANGE:
-#        required: true
-#      NETWORK_SERVICES_CIDR_BLOCK:
-#        required: true
-#      AZUREAD_CLIENT_ID:
-#        required: true
-#      AZUREAD_CLIENT_SECRET:
-#        required: true
-#      AZUREAD_AUTH_URL:
-#        required: true
-#      AZUREAD_TOKEN_URL:
-#        required: true
-#      SERVER_ROOT_URL:
-#        required: true
-#      DB_NAME:
-#        required: true
+      ENABLED:
+        required: true
+        type: string
 
 jobs:
   deploy-development:
@@ -53,12 +17,12 @@ jobs:
       run:
         shell: bash
     env:
-      ENV: ${{ inputs.ENV }} #"development"
+      ENV: ${{ inputs.ENV }}
+      TF_VAR_enabled: ${{ inputs.ENABLED }}
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
       TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
       TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
       TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
-      TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
       TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
