@@ -90,8 +90,8 @@ module "eks" {
   tags = module.eks_label.tags
 
   providers = {
-    aws = aws.main
-        aws.development    = aws.development
-        aws.pre_production = aws.pre_production
+    aws                = aws.main
+    aws.development    = aws.development
+    aws.pre_production = aws.pre_production
   }
 }
