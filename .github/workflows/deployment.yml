@@ -6,300 +6,207 @@ on:
       - "main"
   push:
     branches:
-      - "main"
+      - "montoring-impovements"
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
+
   deploy-development:
-    name: 'Deploy Development'
-    runs-on: ubuntu-latest
-    environment: development
-    defaults:
-      run:
-        shell: bash
-    env:
-      ENV: "development"
-      TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
-      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
-      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
-      TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
-      TF_VAR_enabled: ${{ secrets.ENABLED }}
-      TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-      TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
-      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
-      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
-      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
-      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
-      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
-      TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
-      TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
-      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
-      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
-      AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
-      AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
-      AZUREAD_TOKEN_URL: ${{ secrets.AZUREAD_TOKEN_URL }}
-      SERVER_ROOT_URL: ${{ secrets.SERVER_ROOT_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
+    uses: ./.github/workflows/deployment_reusable_workflow.yml
+    with:
+      ENV: development
+    secrets: inherit
 
-    steps:
-
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    # Configure AWS credentials
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
-      with:
-        aws-region: eu-west-2
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-session-name: GitHubWorkflow
-
-    # Install Kubectl and Helm CLI
-    - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.9.3
-      with:
-        setup-tools: |
-          kubectl
-          helm
-        kubectl: '1.25.6'
-        helm: '3.8.0'
-
-    # Create environment variables from AWS SSM parameters values
-    - name: Create environment variables from AWS SSM
-      run: |
-        export dhcpApiBasicAuthUsername=`aws ssm get-parameter --name /codebuild/dhcp/admin/api/basic_auth_username --query Parameter.Value --with-decryption --output text`
-        export dhcpApiBasicAuthPassword=`aws ssm get-parameter --name /codebuild/dhcp/admin/api/basic_auth_password --query Parameter.Value --with-decryption --output text`
-
-    # Install Terraform CLI
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.2.0
-        terraform_wrapper: false
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
-
-    # Select or create and then select a Terraform workspace
-    - name: Terraform Workspace
-      run: terraform workspace select $ENV || terraform workspace new $ENV
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt --recursive -check
-
-    # Validates Terraform configuration
-    - name: Terraform Validate
-      run: terraform validate
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan
-
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve
-
-    - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: make deploy
-
-  # Terraform apply in pre-production
-  deploy-pre-production:
-    name: 'Deploy Pre-Production'
-    needs: deploy-development
-    runs-on: ubuntu-latest
-    environment: pre-production
-    defaults:
-      run:
-        shell: bash
-    env:
-      ENV: "pre-production"
-      TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
-      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
-      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
-      TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
-      TF_VAR_enabled: ${{ secrets.ENABLED }}
-      TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-      TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
-      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
-      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
-      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
-      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
-      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
-      TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
-      TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
-      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
-      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
-      AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
-      AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
-      AZUREAD_TOKEN_URL: ${{ secrets.AZUREAD_TOKEN_URL }}
-      SERVER_ROOT_URL: ${{ secrets.SERVER_ROOT_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    # Configure AWS credentials
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
-      with:
-        aws-region: eu-west-2
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-session-name: GitHubWorkflow
-
-    # Install Kubectl and Helm CLI
-    - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.9.3
-      with:
-        setup-tools: |
-          kubectl
-          helm
-        kubectl: '1.25.6'
-        helm: '3.8.0'
-
-    # Install Terraform CLI
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.2.0
-        terraform_wrapper: false
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
-
-    # Select or create and then select a Terraform workspace
-    - name: Terraform Workspace
-      run: terraform workspace select $ENV || terraform workspace new $ENV
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt --recursive -check
-
-    # Validates Terraform configuration
-    - name: Terraform Validate
-      run: terraform validate
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan
-
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve
-
-    - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: make deploy
-
-  # Terraform apply in production
-  deploy-production:
-    name: 'Deploy Production'
-    needs: deploy-pre-production
-    runs-on: ubuntu-latest
-    environment: production
-    defaults:
-      run:
-        shell: bash
-    env:
-      ENV: "production"
-      TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
-      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
-      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
-      TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
-      TF_VAR_enabled: ${{ secrets.ENABLED }}
-      TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
-      TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
-      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
-      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
-      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
-      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
-      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
-      TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
-      TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
-      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
-      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
-      AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
-      AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
-      AZUREAD_TOKEN_URL: ${{ secrets.AZUREAD_TOKEN_URL }}
-      SERVER_ROOT_URL: ${{ secrets.SERVER_ROOT_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-
-
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    # Configure AWS credentials
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2.2.0
-      with:
-        aws-region: eu-west-2
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-session-name: GitHubWorkflow
-
-    # Install Kubectl and Helm CLI
-    - name: Setup Kubectl and Helm
-      uses: yokawasa/action-setup-kube-tools@v0.9.3
-      with:
-        setup-tools: |
-          kubectl
-          helm
-        kubectl: '1.25.6'
-        helm: '3.8.0'
-
-    # Install Terraform CLI
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.2.0
-        terraform_wrapper: false
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
-
-    # Select or create and then select a Terraform workspace
-    - name: Terraform Workspace
-      run: terraform workspace select $ENV || terraform workspace new $ENV
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt --recursive -check
-
-    # Validates Terraform configuration
-    - name: Terraform Validate
-      run: terraform validate
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan
-
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve
-
-    - name: Run the deployment script
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: make deploy
+#  # Terraform apply in pre-production
+#  deploy-pre-production:
+#    name: 'Deploy Pre-Production'
+#    needs: deploy-development
+#    runs-on: ubuntu-latest
+#    environment: pre-production
+#    defaults:
+#      run:
+#        shell: bash
+#    env:
+#      ENV: "pre-production"
+#      TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+#      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+#      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
+#      TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+#      TF_VAR_enabled: ${{ secrets.ENABLED }}
+#      TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
+#      TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+#      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+#      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
+#      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
+#      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
+#      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
+#      TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
+#      TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
+#      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
+#      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+#      AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
+#      AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
+#      AZUREAD_TOKEN_URL: ${{ secrets.AZUREAD_TOKEN_URL }}
+#      SERVER_ROOT_URL: ${{ secrets.SERVER_ROOT_URL }}
+#      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+#      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+#      DB_NAME: ${{ secrets.DB_NAME }}
+#
+#    steps:
+#    # Checkout the repository to the GitHub Actions runner
+#    - name: Checkout
+#      uses: actions/checkout@v3
+#
+#    # Configure AWS credentials
+#    - name: Configure AWS Credentials
+#      uses: aws-actions/configure-aws-credentials@v2.2.0
+#      with:
+#        aws-region: eu-west-2
+#        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+#        role-session-name: GitHubWorkflow
+#
+#    # Install Kubectl and Helm CLI
+#    - name: Setup Kubectl and Helm
+#      uses: yokawasa/action-setup-kube-tools@v0.9.3
+#      with:
+#        setup-tools: |
+#          kubectl
+#          helm
+#        kubectl: '1.25.6'
+#        helm: '3.8.0'
+#
+#    # Install Terraform CLI
+#    - name: Setup Terraform
+#      uses: hashicorp/setup-terraform@v2
+#      with:
+#        terraform_version: 1.2.0
+#        terraform_wrapper: false
+#
+#    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#    - name: Terraform Init
+#      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
+#
+#    # Select or create and then select a Terraform workspace
+#    - name: Terraform Workspace
+#      run: terraform workspace select $ENV || terraform workspace new $ENV
+#
+#    # Checks that all Terraform configuration files adhere to a canonical format
+#    - name: Terraform Format
+#      run: terraform fmt --recursive -check
+#
+#    # Validates Terraform configuration
+#    - name: Terraform Validate
+#      run: terraform validate
+#
+#    # Generates an execution plan for Terraform
+#    - name: Terraform Plan
+#      run: terraform plan
+#
+#      # On push to main, build or change infrastructure according to Terraform configuration files
+#      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+#    - name: Terraform Apply
+#      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#      run: terraform apply -auto-approve
+#
+#    - name: Run the deployment script
+#      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#      run: make deploy
+#
+#  # Terraform apply in production
+#  deploy-production:
+#    name: 'Deploy Production'
+#    needs: deploy-pre-production
+#    runs-on: ubuntu-latest
+#    environment: production
+#    defaults:
+#      run:
+#        shell: bash
+#    env:
+#      ENV: "production"
+#      TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
+#      TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
+#      TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
+#      TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+#      TF_VAR_enabled: ${{ secrets.ENABLED }}
+#      TF_VAR_zone_id: ${{ secrets.ZONE_ID }}
+#      TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+#      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+#      TF_VAR_enable_transit_gateway: ${{ secrets.ENABLE_TRANSIT_GATEWAY }}
+#      TF_VAR_transit_gateway_id: ${{ secrets.TRANSIT_GATEWAY_ID }}
+#      TF_VAR_transit_gateway_route_table_id: ${{ secrets.TRANSIT_GATEWAY_ROUTE_TABLE_ID }}
+#      TF_VAR_byoip_pool_id: ${{ secrets.BYOIP_POOL_ID }}
+#      TF_VAR_corsham_mgmt_range: ${{ secrets.CORSHAM_MGMT_RANGE }}
+#      TF_VAR_farnborough_mgmt_range: ${{ secrets.FARNBOROUGH_MGMT_RANGE }}
+#      TF_VAR_network_services_cidr_block: ${{ secrets.NETWORK_SERVICES_CIDR_BLOCK }}
+#      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+#      AZUREAD_CLIENT_SECRET: ${{ secrets.AZUREAD_CLIENT_SECRET }}
+#      AZUREAD_AUTH_URL: ${{ secrets.AZUREAD_AUTH_URL }}
+#      AZUREAD_TOKEN_URL: ${{ secrets.AZUREAD_TOKEN_URL }}
+#      SERVER_ROOT_URL: ${{ secrets.SERVER_ROOT_URL }}
+#      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+#      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+#      DB_NAME: ${{ secrets.DB_NAME }}
+#
+#
+#    steps:
+#    # Checkout the repository to the GitHub Actions runner
+#    - name: Checkout
+#      uses: actions/checkout@v3
+#
+#    # Configure AWS credentials
+#    - name: Configure AWS Credentials
+#      uses: aws-actions/configure-aws-credentials@v2.2.0
+#      with:
+#        aws-region: eu-west-2
+#        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+#        role-session-name: GitHubWorkflow
+#
+#    # Install Kubectl and Helm CLI
+#    - name: Setup Kubectl and Helm
+#      uses: yokawasa/action-setup-kube-tools@v0.9.3
+#      with:
+#        setup-tools: |
+#          kubectl
+#          helm
+#        kubectl: '1.25.6'
+#        helm: '3.8.0'
+#
+#    # Install Terraform CLI
+#    - name: Setup Terraform
+#      uses: hashicorp/setup-terraform@v2
+#      with:
+#        terraform_version: 1.2.0
+#        terraform_wrapper: false
+#
+#    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#    - name: Terraform Init
+#      run: terraform init -upgrade -reconfigure --backend-config="key=terraform.$ENV.state"
+#
+#    # Select or create and then select a Terraform workspace
+#    - name: Terraform Workspace
+#      run: terraform workspace select $ENV || terraform workspace new $ENV
+#
+#    # Checks that all Terraform configuration files adhere to a canonical format
+#    - name: Terraform Format
+#      run: terraform fmt --recursive -check
+#
+#    # Validates Terraform configuration
+#    - name: Terraform Validate
+#      run: terraform validate
+#
+#    # Generates an execution plan for Terraform
+#    - name: Terraform Plan
+#      run: terraform plan
+#
+#      # On push to main, build or change infrastructure according to Terraform configuration files
+#      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+#    - name: Terraform Apply
+#      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#      run: terraform apply -auto-approve
+#
+#    - name: Run the deployment script
+#      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#      run: make deploy
