@@ -46,14 +46,6 @@ output "cloudwatch_exporter_iam_role_arn" {
   value = aws_iam_role.cloudwatch_exporter.arn
 }
 
-output "cloudwatch_exporter_development_iam_role_arn" {
-  value = aws_iam_role.cloudwatch_exporter_development != [] ? aws_iam_role.cloudwatch_exporter_development[0].arn : ""
-}
-
-output "cloudwatch_exporter_pre_production_iam_role_arn" {
-  value = aws_iam_role.cloudwatch_exporter_pre_production != [] ? aws_iam_role.cloudwatch_exporter_pre_production[0].arn : ""
-}
-
 output "db_endpoint" {
   value = aws_db_instance.this.endpoint
 }
