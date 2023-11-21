@@ -34,8 +34,14 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "available_zones" {
-  count = 1
+  count = local.always_create
   state = "available"
+}
+
+locals {
+  ## work around to prevent destruction of exisisting resources in production
+  ## avoids risk of importing into state file of live services.
+  always_create = 1
 }
 
 module "label" {
@@ -51,7 +57,7 @@ module "vpc_label" {
 }
 
 module "vpc" {
-  count                          = 1
+  count                          = local.always_create
   source                         = "./modules/vpc"
   prefix                         = module.vpc_label.id
   cidr                           = "10.180.100.0/22"
@@ -78,7 +84,7 @@ module "eks_label" {
 }
 
 module "eks" {
-  count                       = 1
+  count                       = local.always_create
   source                      = "./modules/eks"
   prefix                      = module.eks_label.id
   vpc_id                      = module.vpc[0].vpc_id
