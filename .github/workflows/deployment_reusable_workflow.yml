@@ -99,6 +99,6 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
-      - name: Run the deployment script
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: make deploy
+      # - name: Run the deployment script
+      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      #   run: make deploy
