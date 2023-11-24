@@ -3,10 +3,10 @@ name: Deployment
 on:
   pull_request:
     branches:
-      - "main"
+      - "feature/ingress-loadbalancer-fix"
   push:
     branches:
-      - "main"
+      - "feature/ingress-loadbalancer-fix"
 
 permissions:
   id-token: write
