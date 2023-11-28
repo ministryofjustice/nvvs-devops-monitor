@@ -1,80 +1,160 @@
 #!make
--include .env
-export
+.DEFAULT_GOAL := help
+SHELL := '/bin/bash'
 
-deploy:
-	./scripts/deploy.sh
+CURRENT_TIME := `date "+%Y.%m.%d-%H.%M.%S"`
+TERRAFORM_VERSION := `cat versions.tf 2> /dev/null | grep required_version | cut -d "\\"" -f 2 | cut -d " " -f 2`
 
-uninstall:
-	./scripts/uninstall_all_deployments.sh
+LOCAL_IMAGE := ministryofjustice/nvvs/terraforms:latest
+DOCKER_IMAGE := ghcr.io/ministryofjustice/nvvs/terraforms:v0.2.0
 
-fmt:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform fmt --recursive
+DOCKER_RUN := @docker run --rm \
+				--env-file <(aws-vault exec $$AWS_PROFILE -- env | grep ^AWS_) \
+				--env-file <(env | grep ^TF_VAR_) \
+				--env-file <(env | grep ^ENV) \
+				-e TFENV_TERRAFORM_VERSION=$(TERRAFORM_VERSION) \
+				-v `pwd`:/data \
+				--workdir /data \
+				--platform linux/amd64 \
+				$(DOCKER_IMAGE)
 
-init:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform init -reconfigure \
-	--backend-config="key=terraform.$$ENV.state"
+DOCKER_RUN_IT := @docker run --rm -it \
+				--env-file <(aws-vault exec $$AWS_PROFILE -- env | grep ^AWS_) \
+				--env-file <(env | grep ^TF_VAR_) \
+				--env-file <(env | grep ^ENV) \
+				-e TFENV_TERRAFORM_VERSION=$(TERRAFORM_VERSION) \
+				-v `pwd`:/data \
+				--workdir /data \
+				--platform linux/amd64 \
+				$(DOCKER_IMAGE)
 
-init-upgrade:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform init -upgrade \
-	--backend-config="key=terraform.$$ENV.state"
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
-# How to use
-# IMPORT_ARGUMENT=module.foo.bar some_resource make import
-import:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform import $$IMPORT_ARGUMENT
+.PHONY: debug
+debug:  ## debug
+	@echo "debug"
+	$(info target is $@)
 
-workspace-list:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform workspace list
+.PHONY: aws
+aws:  ## provide aws cli command as an arg e.g. (make aws AWSCLI_ARGUMENT="s3 ls")
+	$(DOCKER_RUN) /bin/bash -c "aws $$AWSCLI_ARGUMENT"
 
-workspace-select:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform workspace select $$ENV || \
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform workspace new $$ENV
+.PHONY: shell
+shell: ## Run Docker container with interactive terminal
+	$(DOCKER_RUN_IT) /bin/bash
 
-validate:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform validate
+.PHONY: fmt
+fmt: ## terraform fmt
+	$(DOCKER_RUN) terraform fmt --recursive
 
-plan-out:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform plan -no-color > $$ENV.tfplan
+.PHONY: init
+init: ## terraform init (make init ENV_ARGUMENT=pre-production) NOTE: Will also select the env's workspace.
 
-plan:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform plan
+## INFO: Do not indent the conditional below, make stops with an error.
+ifneq ("$(wildcard .env)","")
+$(info Using config file ".env")
+include .env
+init: -init
+else
+$(info Config file ".env" does not exist.)
+init: -init-gen-env
+endif
 
-refresh:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform refresh
+.PHONY: -init-gen-env
+-init-gen-env:
+	$(MAKE) gen-env
 
-output:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform output -json
+.PHONY: -init
+-init:
+	$(DOCKER_RUN) terraform init --backend-config="key=terraform.$$ENV.state"
+	$(MAKE) workspace-select
 
-apply:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform apply
-	./scripts/publish_terraform_outputs.sh
+.PHONY: init-upgrade
+init-upgrade: ## terraform init -upgrade
+	$(DOCKER_RUN) terraform init -upgrade --backend-config="key=terraform.$$ENV.state"
 
-state-list:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform state list
+.PHONY: import
+import: ## terraform import e.g. (make import IMPORT_ARGUMENT=module.foo.bar some_resource)
+	$(DOCKER_RUN) terraform import $$IMPORT_ARGUMENT
 
-show:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform show -no-color
+.PHONY: workspace-list
+workspace-list: ## terraform workspace list
+	$(DOCKER_RUN) terraform workspace list
 
-destroy:
-	aws-vault exec $$AWS_VAULT_PROFILE -- terraform destroy
+.PHONY: workspace-select
+workspace-select: ## terraform workspace select
+	$(DOCKER_RUN) terraform workspace select $$ENV || \
+	$(DOCKER_RUN) terraform workspace new $$ENV
 
-clean:
-	rm -rf .terraform/ terraform.tfstate*
+.PHONY: validate
+validate: ## terraform validate
+	$(DOCKER_RUN) terraform validate
 
-tfenv:
-	tfenv use $(cat versions.tf 2> /dev/null | grep required_version | cut -d "\"" -f 2 | cut -d " " -f 2) && tfenv pin
+.PHONY: plan-out
+plan-out: ## terraform plan - output to timestamped file
+	$(DOCKER_RUN) terraform plan -no-color > $$ENV.$(CURRENT_TIME).tfplan
 
-generate_diagrams:
-	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/architecture_diagram.py
-	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/detailed_eks_diagram.py
+.PHONY: plan
+plan: ## terraform plan
+	$(DOCKER_RUN) terraform plan
 
-.PHONY:
-	fmt init workspace-list workspace-select validate plan-out plan \
-	refresh output apply state-list show destroy clean tfenv
+.PHONY: refresh
+refresh: ## terraform refresh
+	$(DOCKER_RUN) terraform refresh
 
+.PHONY: output
+output: ## terraform output (make output OUTPUT_ARGUMENT='--raw dns_dhcp_vpc_id')
+	$(DOCKER_RUN) terraform output -no-color $$OUTPUT_ARGUMENT
+
+.PHONY: apply
+apply: ## terraform apply
+	$(DOCKER_RUN_IT) terraform apply
+	$(DOCKER_RUN) /bin/bash -c "./scripts/publish_terraform_outputs.sh"
+
+.PHONY: state-list
+state-list: ## terraform state list
+	$(DOCKER_RUN) terraform state list
+
+.PHONY: show
+show: ## terraform show
+	$(DOCKER_RUN) terraform show -no-color
+
+.PHONY: destroy
+destroy: ## terraform destroy
+	$(DOCKER_RUN) terraform destroy
 
 .PHONY: lock
 lock: ## terraform providers lock (reset hashes after upgrades prior to commit)
 	rm .terraform.lock.hcl
 	$(DOCKER_RUN) terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
+
+.PHONY: clean
+clean: ## clean terraform cached providers etc
+	rm -rf .terraform/ terraform.tfstate* .env .env.tmp
+	## Sometimes engineers forget to remove the unnecessary TFVARs file and create issues
+	## We move it safely out of the way
+	if test -f terraform.tfvars; then mv terraform.tfvars terraform.tfvars.DELETE_ME; fi
+
+.PHONY: gen-env
+gen-env: ## generate a ".env" file with the correct TF_VARS for the environment e.g. (make gen-env ENV_ARGUMENT=pre-production)
+	$(DOCKER_RUN) /bin/bash -c "./scripts/generate-env-file.sh $$ENV_ARGUMENT"
+
+.PHONY: tfenv
+tfenv: ## tfenv pin - terraform version from versions.tf
+	tfenv use $(cat versions.tf 2> /dev/null | grep required_version | cut -d "\"" -f 2 | cut -d " " -f 2) && tfenv pin
+
+.PHONY: deploy
+deploy: ## deploy
+	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/deploy.sh"
+
+.PHONY: uninstall
+uninstall: ## uninstall
+	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/uninstall_all_deployments.sh"
+
+.PHONY: generate_diagrams
+generate_diagrams: ## generate_diagrams
+	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/architecture_diagram.py
+	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/detailed_eks_diagram.py
+
+help:
+	@grep -h -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
