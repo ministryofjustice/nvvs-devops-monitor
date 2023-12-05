@@ -3,10 +3,10 @@ name: Deployment
 on:
   pull_request:
     branches:
-      - "main"
+      - "deploy-dev"
   push:
     branches:
-      - "main"
+      - "deploy-dev"
 
 permissions:
   id-token: write
