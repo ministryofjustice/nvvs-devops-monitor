@@ -59,6 +59,10 @@ set_variables() {
   production_account_id=`aws ssm get-parameter --name "/codebuild/production/account_id" --with-decryption --query Parameter.Value --output text`
   pre_production_account_id=`aws ssm get-parameter --name "/codebuild/pre-production/account_id" --with-decryption --query Parameter.Value --output text`
   development_account_id=`aws ssm get-parameter --name "/codebuild/development/account_id" --with-decryption --query Parameter.Value --output text`
+
+  # Retrieve username and password for prometheus ingress
+  existing_username=$(aws ssm get-parameter --name /codebuild/dhcp/admin/api/${namespace}_prometheus_ingress_username --with-decryption --query 'Parameter.Value' --output text 2>/dev/null)
+  existing_password=$(aws ssm get-parameter --name /codebuild/dhcp/admin/api/${namespace}_prometheus_ingress_password --with-decryption  --query 'Parameter.Value' --output text 2>/dev/null)
 }
 
 base64_encode() {
@@ -109,6 +113,46 @@ EOL
   kubectl config use-context $eks_cluster_name
 }
 
+generate_and_store_prometheus_ingress_credentials() {
+
+    # Check if the credentials could not be retrieved
+    if [ -z "$existing_username" ] || [ -z "$existing_password" ]; then
+        echo "Error: Failed to retrieve both the username and password from AWS SSM Parameter Store."
+        exit 1
+    fi
+    # Check if the Kubernetes secret already exists
+    secret_exists=$(kubectl get secret prometheus-basic-auth -n monitoring --ignore-not-found=true -o jsonpath='{.metadata.name}')
+    if [ -n "$secret_exists" ]; then
+        echo "Kubernetes secret 'prometheus-basic-auth' already exists. Skipping generation of credentials."
+    else
+        # Generate htpasswd entry
+        htpasswd -b -B -c ./auth "$existing_username" "$existing_password"
+        # Store the username and password in Kubernetes Secret
+        kubectl create secret generic prometheus-basic-auth \
+            --from-file=auth \
+            -n monitoring
+        # Clean up the temporary auth file
+        rm ./auth
+        echo "Kubernetes secret 'prometheus-basic-auth' generated and stored."
+    fi
+
+    # Check if the Kubernetes secret already exists in grafana namespace
+    secret_exists_grafana=$(kubectl get secret prometheus-basic-auth -n grafana --ignore-not-found=true -o jsonpath='{.metadata.name}')
+    if [ -n "$secret_exists_grafana" ]; then
+        echo "Kubernetes secret 'prometheus-basic-auth' already exists in the grafana namespace. Skipping generation of credentials for grafana namespace."
+    else
+        # Generate htpasswd entry
+        htpasswd -b -B -c ./auth "$existing_username" "$existing_password"
+        # Store the username and password in Kubernetes Secret in grafana namespace
+        kubectl create secret generic prometheus-basic-auth \
+            --from-file=auth \
+            -n grafana
+        # Clean up the temporary auth file
+        rm ./auth
+        echo "Kubernetes secret 'prometheus-basic-auth' generated and stored in the grafana namespace."
+    fi
+}
+
 deploy_kube-prometheus-stack() {
   printf "\n${ORANGE}############# ${PURPLE}Deploying Kube prometheus stack ${ORANGE}#############${NC}\n"
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -125,9 +169,10 @@ deploy_kube-prometheus-stack() {
     --set alertmanager.config.global.smtp_auth_username=$alertmanager_smtp_user \
     --set alertmanager.config.global.smtp_auth_password=$alertmanager_smtp_password \
     --set alertmanager.config.global.pagerduty_url="https://events.pagerduty.com/v2/enqueue"
-}
+   }
 
 deploy_thanos_stack() {
+  namespace="monitoring"
   printf "\n${ORANGE}############# ${PURPLE}Deploying thanos stack ${ORANGE}#############${NC}\n"
   helm repo add bitnami https://charts.bitnami.com/bitnami
   helm upgrade --install thanos bitnami/thanos \
@@ -143,10 +188,27 @@ config:
   endpoint: 's3.eu-west-2.amazonaws.com'
 "
   # Create a datasource for Grafana
-  kubectl apply -f ./k8s-configmaps/thanos-query-grafana-datasource.yaml -n monitoring
+  kubectl apply -f ./k8s-configmaps/thanos-query-grafana-datasource.yaml -n $namespace
 
   # Create a dashboard for Grafana with the metrics from the ServiceMonitor\
-  kubectl apply -f ./k8s-configmaps/thanos-overview-grafana-dashboard.yaml -n monitoring
+  kubectl apply -f ./k8s-configmaps/thanos-overview-grafana-dashboard.yaml -n $namespace
+
+# Implement additional Ingress to protect exposed  /metrics endpoint
+  # Replace the placeholder in the template file
+  sed "s/{{ .Values.hostPlaceholder }}/${thanos_domain}/" k8s-values/k8s-additional-resources/thanos-additional-ingress-template.yaml \
+| sed "s/{{ .Values.ingressNamePlaceholder }}/thanos-receive-metrics/" \
+| sed "s/{{ .Values.PortNumberPlaceholder }}/http/" \
+| sed "s/{{ .Values.ServiceNamePlaceholder }}/thanos-receive/" > k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml
+
+  # Apply the modified configuration
+  kubectl apply -f k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml -n $namespace
+
+  if [ -e "k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml" ]; then
+    rm "k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml"
+  else
+    echo "Skipping clean at this time."
+  fi
+
 }
 
 deploy_shared_resources_helm_chart() {
@@ -225,14 +287,15 @@ deploy_ingress_nginx() {
 }
 
 deploy_grafana() {
+  namespace="grafana"
   printf "\n${ORANGE}############# ${PURPLE}Deploying Grafana ${ORANGE}#############${NC}\n"
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo update
   helm upgrade --install grafana grafana/grafana \
     -f ./k8s-values/values.grafana.yaml \
-    -n grafana \
+    -n $namespace \
     --create-namespace \
-    --set ingress.hosts[0]=$application_domain \
+    --set ingress.hosts={$application_domain} \
     --set env.GF_AUTH_AZUREAD_CLIENT_ID=$AZUREAD_CLIENT_ID \
     --set env.GF_AUTH_AZUREAD_CLIENT_SECRET=$AZUREAD_CLIENT_SECRET \
     --set env.GF_AUTH_AZUREAD_AUTH_URL=$AZUREAD_AUTH_URL \
@@ -243,7 +306,23 @@ deploy_grafana() {
     --set env.GF_DATABASE_USER=$DB_USERNAME \
     --set env.GF_DATABASE_PASSWORD=$DB_PASSWORD \
     --set env.GF_DATABASE_NAME=$DB_NAME
-  kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n grafana
+  kubectl apply -f ./k8s-persistent-volume-claims/grafana-persistent-volume-claim.yaml -n $namespace
+
+# Implement additional Ingress to protect exposed  /metrics endpoint
+  # Replace the placeholder in the template file
+  sed "s/{{ .Values.hostPlaceholder }}/${application_domain}/" k8s-values/k8s-additional-resources/grafana-additional-ingress-template.yaml \
+| sed "s/{{ .Values.ingressNamePlaceholder }}/grafana/" \
+| sed "s/{{ .Values.PortNumberPlaceholder }}/80/" \
+| sed "s/{{ .Values.ServiceNamePlaceholder }}/grafana/" > k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml
+  # Apply the modified configuration
+  kubectl apply -f k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml -n $namespace
+  # Clean up temporary files
+  if [ -e "k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml" ]; then
+    rm "k8s-values/k8s-additional-resources/$namespace-prometheus-metrics-ingress.yaml"
+  else
+    echo "Skipping clean at this time."
+  fi
+
 }
 
 deploy_cns_team_monitoring() {
@@ -283,6 +362,7 @@ main() {
   deploy_external_dns
   deploy_ingress_nginx
   deploy_grafana
+  generate_and_store_prometheus_ingress_credentials
   deploy_cns_team_monitoring
 }
 

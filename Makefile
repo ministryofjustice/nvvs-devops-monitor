@@ -6,7 +6,7 @@ CURRENT_TIME := `date "+%Y.%m.%d-%H.%M.%S"`
 TERRAFORM_VERSION := `cat versions.tf 2> /dev/null | grep required_version | cut -d "\\"" -f 2 | cut -d " " -f 2`
 
 LOCAL_IMAGE := ministryofjustice/nvvs/terraforms:latest
-DOCKER_IMAGE := ghcr.io/ministryofjustice/nvvs/terraforms:v0.2.0
+DOCKER_IMAGE := ghcr.io/ministryofjustice/nvvs/terraforms:v0.1.1
 
 DOCKER_RUN := @docker run --rm \
 				--env-file <(aws-vault exec $$AWS_PROFILE -- env | grep ^AWS_) \
@@ -14,6 +14,8 @@ DOCKER_RUN := @docker run --rm \
 				--env-file <(env | grep ^ENV) \
 				-e TFENV_TERRAFORM_VERSION=$(TERRAFORM_VERSION) \
 				-v `pwd`:/data \
+				-v $(HOME)/.kube/config:/root/.kube/config \
+				-v $(HOME)/.aws/config:/root/.aws/config \
 				--workdir /data \
 				--platform linux/amd64 \
 				$(DOCKER_IMAGE)
@@ -24,6 +26,8 @@ DOCKER_RUN_IT := @docker run --rm -it \
 				--env-file <(env | grep ^ENV) \
 				-e TFENV_TERRAFORM_VERSION=$(TERRAFORM_VERSION) \
 				-v `pwd`:/data \
+				-v $(HOME)/.kube/config:/root/.kube/config \
+				-v $(HOME)/.aws/config:/root/.aws/config \
 				--workdir /data \
 				--platform linux/amd64 \
 				$(DOCKER_IMAGE)
