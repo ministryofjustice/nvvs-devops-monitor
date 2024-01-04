@@ -1,0 +1,177 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: monitoring
+    prometheus-operator-validated: "true"
+  creationTimestamp: "2022-08-25T09:36:30Z"
+  generation: 1
+  labels:
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    heritage: Helm
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}.dns-dhcp.rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: dns-dhcp.rules
+    rules:
+    - alert: DHCP KEA Configuration Reload Failed
+      expr: aws_kea_dhcp_config_reload_failed_sum{account_id="{{ .Values.development_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: The configuration reload has failed
+        description: The {{ "{{ $labels.name }}" }} Configuration reload has failed {{ "{{ $value }}" }} time(s).
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP ECS Task count
+      expr: aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName="staff-device-development-dhcp-cluster"} < 1
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP ECS Task count is below 1
+        description: The ECS task count is below 1 for DHCP
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP ECS High CPU/Memory Alert
+      expr: aws_ecs_cpuutilization_average{dimension_ClusterName="staff-device-development-dhcp-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="staff-device-development-dhcp-cluster"} > 60
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP ECS CPU or MemoryUtilization is above 60 percent
+        description: The Memory or CPU is currently {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP KEA Failed Leases
+      expr: aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum{account_id="{{ .Values.development_account_id }}" } > 10
+      for: 10m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: KEA DHCP Failed leases > 10
+        description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP KEA Server Alert
+      expr: aws_kea_dhcp_error_sum{account_id="{{ .Values.development_account_id }}" } > 150 or aws_kea_dhcp_fatal_sum{account_id="{{ .Values.development_account_id }}" } > 150
+      for: 7m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP KEA Server Alert ERROR or FATAL > 150
+        description: The server alert ERROR or FATAL is greater than 150. The current value is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP RDS CPU Alert
+      expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="staff-device-development-dhcp-db"} > 60
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP RDS CPU is above 60 percent
+        description: The RDS CPU for DHCP has been above 60 percent for 5 minutes.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP Subnet Usage Alert
+      expr: subnet_statistics_usage > 80
+      for: 5m
+      labels:
+        severity: warning
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP Subnet utilisation > 80%
+        description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DHCP Subnet Usage Alert
+      expr: subnet_statistics_usage > 90
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DHCP Subnet utilisation > 90%
+        description: The DHCP Subnet utilisation has been above 90 percent for 5 minutes.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: DNS ECS High CPU/Memory Alert
+      expr: aws_ecs_cpuutilization_average{dimension_ClusterName="staff-device-development-dns-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="staff-device-development-dns-cluster"} > 60
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DNS ECS CPU or MemoryUtilization is above 60 percent
+        description: The Memory or CPU is currently {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+    - alert: DNS ECS Unhealthy Container Alert
+      expr: aws_networkelb_un_healthy_host_count_minimum{dimension_LoadBalancer=~".+dns.+",account_id="{{ .Values.development_account_id }}"} > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DNS ECS Unhealthy Container is above 0
+        description: Unhealthy Container count is currently {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+    - alert: DNS ECS Task Count
+      expr: aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName="staff-device-development-dns-cluster"} < 1
+      for: 5m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: DNS ECS Task count is below 1
+        description: The ECS task count has fallen below 1 for DNS.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+    - alert: Missing Request Metrics for Development
+      expr: absent_over_time(aws_kea_dhcp_pkt4_request_received_average{account_id="{{ .Values.development_account_id }}" }[10m]) == 1
+      for: 10m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: Missing request metrics for Development
+        description: No metrics recieved for 10m.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: Missing Offer Metrics for Development
+      expr: absent_over_time(aws_kea_dhcp_pkt4_offer_sent_average{account_id="{{ .Values.development_account_id }}" }[10m]) == 1
+      for: 10m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: Missing offer metrics for Development
+        description: No metrics recieved for 10m.
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+    - alert: Prometheus_Build_Info Alert
+      expr: prometheus_build_info{instance="localhost:9090"} > 1
+      for: 1m
+      labels:
+        severity: critical
+        service: DNS DHCP Dev Dev PreProd
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: Prometheus_build_info is above 0.5
+        description: prometheus_build_info of {{ "{{ $labels.instance }}" }} in {{ "{{ $labels.job }}" }} is currently {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/lux4rd0labs_loki_syslog_aio_01/proto-loki-syslog-overview?orgId=1&refresh=30s
