@@ -50,6 +50,8 @@ set_variables() {
   pagerduty_routing_key=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/pagerduty_routing_key" --with-decryption --query Parameter.Value --output text`
   ima_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/development/mojo-ima-platform-alerts_slack_webhook_url" --with-decryption --query Parameter.Value --output text`
   dhcp_dns_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/production/mojo-staff-device-dhcp-dns-alerts_slackwebhook" --with-decryption --query Parameter.Value --output text`
+  pre_production_dhcp_dns_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/pre-production/mojo-staff-device-dhcp-dns-alerts_slackwebhook" --with-decryption --query Parameter.Value --output text`
+  development_dhcp_dns_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/development/mojo-staff-device-dhcp-dns-alerts_slackwebhook" --with-decryption --query Parameter.Value --output text`
   certificate_services_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/pki-alerts" --with-decryption --query Parameter.Value --output text`
   networks_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-ima-pipeline/production/slack_webhook_url/mojdt-network-alerts" --with-decryption --query Parameter.Value --output text`
   ost_slack_webhook_url=`aws ssm get-parameter --name "/codebuild/pttp-ci-datasource-config-pipeline/production/ost_slack_webhook_url" --with-decryption --query Parameter.Value --output text`
@@ -262,6 +264,8 @@ deploy_cns_team_monitoring() {
     --set alertmanager.alert_rules.pagerduty_routing_key=`base64_encode $pagerduty_routing_key` \
     --set alertmanager.alert_rules.ima_slack_webhook_url=`base64_encode $ima_slack_webhook_url` \
     --set alertmanager.alert_rules.dhcp_dns_slack_webhook_url=`base64_encode $dhcp_dns_slack_webhook_url` \
+    --set alertmanager.alert_rules.pre_production_dhcp_dns_slack_webhook_url=`base64_encode $pre_production_dhcp_dns_slack_webhook_url` \
+    --set alertmanager.alert_rules.development_dhcp_dns_slack_webhook_url=`base64_encode $development_dhcp_dns_slack_webhook_url` \
     --set alertmanager.alert_rules.certificate_services_slack_webhook_url=`base64_encode $certificate_services_slack_webhook_url` \
     --set alertmanager.alert_rules.networks_slack_webhook_url=`base64_encode $networks_slack_webhook_url` \
     --set alertmanager.alert_rules.ost_slack_webhook_url=`base64_encode $ost_slack_webhook_url` \
@@ -292,4 +296,3 @@ if `terraform output enabled`; then
 else
   printf "\n${ORANGE}############# ${PURPLE}Nothing to deploy as environment: `terraform output -raw terraform_workspace` is not enabled ${ORANGE}#############${NC}\n"
 fi
-
