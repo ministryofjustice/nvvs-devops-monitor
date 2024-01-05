@@ -22,3 +22,5 @@ alertmanager:
     network_access_control_production_slack_webhook_url: ""
     network_access_control_pre_production_slack_webhook_url: ""
     network_access_control_critical_slack_webhook_url: ""
+    pre_production_dhcp_dns_slack_webhook_url: ""
+    development_dhcp_dns_slack_webhook_url: ""
