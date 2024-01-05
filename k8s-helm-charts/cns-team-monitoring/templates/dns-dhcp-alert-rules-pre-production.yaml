@@ -26,152 +26,152 @@ spec:
       for: 1m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: The configuration reload has failed
         description: The {{ "{{ $labels.name }}" }} Configuration reload has failed {{ "{{ $value }}" }} time(s).
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP ECS Task count
       expr: aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName="staff-device-pre-production-dhcp-cluster"} < 1
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP ECS Task count is below 1
         description: The ECS task count is below 1 for DHCP
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP ECS High CPU/Memory Alert
       expr: aws_ecs_cpuutilization_average{dimension_ClusterName="staff-device-pre-production-dhcp-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="staff-device-pre-production-dhcp-cluster"} > 60
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP KEA Failed Leases
       expr: aws_kea_dhcp_alloc_engine_v4_alloc_fail_sum{account_id="{{ .Values.pre_production_account_id }}" } > 10
       for: 10m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: KEA DHCP Failed leases > 10
         description: KEA DHCP Failed leases is greater than 10. The current value is {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP KEA Server Alert
       expr: aws_kea_dhcp_error_sum{account_id="{{ .Values.pre_production_account_id }}" } > 150 or aws_kea_dhcp_fatal_sum{account_id="{{ .Values.pre_production_account_id }}" } > 150
       for: 7m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP KEA Server Alert ERROR or FATAL > 150
         description: The server alert ERROR or FATAL is greater than 150. The current value is {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP RDS CPU Alert
       expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="staff-device-pre-production-dhcp-db"} > 60
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP RDS CPU is above 60 percent
         description: The RDS CPU for DHCP has been above 60 percent for 5 minutes.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP Subnet Usage Alert
       expr: subnet_statistics_usage > 80
       for: 5m
       labels:
         severity: warning
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP Subnet utilisation > 80%
         description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DHCP Subnet Usage Alert
       expr: subnet_statistics_usage > 90
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DHCP Subnet utilisation > 90%
         description: The DHCP Subnet utilisation has been above 90 percent for 5 minutes.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: DNS ECS High CPU/Memory Alert
       expr: aws_ecs_cpuutilization_average{dimension_ClusterName="staff-device-pre-production-dns-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="staff-device-pre-production-dns-cluster"} > 60
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DNS ECS CPU or MemoryUtilization is above 60 percent
         description: The Memory or CPU is currently {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics?orgId=1&var-account_id=473630360727
     - alert: DNS ECS Unhealthy Container Alert
       expr: aws_networkelb_un_healthy_host_count_minimum{dimension_LoadBalancer=~".+dns.+",account_id="{{ .Values.pre_production_account_id }}"} > 0
       for: 1m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DNS ECS Unhealthy Container is above 0
         description: Unhealthy Container count is currently {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics?orgId=1&var-account_id=473630360727
     - alert: DNS ECS Task Count
       expr: aws_ecs_containerinsights_running_task_count_average{dimension_ClusterName="staff-device-pre-production-dns-cluster"} < 1
       for: 5m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: DNS ECS Task count is below 1
         description: The ECS task count has fallen below 1 for DNS.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/tm5gLH1Gz/bind-dns-metrics?orgId=1&var-account_id=473630360727
     - alert: Missing Request Metrics for Pre Production
       expr: absent_over_time(aws_kea_dhcp_pkt4_request_received_average{account_id="{{ .Values.pre_production_account_id }}" }[10m]) == 1
       for: 10m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: Missing request metrics for Pre Production
         description: No metrics recieved for 10m.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: Missing Offer Metrics for Pre Production
       expr: absent_over_time(aws_kea_dhcp_pkt4_offer_sent_average{account_id="{{ .Values.pre_production_account_id }}" }[10m]) == 1
       for: 10m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: Missing offer metrics for Pre Production
         description: No metrics recieved for 10m.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics?orgId=1&refresh=1m&var-account_id=473630360727
     - alert: Prometheus_Build_Info Alert
       expr: prometheus_build_info{instance="localhost:9090"} > 1
       for: 1m
       labels:
         severity: critical
-        service: DNS DHCP PreProd
+        service: DNS DHCP Dev PreProd
         namespace: {{ .Release.Namespace }}
       annotations:
         summary: Prometheus_build_info is above 0.5
         description: prometheus_build_info of {{ "{{ $labels.instance }}" }} in {{ "{{ $labels.job }}" }} is currently {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/lux4rd0labs_loki_syslog_aio_01/proto-loki-syslog-overview?orgId=1&refresh=30s
+        grafana_dashboard_url: ""

@@ -29,22 +29,6 @@ spec:
             value: DNS DHCP
           - name: severity
             value: critical
-      - receiver: NVVS DevOps Critical Dev
-        groupWait: 10s
-        repeatInterval: 24h
-        matchers:
-          - name: service
-            value: DNS DHCP Dev
-          - name: severity
-            value: critical
-      - receiver: NVVS DevOps Critical PreProd
-        groupWait: 10s
-        repeatInterval: 24h
-        matchers:
-          - name: service
-            value: DNS DHCP PreProd
-          - name: severity
-            value: critical
       - receiver: NVVS DevOps
         groupWait: 10s
         repeatInterval: 24h
@@ -53,20 +37,14 @@ spec:
             value: DNS DHCP
           - name: severity
             value: warning
-      - receiver: NVVS DevOps Dev
+      - receiver: NVVS DevOps Dev PreProd
         groupWait: 10s
         repeatInterval: 24h
         matchers:
           - name: service
-            value: DNS DHCP Dev
+            value: DNS DHCP Dev PreProd
           - name: severity
-            value: warning
-      - receiver: NVVS DevOps PreProd
-        groupWait: 10s
-        repeatInterval: 24h
-        matchers:
-          - name: service
-            value: DNS DHCP PreProd
+            value: critical
           - name: severity
             value: warning
       - receiver: Team PKI
@@ -138,20 +116,7 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-    - name: NVVS DevOps
-      slackConfigs:
-        - apiURL:
-            key: dhcp_dns_slack_webhook_url
-            name: slack-webhooks
-            optional: false
-          channel: '#mojo-staff-device-dhcp-dns-alerts'
-          sendResolved: true
-          title: {{`'{{ template "slack.alerts.title" . }}'`}}
-          text: {{`'{{ template "slack.alerts.text" . }}'`}}
-          username: {{`'{{ template "slack.alerts.username" . }}'`}}
-          color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-    - name: NVVS DevOps Dev
+    - name: NVVS DevOps Dev PreProd
       slackConfigs:
         - apiURL:
             key: development_dhcp_dns_slack_webhook_url
@@ -164,10 +129,10 @@ spec:
           username: {{`'{{ template "slack.alerts.username" . }}'`}}
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-    - name: NVVS DevOps PreProd
+    - name: NVVS DevOps
       slackConfigs:
         - apiURL:
-            key: pre_production_dhcp_dns_slack_webhook_url
+            key: dhcp_dns_slack_webhook_url
             name: slack-webhooks
             optional: false
           channel: '#mojo-staff-device-dhcp-dns-alerts'
@@ -184,40 +149,6 @@ spec:
             name: slack-webhooks
             optional: false
           channel: '#mojo-staff-device-dhcp-dns-alerts'
-          sendResolved: true
-          title: {{`'{{ template "slack.alerts.title" . }}'`}}
-          text: {{`'{{ template "slack.alerts.text" . }}'`}}
-          username: {{`'{{ template "slack.alerts.username" . }}'`}}
-          color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-      pagerdutyConfigs:
-        - routingKey:
-            key: pagerduty_routing_key
-            name: slack-webhooks
-    - name: NVVS DevOps Critical Dev
-      slackConfigs:
-        - apiURL:
-            key: development_dhcp_dns_slack_webhook_url
-            name: slack-webhooks
-            optional: false
-          channel: '#mojo-staff-device-dhcp-dns-alerts-dev-preprod'
-          sendResolved: true
-          title: {{`'{{ template "slack.alerts.title" . }}'`}}
-          text: {{`'{{ template "slack.alerts.text" . }}'`}}
-          username: {{`'{{ template "slack.alerts.username" . }}'`}}
-          color: {{`'{{ template "slack.alerts.color" . }}'`}}
-          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
-      pagerdutyConfigs:
-        - routingKey:
-            key: pagerduty_routing_key
-            name: slack-webhooks
-    - name: NVVS DevOps Critical PreProd
-      slackConfigs:
-        - apiURL:
-            key: pre_production_dhcp_dns_slack_webhook_url
-            name: slack-webhooks
-            optional: false
-          channel: '#mojo-staff-device-dhcp-dns-alerts-dev-preprod'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
