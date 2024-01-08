@@ -128,7 +128,7 @@ spec:
             key: development_pre_production_dhcp_dns_slack_webhook_url
             name: slack-webhooks
             optional: false
-          channel: '#mojo-staff-device-dhcp-dns-alerts'
+          channel: '#mojo-staff-device-dhcp-dns-alerts-dev-preprod'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
@@ -141,7 +141,7 @@ spec:
             key: development_pre_production_dhcp_dns_slack_webhook_url
             name: slack-webhooks
             optional: false
-          channel: '#mojo-staff-device-dhcp-dns-alerts'
+          channel: '#mojo-staff-device-dhcp-dns-alerts-dev-preprod'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
