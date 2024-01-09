@@ -62,7 +62,7 @@ module "vpc" {
   prefix                         = module.vpc_label.id
   cidr                           = "10.180.100.0/22"
   region                         = var.aws_region
-  available_zones                = var.enabled ? data.aws_availability_zones.available_zones[0].zone_ids : ["eu-west-2a"] // If environment off lower VPC avilability
+  available_zones                = data.aws_availability_zones.available_zones[0].zone_ids
   enable_transit_gateway         = var.enable_transit_gateway
   transit_gateway_id             = var.transit_gateway_id
   transit_gateway_route_table_id = var.transit_gateway_route_table_id
