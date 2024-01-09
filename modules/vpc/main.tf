@@ -14,9 +14,9 @@ module "vpc" {
   manage_default_security_group = var.manage_default_security_group
   manage_default_route_table    = var.manage_default_route_table
   reuse_nat_ips                 = terraform.workspace == "development" || terraform.workspace == "pre-production" ? false : true
-  external_nat_ip_ids           = terraform.workspace == "development" || terraform.workspace == "pre-production" ?  [] : aws_eip.gw.*.id
+  external_nat_ip_ids           = terraform.workspace == "development" || terraform.workspace == "pre-production" ? [] : aws_eip.gw.*.id
   // Lower costs, by lowering availability
-  single_nat_gateway            = terraform.workspace == "development" || terraform.workspace == "pre-production" ? true : false
+  single_nat_gateway = terraform.workspace == "development" || terraform.workspace == "pre-production" ? true : false
 
   private_subnets = [for cidr_block in cidrsubnets(var.cidr, 2, 2, 2) : cidrsubnets(cidr_block, 1, 1)[0]]
   private_subnet_tags = merge(
