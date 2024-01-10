@@ -1,3 +1,7 @@
+locals {
+  is_production = terraform.workspace == "production" ? true : false
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.1"
