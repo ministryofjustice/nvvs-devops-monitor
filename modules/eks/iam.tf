@@ -438,7 +438,7 @@ data "aws_iam_policy_document" "cloudwatch_exporter_assume_role_policy_other_aws
 # IAM role for Cloudwatch Exporter in development aws account
 
 resource "aws_iam_role" "cloudwatch_exporter_development" {
-  count      = local.is_production  ? 1 : 0
+  count              = local.is_production ? 1 : 0
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
   name               = "${var.prefix}-CloudwatchExporter"
 
@@ -448,7 +448,7 @@ resource "aws_iam_role" "cloudwatch_exporter_development" {
 }
 
 resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_development" {
-  count      = local.is_production  ? 1 : 0
+  count       = local.is_production ? 1 : 0
   name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
   path        = "/"
   description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
@@ -461,7 +461,7 @@ resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_development" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_development" {
-  count      = local.is_production  ? 1 : 0
+  count      = local.is_production ? 1 : 0
   policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_development[0].arn
   role       = aws_iam_role.cloudwatch_exporter_development[0].name
 
@@ -469,7 +469,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_develop
 }
 
 resource "aws_iam_policy" "development_cloudwatch_exporter_role_allow_assume_policy" {
-  count      = local.is_production  ? 1 : 0
+  count       = local.is_production ? 1 : 0
   name        = "development_cloudwatch_exporter_role_allow_assume_policy"
   path        = "/"
   description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in development AWS account"
@@ -496,7 +496,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "development_cloudwatch_exporter_allow_assume_IAMPolicy" {
-  count      = local.is_production  ? 1 : 0
+  count      = local.is_production ? 1 : 0
   policy_arn = aws_iam_policy.development_cloudwatch_exporter_role_allow_assume_policy[0].arn
   role       = aws_iam_role.cloudwatch_exporter.name
 
@@ -508,7 +508,7 @@ resource "aws_iam_role_policy_attachment" "development_cloudwatch_exporter_allow
 # IAM role for Cloudwatch Exporter in pre-production AWS account
 
 resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
-  count      = local.is_production  ? 1 : 0
+  count              = local.is_production ? 1 : 0
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_exporter_assume_role_policy_other_aws_accounts.json
   name               = "${var.prefix}-CloudwatchExporter"
 
@@ -518,7 +518,7 @@ resource "aws_iam_role" "cloudwatch_exporter_pre_production" {
 }
 
 resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_pre_production" {
-  count      = local.is_production  ? 1 : 0
+  count       = local.is_production ? 1 : 0
   name        = "${var.prefix}-CloudwatchExporterIAMPolicy"
   path        = "/"
   description = "IAM role policy for Cloudwatch Exporter in EKS Cluster for ${var.prefix}"
@@ -531,7 +531,7 @@ resource "aws_iam_policy" "cloudwatch_exporter_iam_policy_pre_production" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_pre_production" {
-  count      = local.is_production  ? 1 : 0
+  count      = local.is_production ? 1 : 0
   policy_arn = aws_iam_policy.cloudwatch_exporter_iam_policy_pre_production[0].arn
   role       = aws_iam_role.cloudwatch_exporter_pre_production[0].name
 
@@ -539,7 +539,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_exporter_IAMPolicy_pre_pro
 }
 
 resource "aws_iam_policy" "pre_production_cloudwatch_exporter_role_allow_assume_policy" {
-  count      = local.is_production  ? 1 : 0
+  count       = local.is_production ? 1 : 0
   name        = "pre_production_cloudwatch_exporter_role_allow_assume_policy"
   path        = "/"
   description = "Policy that allows cloudwatch exporter in EKS Cluster for ${var.prefix} to assume role in pre-production AWS account"
@@ -566,7 +566,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "pre_production_cloudwatch_exporter_allow_assume_IAMPolicy" {
-  count      = local.is_production  ? 1 : 0
+  count      = local.is_production ? 1 : 0
   policy_arn = aws_iam_policy.pre_production_cloudwatch_exporter_role_allow_assume_policy[0].arn
   role       = aws_iam_role.cloudwatch_exporter.name
 
