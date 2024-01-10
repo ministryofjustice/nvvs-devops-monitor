@@ -101,4 +101,4 @@ jobs:
 
       - name: Run the deployment script
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: make deploy
+        run: ./scripts/deploy.sh
