@@ -1,5 +1,4 @@
 resource "aws_db_instance" "this" {
-  count                       = var.enabled ? 1 : 0
   identifier                  = "${var.prefix}-grafana-db"
   allocated_storage           = 10
   storage_type                = "gp2"

@@ -27,7 +27,7 @@ output "aws_ebs_csi_driver_iam_role_arn" {
 }
 
 output "efs_file_system_id" {
-  value = var.enabled ? aws_efs_file_system.this[0].id : null
+  value = aws_efs_file_system.this.id
 }
 
 output "thanos_iam_role_arn" {
@@ -55,5 +55,5 @@ output "cloudwatch_exporter_pre_production_iam_role_arn" {
 }
 
 output "db_endpoint" {
-  value = var.enabled ? aws_db_instance.this[0].endpoint : null
+  value = aws_db_instance.this.endpoint
 }
