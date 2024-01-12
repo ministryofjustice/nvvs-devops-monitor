@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/deployment_reusable_workflow.yml
     with:
       ENV: development
-      ENABLED: false
+      ENABLED: true
     secrets: inherit
 
   deploy-pre-production:
@@ -26,16 +26,16 @@ jobs:
     uses: ./.github/workflows/deployment_reusable_workflow.yml
     with:
       ENV: pre-production
-      ENABLED: false
+      ENABLED: true
     secrets: inherit
 
-#  destroy-development:
-#    needs: [ deploy-development, deploy-pre-production]
-#    uses: ./.github/workflows/deployment_reusable_workflow.yml
-#    with:
-#      ENV: development
-#      ENABLED: false
-#    secrets: inherit
+  destroy-development:
+    needs: [ deploy-development, deploy-pre-production]
+    uses: ./.github/workflows/deployment_reusable_workflow.yml
+    with:
+      ENV: development
+      ENABLED: false
+    secrets: inherit
 
   deploy-production:
     needs: [deploy-development, deploy-pre-production]
@@ -45,10 +45,10 @@ jobs:
       ENABLED: true
     secrets: inherit
 
-#  destroy-pre-production:
-#    needs: [ deploy-development, deploy-pre-production, deploy-production]
-#    uses: ./.github/workflows/deployment_reusable_workflow.yml
-#    with:
-#      ENV: pre-production
-#      ENABLED: false
-#    secrets: inherit
+  destroy-pre-production:
+    needs: [ deploy-development, deploy-pre-production, deploy-production]
+    uses: ./.github/workflows/deployment_reusable_workflow.yml
+    with:
+      ENV: pre-production
+      ENABLED: false
+    secrets: inherit
