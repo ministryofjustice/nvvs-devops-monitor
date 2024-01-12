@@ -25,9 +25,3 @@ variable "db_username" {
 variable "db_password" {
   type = string
 }
-
-variable "enabled" {
-  description = "Feature flag that controls the deployment of the infrastructure in a given environment"
-  type        = bool
-  default     = true
-}
