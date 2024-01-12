@@ -1,3 +1,7 @@
+locals {
+  is_production = terraform.workspace == "production" ? true : false
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.1"
@@ -13,8 +17,10 @@ module "vpc" {
   manage_default_network_acl    = var.manage_default_network_acl
   manage_default_security_group = var.manage_default_security_group
   manage_default_route_table    = var.manage_default_route_table
-  reuse_nat_ips                 = true
-  external_nat_ip_ids           = aws_eip.gw.*.id
+  reuse_nat_ips                 = local.is_production
+  external_nat_ip_ids           = local.is_production ? aws_eip.gw.*.id : []
+  // Lower costs, by lowering availability
+  single_nat_gateway = local.is_production ? false : true
 
   private_subnets = [for cidr_block in cidrsubnets(var.cidr, 2, 2, 2) : cidrsubnets(cidr_block, 1, 1)[0]]
   private_subnet_tags = merge(
@@ -37,7 +43,6 @@ module "vpc" {
   private_route_table_tags = { for k, v in var.tags : k => v if k != "Name" }
   public_route_table_tags  = { for k, v in var.tags : k => v if k != "Name" }
 
-  depends_on = [aws_eip.gw]
 }
 
 resource "aws_flow_log" "vpc_flow_log" {
@@ -48,8 +53,8 @@ resource "aws_flow_log" "vpc_flow_log" {
 }
 
 resource "aws_eip" "gw" {
-  vpc              = true
-  count            = length(var.available_zones)
+  domain           = "vpc"
+  count            = terraform.workspace == "development" ? 0 : length(var.available_zones)
   public_ipv4_pool = var.byoip_pool_id
 
   tags = var.tags
