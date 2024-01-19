@@ -13,3 +13,4 @@ terraform.tfstate
 *.tfstate.*
 .infracost/
 .terraform-version
+.idea

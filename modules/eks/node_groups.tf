@@ -5,13 +5,13 @@ resource "aws_eks_node_group" "green" {
   subnet_ids      = var.private_subnets
 
   scaling_config {
-    desired_size = 3
-    max_size     = 4
-    min_size     = 2
+    desired_size = var.enabled ? 3 : 0
+    max_size     = var.enabled ? 4 : 1
+    min_size     = var.enabled ? 2 : 0
   }
 
   update_config {
-    max_unavailable = 2
+    max_unavailable = var.enabled ? 2 : 1
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
