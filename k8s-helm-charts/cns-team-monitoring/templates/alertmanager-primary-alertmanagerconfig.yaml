@@ -44,7 +44,7 @@ spec:
           - name: service
             value: DNS DHCP Dev PreProd
           - name: severity
-            value: warning
+            value: critical
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
