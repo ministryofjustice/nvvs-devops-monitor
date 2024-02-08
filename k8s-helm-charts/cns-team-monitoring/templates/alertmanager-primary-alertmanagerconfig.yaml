@@ -37,7 +37,7 @@ spec:
             value: DNS DHCP
           - name: severity
             value: warning
-      - receiver: NVVS DevOps Dev PreProd
+      - receiver: NVVS DevOps Dev PreProd Critical
         groupWait: 10s
         repeatInterval: 24h
         matchers:
@@ -45,6 +45,14 @@ spec:
             value: DNS DHCP Dev PreProd
           - name: severity
             value: critical
+      - receiver: NVVS DevOps Dev PreProd
+        groupWait: 10s
+        repeatInterval: 24h
+        matchers:
+          - name: service
+            value: DNS DHCP Dev PreProd
+          - name: severity
+            value: warning
       - receiver: Team PKI
         groupWait: 10s
         repeatInterval: 7d
@@ -108,6 +116,19 @@ spec:
             name: slack-webhooks
             optional: false
           channel: '#mojo-ima-platform-alerts-dev-preprod'
+          sendResolved: true
+          title: {{`'{{ template "slack.alerts.title" . }}'`}}
+          text: {{`'{{ template "slack.alerts.text" . }}'`}}
+          username: {{`'{{ template "slack.alerts.username" . }}'`}}
+          color: {{`'{{ template "slack.alerts.color" . }}'`}}
+          iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
+    - name: NVVS DevOps Dev PreProd Critical
+      slackConfigs:
+        - apiURL:
+            key: development_pre_production_dhcp_dns_slack_webhook_url
+            name: slack-webhooks
+            optional: false
+          channel: '#mojo-staff-device-dhcp-dns-alerts-dev-preprod'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}
