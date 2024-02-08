@@ -15,11 +15,11 @@ metadata:
     chart: {{ .Chart.Name }}
     heritage: Helm
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}.dns-dhcp.rules-pre-production
+  name: {{ .Release.Name }}.dns-dhcp-pre-production.rules
   namespace: {{ .Release.Namespace }}
 spec:
   groups:
-  - name: {{ .Release.Name }}.dns-dhcp.rules-pre-production
+  - name: {{ .Release.Name }}.dns-dhcp-pre-production.rules
     rules:
     - alert: DHCP KEA Configuration Reload Failed
       expr: aws_kea_dhcp_config_reload_failed_sum{account_id="{{ .Values.pre_production_account_id }}" } > 0

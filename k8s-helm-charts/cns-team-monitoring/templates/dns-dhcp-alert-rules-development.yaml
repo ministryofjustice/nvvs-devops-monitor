@@ -15,11 +15,11 @@ metadata:
     chart: {{ .Chart.Name }}
     heritage: Helm
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}.dns-dhcp.rules-development
+  name: {{ .Release.Name }}.dns-dhcp-development.rules
   namespace: {{ .Release.Namespace }}
 spec:
   groups:
-  - name: dns-dhcp.rules-development
+  - name: dns-dhcp-development.rules
     rules:
     - alert: DHCP KEA Configuration Reload Failed
       expr: aws_kea_dhcp_config_reload_failed_sum{account_id="{{ .Values.development_account_id }}" } > 0
