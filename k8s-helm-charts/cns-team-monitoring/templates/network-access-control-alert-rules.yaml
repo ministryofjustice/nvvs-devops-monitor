@@ -119,7 +119,7 @@ spec:
       annotations:
         summary: Failed to start task
         description: An unhealthy container has been released, failed to start task count is {{ "{{ $value }}" }}
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/sx5ovCb7z/pre-production-network-access-control
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: FreeRadius Container Health Check Alert
       expr: aws_mojo_nac_requests_health_check_ok_sum{account_id="{{ .Values.production_account_id }}" } < 1
       for: 1m
