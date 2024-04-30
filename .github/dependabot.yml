@@ -26,6 +26,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "k8s-helm-charts/cns-team-monitoring/templates"
     schedule:
       interval: "daily"
