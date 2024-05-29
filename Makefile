@@ -128,6 +128,10 @@ lock: ## terraform providers lock (reset hashes after upgrades prior to commit)
 	rm .terraform.lock.hcl
 	$(DOCKER_RUN) terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
 
+.PHONY: unlock
+unlock: ## terraform unlock e.g. (make unlock IMPORT_ARGUMENT=LOCK_ID)
+	$(DOCKER_RUN) terraform force-unlock $$IMPORT_ARGUMENT
+
 .PHONY: clean
 clean: ## clean terraform cached providers etc
 	rm -rf .terraform/ terraform.tfstate* .env .env.tmp
