@@ -5,6 +5,11 @@ queryFrontend:
   enabled: false
 storegateway:
   enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+    requests:
+      memory: "1Gi"
 compactor:
   enabled: true
 receive:

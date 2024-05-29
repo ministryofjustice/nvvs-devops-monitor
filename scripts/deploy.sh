@@ -230,6 +230,7 @@ deploy_grafana() {
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo update
   helm upgrade --install grafana grafana/grafana \
+    --version 7.3.0 \
     -f ./k8s-values/values.grafana.yaml \
     -n grafana \
     --create-namespace \
