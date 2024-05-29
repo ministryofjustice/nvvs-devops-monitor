@@ -64,7 +64,7 @@ jobs:
             kubectl
             helm
           kubectl: '1.25.6'
-          helm: '3.8.0'
+          helm: '3.14.3'
 
       # Install Terraform CLI
       - name: Setup Terraform
