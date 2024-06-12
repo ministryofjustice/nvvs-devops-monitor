@@ -13,9 +13,9 @@ storegateway:
 compactor:
   enabled: true
   resources:
-     limits:
+    limits:
       cpu: 500m
-     requests:
+    requests:
       cpu: 300m
 receive:
   enabled: true
