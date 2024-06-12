@@ -12,6 +12,11 @@ storegateway:
       memory: "1Gi"
 compactor:
   enabled: true
+  resources:
+    limits:
+      cpu: 500m
+    requests:
+      cpu: 300m
 receive:
   enabled: true
   ingress:
