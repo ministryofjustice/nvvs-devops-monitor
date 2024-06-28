@@ -127,6 +127,7 @@
           "Effect": "Allow",
           "Action": [
               "elasticloadbalancing:CreateLoadBalancer",
+              "elasticloadbalancing:AddTags",
               "elasticloadbalancing:CreateTargetGroup"
           ],
           "Resource": "*",
