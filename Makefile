@@ -155,6 +155,15 @@ deploy: ## deploy
 uninstall: ## uninstall
 	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/uninstall_all_deployments.sh"
 
+.PHONY: grafana-pwd
+CURRENT_NAMESPACE=$(shell kubectl config view --minify --output 'jsonpath={..namespace}')
+grafana-pwd: ## generate default grafana password for admin
+ifeq ($(CURRENT_NAMESPACE),development)
+	 	@kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+  else
+	 	@echo "This command can only be run in the development namespace."
+  endif
+
 .PHONY: generate_diagrams
 generate_diagrams: ## generate_diagrams
 	docker run -it --rm -v "${PWD}":/app/ -w /app/documentation/diagrams/ mjdk/diagrams scripts/architecture_diagram.py

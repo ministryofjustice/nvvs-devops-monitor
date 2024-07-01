@@ -250,28 +250,45 @@ deploy_grafana() {
 
 deploy_cns_team_monitoring() {
   printf "\n${ORANGE}############# ${PURPLE}Deploying CNS Team monitoring helm chart ${ORANGE}#############${NC}\n"
-  helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \
-    -n monitoring \
-    --set dhcpApiBasicAuthUsername=$dhcpApiBasicAuthUsername \
-    --set dhcpApiBasicAuthPassword=$dhcpApiBasicAuthPassword \
-    --set environment=$namespace \
-    --set production_account_id=$production_account_id \
-    --set pre_production_account_id=$pre_production_account_id \
-    --set development_account_id=$development_account_id \
-    --set cloudwatch_iam_role=$cloudwatch_iam_role_arn \
-    --set cloudwatchExporterDevelopmentArn=$cloudwatch_exporter_development_iam_role_arn \
-    --set cloudwatchExporterPreProductionArn=$cloudwatch_exporter_pre_production_iam_role_arn \
-    --set alertmanager.alert_rules.pagerduty_routing_key=`base64_encode $pagerduty_routing_key` \
-    --set alertmanager.alert_rules.ima_slack_webhook_url=`base64_encode $ima_slack_webhook_url` \
-    --set alertmanager.alert_rules.dhcp_dns_slack_webhook_url=`base64_encode $dhcp_dns_slack_webhook_url` \
-    --set alertmanager.alert_rules.development_pre_production_dhcp_dns_slack_webhook_url=`base64_encode $development_pre_production_dhcp_dns_slack_webhook_url` \
-    --set alertmanager.alert_rules.certificate_services_slack_webhook_url=`base64_encode $certificate_services_slack_webhook_url` \
-    --set alertmanager.alert_rules.networks_slack_webhook_url=`base64_encode $networks_slack_webhook_url` \
-    --set alertmanager.alert_rules.ost_slack_webhook_url=`base64_encode $ost_slack_webhook_url` \
-    --set alertmanager.alert_rules.network_access_control_production_slack_webhook_url=`base64_encode $network_access_control_production_slack_webhook_url` \
-    --set alertmanager.alert_rules.network_access_control_pre_production_slack_webhook_url=`base64_encode $network_access_control_pre_production_slack_webhook_url` \
-    --set alertmanager.alert_rules.network_access_control_critical_slack_webhook_url=`base64_encode $network_access_control_critical_slack_webhook_url`
-}
+   # Check environment and set values file path or reconfigure values
+    if [ "$namespace" == "production" ]; then
+      helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \
+        -n monitoring \
+        --set dhcpApiBasicAuthUsername="$dhcpApiBasicAuthUsername" \
+        --set dhcpApiBasicAuthPassword="$dhcpApiBasicAuthPassword" \
+        --set environment="$namespace" \
+        --set production_account_id="$production_account_id" \
+        --set pre_production_account_id="$pre_production_account_id" \
+        --set development_account_id="$development_account_id" \
+        --set cloudwatch_iam_role="$cloudwatch_iam_role_arn" \
+        --set cloudwatchExporterDevelopmentArn="$cloudwatch_exporter_development_iam_role_arn" \
+        --set cloudwatchExporterPreProductionArn="$cloudwatch_exporter_pre_production_iam_role_arn" \
+        --set alertmanager.alert_rules.pagerduty_routing_key=$(base64_encode "$pagerduty_routing_key") \
+        --set alertmanager.alert_rules.ima_slack_webhook_url=$(base64_encode "$ima_slack_webhook_url") \
+        --set alertmanager.alert_rules.dhcp_dns_slack_webhook_url=$(base64_encode "$dhcp_dns_slack_webhook_url") \
+        --set alertmanager.alert_rules.development_pre_production_dhcp_dns_slack_webhook_url=$(base64_encode "$development_pre_production_dhcp_dns_slack_webhook_url") \
+        --set alertmanager.alert_rules.certificate_services_slack_webhook_url=$(base64_encode "$certificate_services_slack_webhook_url") \
+        --set alertmanager.alert_rules.networks_slack_webhook_url=$(base64_encode "$networks_slack_webhook_url") \
+        --set alertmanager.alert_rules.ost_slack_webhook_url=$(base64_encode "$ost_slack_webhook_url") \
+        --set alertmanager.alert_rules.network_access_control_production_slack_webhook_url=$(base64_encode "$network_access_control_production_slack_webhook_url") \
+        --set alertmanager.alert_rules.network_access_control_pre_production_slack_webhook_url=$(base64_encode "$network_access_control_pre_production_slack_webhook_url") \
+        --set alertmanager.alert_rules.network_access_control_critical_slack_webhook_url=$(base64_encode "$network_access_control_critical_slack_webhook_url")
+    else
+      values_file="./k8s-helm-charts/cns-team-monitoring-non-production/values-$namespace.yaml"
+      helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \
+        -n monitoring \
+        --set dhcpApiBasicAuthUsername="$dhcpApiBasicAuthUsername" \
+        --set dhcpApiBasicAuthPassword="$dhcpApiBasicAuthPassword" \
+        --set environment="$namespace" \
+        --set production_account_id="$production_account_id" \
+        --set pre_production_account_id="$pre_production_account_id" \
+        --set development_account_id="$development_account_id" \
+        --set cloudwatch_iam_role="$cloudwatch_iam_role_arn" \
+        --set cloudwatchExporterDevelopmentArn="$cloudwatch_exporter_development_iam_role_arn" \
+        --set cloudwatchExporterPreProductionArn="$cloudwatch_exporter_pre_production_iam_role_arn" \
+        --values "$values_file"
+    fi
+  }
 
 main() {
   set_variables

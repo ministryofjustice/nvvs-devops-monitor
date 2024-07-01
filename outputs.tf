@@ -23,7 +23,7 @@ output "vpc" {
     private_subnets = module.vpc[0].private_subnets_cidr_blocks
     public_subnets  = module.vpc[0].public_subnets_cidr_blocks
   } : null
-  sensitive = true
+  sensitive = false
 }
 
 output "certificate" {
