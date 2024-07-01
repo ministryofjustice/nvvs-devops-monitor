@@ -18,7 +18,7 @@ jobs:
         shell: bash
     env:
       ENV: ${{ inputs.ENV }}
-      TF_VAR_enabled: ${{ inputs.ENABLED }}
+      TF_VAR_enabled: ${{ secrets.ENABLED }}
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
       TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
       TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
