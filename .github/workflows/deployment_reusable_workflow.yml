@@ -18,7 +18,6 @@ jobs:
         shell: bash
     env:
       ENV: ${{ inputs.ENV }}
-      TF_VAR_enabled: ${{ inputs.ENABLED }}
       TF_VAR_assume_role: ${{ secrets.ASSUME_ROLE }}
       TF_VAR_assume_role_development: ${{ secrets.ASSUME_ROLE_DEVELOPMENT }}
       TF_VAR_assume_role_pre_production: ${{ secrets.ASSUME_ROLE_PRE_PRODUCTION }}
@@ -55,7 +54,17 @@ jobs:
           aws-region: eu-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHubWorkflow
+      - name: Set TF_VAR_enabled based on environment
+        run: |
+          if [[ "${{ inputs.ENV }}" == "production" ]]; then
+            echo "TF_VAR_enabled=true" >> $GITHUB_ENV
+          else
+            echo "TF_VAR_enabled=${{ inputs.ENABLED }}" >> $GITHUB_ENV
+          fi
 
+      - name: Display TF_VAR_enabled value
+        run: echo "TF_VAR_enabled=${{ env.TF_VAR_enabled }}"
+        
       # Install Kubectl and Helm CLI
       - name: Setup Kubectl and Helm
         uses: yokawasa/action-setup-kube-tools@v0.11.1
