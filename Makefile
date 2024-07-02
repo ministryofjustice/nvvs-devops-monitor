@@ -155,6 +155,10 @@ deploy: ## deploy
 uninstall: ## uninstall
 	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/uninstall_all_deployments.sh"
 
+.PHONY: get-kubeconfig
+get-kubeconfig: ## get-kubeconfig
+	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/setup-kubeconfig.sh"
+
 .PHONY: grafana-pwd
 CURRENT_NAMESPACE=$(shell kubectl config view --minify --output 'jsonpath={..namespace}')
 grafana-pwd: ## generate default grafana password for admin
