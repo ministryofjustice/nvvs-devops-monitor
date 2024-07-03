@@ -53,4 +53,5 @@ set_kubeconfig() {
 set_variables
 set_kubeconfig
 
+echo "Kubeconfig setup complete for cluster: $eks_cluster_name"
 print_message "Kubeconfig setup is complete"
