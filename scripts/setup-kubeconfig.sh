@@ -49,8 +49,14 @@ set_kubeconfig() {
     kubectl config use-context "$eks_cluster_name"
 }
 
+copy_kubeconfig_to_local() {
+  cp ${HOME}/.kube/config /data/.kube_config
+}
+
 # Main script execution
 set_variables
 set_kubeconfig
+copy_kubeconfig_to_local
 
+echo "Kubeconfig setup complete for cluster: $eks_cluster_name"
 print_message "Kubeconfig setup is complete"

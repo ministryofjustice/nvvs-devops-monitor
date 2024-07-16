@@ -14,3 +14,6 @@ terraform.tfstate
 .infracost/
 .terraform-version
 .idea
+
+#tmp kube config written by tooling container
+.kube_config

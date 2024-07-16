@@ -158,6 +158,11 @@ uninstall: ## uninstall
 .PHONY: get-kubeconfig
 get-kubeconfig: ## get-kubeconfig
 	$(DOCKER_RUN_IT) /bin/bash -c "./scripts/setup-kubeconfig.sh"
+	@mkdir -p ~/.kube
+	@cp ~/.kube/config ~/.kube/config.backup.$(shell date +%Y%m%d%H%M%S)
+	@KUBECONFIG=.kube_config:~/.kube/config kubectl config view --flatten > ~/.kube/config.merged
+	@mv ~/.kube/config.merged ~/.kube/config
+	@echo "Kubeconfig file has been merged and saved to ~/.kube/config"
 
 .PHONY: grafana-pwd
 CURRENT_NAMESPACE=$(shell kubectl config view --minify --output 'jsonpath={..namespace}')
