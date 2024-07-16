@@ -1,0 +1,65 @@
+name: Check for Helm Chart Updates
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  check-helm-chart-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Helm
+        uses: yokawasa/action-setup-kube-tools@v0.11.1
+        with:
+          setup-tools: |
+            helm
+          helm: '3.14.3'
+
+      - name: Add Prometheus Community Repo and Update
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+      - name: Get Latest Helm Chart Version
+        id: latest_version
+        run: |
+          version=$(helm search repo prometheus-community/kube-prometheus-stack -o json | jq -r '.[0].version')
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Check Current Version
+        id: current_version
+        run: |
+          current_version=$(grep 'helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack' scripts/deploy.sh | awk '{print $6}')
+          echo "Current version extracted from deploy.sh: $current_version"
+          echo "CURRENT_VERSION=$current_version" >> $GITHUB_ENV
+
+      - name: Compare Versions and Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LATEST_VERSION: ${{ env.version }}
+          CURRENT_VERSION: ${{ env.current_version }}
+        run: |
+          if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "Updating to version $LATEST_VERSION"
+            sed -i "/helm upgrade --install kube-prometheus-stack prometheus-community\/kube-prometheus-stack/ s/\(--version \)[^ ]*/\1$LATEST_VERSION/" scripts/deploy.sh
+          # Display file content after sed command
+#            echo "Updated deploy.sh content:"
+#            cat scripts/deploy.sh
+            git config --global user.email "actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git checkout -b update-helm-chart
+            git status
+            git add scripts/deploy.sh
+            git commit -m "Update kube-prometheus-stack to version $LATEST_VERSION"
+            git push origin update-helm-chart
+            gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+            gh pr create --title "Update kube-prometheus-stack to version $LATEST_VERSION" --body "This PR updates the kube-prometheus-stack Helm chart to the latest version."
+          else
+            echo "No updates available."
+          fi
