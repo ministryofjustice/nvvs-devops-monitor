@@ -4,11 +4,11 @@ query:
   resources:
     limits:
       memory: "400Mi"
-      ephemeral-storage:	"1Gi"
+      ephemeral-storage: "1Gi"
       cpu: "300m"
     requests:
       memory: "300Mi"
-      ephemeral-storage:	"50Mi"
+      ephemeral-storage: "50Mi"
       cpu: "200m"
 queryFrontend:
   enabled: false
