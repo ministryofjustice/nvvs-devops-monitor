@@ -1,6 +1,15 @@
 query:
   stores:
     - "dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local"
+  resources:
+    limits:
+      memory: "400Mi"
+      ephemeral-storage: "1Gi"
+      cpu: "300m"
+    requests:
+      memory: "300Mi"
+      ephemeral-storage: "50Mi"
+      cpu: "200m"
 queryFrontend:
   enabled: false
 storegateway:
@@ -14,9 +23,9 @@ compactor:
   enabled: true
   resources:
     limits:
-      cpu: 500m
+      cpu: 600m
     requests:
-      cpu: 300m
+      cpu: 500m
 receive:
   enabled: true
   ingress:
