@@ -68,3 +68,47 @@ To consume metrics from _other_ Prometheus instances using the remote write func
 | https://thanos-receive.monitoring-alerting.staff.service.justice.gov.uk/api/v1/receive |
 
 For technical details, HLDs, LLDs and developer instructions, please visit the [technical documentation page](documentation/technical-documentation.md).
+
+## Setting up the Development environment
+
+In order to test changes to our monitoring solution, we have a Development environment setup. To get that environment up and running locally, you will have to work through the following steps:
+
+- Check which environment the the Kube context is pointing to, this is likely to be Production.
+```bash
+kubectl config get-contexts
+```
+- To add the Development context you will have to generate the kube config. To do this, run the following commands:
+```bash
+make clean
+make gen-env
+make get-kubeconfig
+```
+- Re-check the Kube context for the Development environment
+```bash
+kubectl config get-contexts
+```
+- Check the connection to the cluster by running 
+```bash
+kubectl get pods -A
+```
+- The Grafana dashboard is not available over the internet. To access the dashboard it will need to be done locally, by using port forwarding. 
+```bash
+kubectl port-forward svc/grafana 3000:80 -n grafana
+```
+- Access using localhost:3000
+
+- The Grafana dashboard requires a username and password. Username is 'admin'. To get the password you will need to run:
+```bash
+make grafana-pwd
+```
+
+## Useful commands
+
+- To view grafana versions
+```bash
+Helm list -n grafana
+```
+- To view status of deployment
+```bash
+kubectl get pods -n grafana
+```
