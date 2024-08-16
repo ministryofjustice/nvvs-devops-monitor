@@ -6,7 +6,14 @@
 # - Nginx Ingress Controller
 
 set -e
-source .env
+
+# Check if the .env file exists
+if [ -f .env ]; then
+  # If it exists, source the .env file
+  source .env
+else
+  echo ".env file not found. Skipping..."
+fi
 
 ORANGE='\033[1;33m'
 PURPLE='\033[1;35m'
