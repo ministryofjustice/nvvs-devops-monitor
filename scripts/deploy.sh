@@ -6,6 +6,7 @@
 # - Nginx Ingress Controller
 
 set -e
+source .env
 
 ORANGE='\033[1;33m'
 PURPLE='\033[1;35m'
