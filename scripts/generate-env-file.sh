@@ -89,9 +89,6 @@ cat << EOF > ./.env
 # then run "make init"
 
 
-export AWS_PROFILE=mojo-shared-services-cli
-export AWS_VAULT_PROFILE=mojo-shared-services-cli
-
 ### ${ENV} ###
 export ENV=${ENV}
 export TF_VAR_env=${ENV}
