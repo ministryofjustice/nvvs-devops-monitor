@@ -107,6 +107,14 @@ spec:
             value: NACS Certificate Expiry Warning
           - name: severity
             value: warning
+      - receiver: NVVS DevOps Critical
+        groupWait: 10s
+        repeatInterval: 7d
+        matchers:
+          - name: service
+            value: SMTP Relay
+          - name: severity
+            value: critical
 
   receivers:
     - name: Master Route
