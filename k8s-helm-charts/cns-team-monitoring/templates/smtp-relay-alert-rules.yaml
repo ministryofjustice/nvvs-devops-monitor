@@ -65,3 +65,14 @@ spec:
           summary: SMTP Rate of change in deferred status count is above 0.0200
           description: The SMTP deferred rate of change has increased above 0.0200
           grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/h36Havfik/postfix
+      - alert: SMTP Postfix Exporter Failed to Scrape Metric
+        expr: aws_smtp_relay_postfix_exporter_failed_to_scrape_sum{account_id="{{ .Values.production_account_id }}" } > 1
+        for: 5m
+        labels:
+          severity: critical
+          service: SMTP Relay
+          namespace: {{ .Release.Namespace }}
+        annotations:
+          summary: SMTP Postfix Exporter has failed to Scrape logs from SMTP Server
+          description: The SMTP Postfix Exporter FailedToScrape Metric SUM is > 1
+          grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/h36Havfik/postfix
