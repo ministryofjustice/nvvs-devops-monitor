@@ -449,6 +449,21 @@
     nilToZero: true
     period: 300
     length: 300
+- namespace: smtp-relay-postfix-exporter
+  name: "smtp-relay-postfix-exporter"
+  regions: [eu-west-2]
+  roles:
+    - roleArn: {{ .Values.cloudwatchExporterProductionArn }}
+    - roleArn: {{ .Values.cloudwatchExporterPreProductionArn }}
+    - roleArn: {{ .Values.cloudwatchExporterDevelopmentArn }}
+    - roleArn: {{ .Values.cloudwatchExporterPkiArn }}
+  metrics:
+  - name: "FailedToScrape"
+    statistics: [Sum]
+    nilToZero: true
+    period: 300
+    length: 300
+
 - namespace: GP_GATEWAY_VMseries
   name: "GP_GATEWAY_VMseries"
   regions: [eu-west-2]
