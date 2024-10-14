@@ -3,11 +3,11 @@ query:
     - "dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local"
   resources:
     limits:
-      memory: "400Mi"
+      memory: "800Mi"
       ephemeral-storage: "1Gi"
       cpu: "300m"
     requests:
-      memory: "300Mi"
+      memory: "600Mi"
       ephemeral-storage: "50Mi"
       cpu: "200m"
 queryFrontend:
