@@ -45,7 +45,9 @@ data:
             "defaults": {
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -73,7 +75,9 @@ data:
           },
           "id": 4,
           "options": {
+            "cellHeight": "sm",
             "footer": {
+              "countRows": false,
               "fields": "",
               "reducer": [
                 "sum"
@@ -82,7 +86,7 @@ data:
             },
             "showHeader": true
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "datasource": {
@@ -130,10 +134,15 @@ data:
           },
           "id": 6,
           "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
             "content": "# $SiteName2",
             "mode": "markdown"
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "datasource": {
@@ -214,19 +223,23 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "prometheus"
               },
+              "editorMode": "code",
               "exemplar": true,
               "expr": "subnet_statistics_usage{cidr_block=\"$customSubnet\"}",
               "interval": "",
               "legendFormat": "Leases",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -276,9 +289,11 @@ data:
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
           },
-          "pluginVersion": "9.0.5",
+          "pluginVersion": "10.4.1",
           "targets": [
             {
               "datasource": {
@@ -307,6 +322,9 @@ data:
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -318,6 +336,7 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
+                "insertNulls": false,
                 "lineInterpolation": "linear",
                 "lineWidth": 1,
                 "pointSize": 3,
@@ -369,7 +388,8 @@ data:
             "legend": {
               "calcs": [],
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -393,11 +413,106 @@ data:
           ],
           "title": "Subnet Usage by CIDR > 60%",
           "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "Display Subnet specific statistics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 23,
+            "x": 0,
+            "y": 15
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "subnet_statistics_usage{cidr_block=\"$customSubnet\"}",
+              "instant": false,
+              "legendFormat": "{{ "{{cidr_block}}" }}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Subnet Statistics $customSubnet",
+          "type": "timeseries"
         }
       ],
       "refresh": false,
-      "schemaVersion": 36,
-      "style": "dark",
+      "schemaVersion": 39,
       "tags": [
         "DHCP",
         "Kea"
@@ -434,8 +549,8 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "10.80.39.0/24",
-              "value": "10.80.39.0/24"
+              "text": "10.150.236.0/24",
+              "value": "10.150.236.0/24"
             },
             "description": "Enter your cidr block in the box in standard notation i.e 192.168.0.1/24 the Site finder panel will populate with your Site Name",
             "hide": 0,
@@ -444,19 +559,19 @@ data:
             "options": [
               {
                 "selected": true,
-                "text": "10.80.39.0/24",
-                "value": "10.80.39.0/24"
+                "text": "10.150.236.0/24",
+                "value": "10.150.236.0/24"
               }
             ],
-            "query": "10.80.39.0/24",
+            "query": "10.150.236.0/24",
             "skipUrlSync": false,
             "type": "textbox"
           },
           {
             "current": {
               "selected": false,
-              "text": "HMP Frankland",
-              "value": "HMP Frankland"
+              "text": "Mitre House",
+              "value": "Mitre House"
             },
             "datasource": {
               "type": "prometheus",
@@ -481,7 +596,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-1h",
+        "from": "now-30d",
         "to": "now"
       },
       "timepicker": {},
