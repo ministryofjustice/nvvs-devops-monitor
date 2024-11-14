@@ -13,4 +13,3 @@ allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 parameters:
   type: gp3
-
