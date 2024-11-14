@@ -14,6 +14,12 @@ queryFrontend:
   enabled: false
 storegateway:
   enabled: true
+  persistence:
+    enabled: true
+    storageClass: gp3-expandable
+    accessModes:
+      - ReadWriteOnce
+    size: 16Gi
   resources:
     limits:
       memory: "2.5Gi"
