@@ -17,3 +17,4 @@ terraform.tfstate
 
 #tmp kube config written by tooling container
 .kube_config
+.env.tmp
