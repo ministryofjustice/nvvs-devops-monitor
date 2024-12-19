@@ -123,7 +123,7 @@ deploy_kube-prometheus-stack() {
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
   helm repo update
   helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
-    --version 61.1.1 \
+    --version 67.4.0 \
     -f ./k8s-values/values.kube-prometheus-stack.yaml \
     -n monitoring \
     --create-namespace \
@@ -239,7 +239,7 @@ deploy_grafana() {
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo update
   helm upgrade --install grafana grafana/grafana \
-    --version 7.3.11 \
+    --version 8.8.2 \
     -f ./k8s-values/values.grafana.yaml \
     -n grafana \
     --create-namespace \
