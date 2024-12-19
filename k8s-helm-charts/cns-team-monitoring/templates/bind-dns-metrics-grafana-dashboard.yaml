@@ -1303,24 +1303,7 @@ data:
             "label": "Environment",
             "multi": false,
             "name": "account_id",
-            "options": [
-              {
-                "selected": true,
-                "text": "Production",
-                "value": "{{ .Values.production_account_id }}"
-              },
-              {
-                "selected": false,
-                "text": "Pre-Production",
-                "value": "{{ .Values.pre_production_account_id }}"
-              },
-              {
-                "selected": false,
-                "text": "Development",
-                "value": "{{ .Values.development_account_id }}"
-              }
-            ],
-            "query": "Production,Pre-Production,Development",
+            "query": "Production : {{ .Values.production_account_id }},Pre-Production : {{ .Values.pre_production_account_id }},Development : {{ .Values.development_account_id }}",
             "queryValue": "",
             "skipUrlSync": false,
             "type": "custom"
