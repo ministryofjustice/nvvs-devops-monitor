@@ -12,9 +12,9 @@ metadata:
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/part-of: {{ .Release.Name }}
-    chart: {{ .Chart.Name }}
-    heritage: Helm
-    release: {{ .Release.Name }}
+      chart: {{ .Chart.Name }}
+      heritage: Helm
+      release: {{ .Release.Name }}
   name: {{ .Release.Name }}.network-access-control.rules
   namespace: {{ .Release.Namespace }}
 spec:
