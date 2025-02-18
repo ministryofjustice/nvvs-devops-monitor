@@ -22,7 +22,7 @@ spec:
   - name: network-access-control.rules
     rules:
     - alert: Ethernet Reject Requests Alert
-      expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.production_account_id }}" } > 0
+      expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.production_account_id }}" } > 250
       for: 1m
       labels:
         severity: warning
@@ -33,7 +33,7 @@ spec:
         description: Ethernet Access Reject count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: Wireless Reject Requests Alert
-      expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.production_account_id }}" } > 0
+      expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.production_account_id }}" } > 10
       for: 1m
       labels:
         severity: warning
@@ -99,7 +99,7 @@ spec:
         description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
     - alert: All Errors
-      expr: aws_mojo_nac_requests_all_errors_sum{account_id="{{ .Values.production_account_id }}" } > 0
+      expr: aws_mojo_nac_requests_all_errors_sum{account_id="{{ .Values.production_account_id }}" } > 260
       for: 1m
       labels:
         severity: warning
@@ -164,4 +164,14 @@ spec:
         summary: A NACS Certificate is due to expire.
         description: Please log onto NAC's and check for expiring certificates https://admin.network-access-control.service.justice.gov.uk/certificates
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-        
+    - alert: EAL TCP OSCP Error count alert
+      expr: aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id="{{ .Values.production_account_id }}" } > 0
+      for: 1m
+      labels:
+        severity: critical
+        service: Network Access Control
+        namespace: {{ .Release.Namespace }}
+      annotations:
+        summary: NACS EAL TCP OSCP Error count
+        description: NACS EAL TCP OSCP Error count is {{ "{{ $value }}" }}
+        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
