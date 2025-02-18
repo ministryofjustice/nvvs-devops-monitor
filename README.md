@@ -84,6 +84,7 @@ kubectl config get-contexts
 ```bash
 make clean
 make gen-env
+make init
 make get-kubeconfig
 ```
 
