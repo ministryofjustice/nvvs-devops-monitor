@@ -5,13 +5,13 @@ metadata:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: monitoring
     prometheus-operator-validated: "true"
-  creationTimestamp: "2022-08-25T09:36:30Z"
-  generation: 1
-  labels:
-    app: {{ .Release.Name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: {{ .Release.Name }}
+    creationTimestamp: "2022-08-25T09:36:30Z"
+    generation: 1
+    labels:
+      app: {{ .Release.Name }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: {{ .Release.Name }}
     chart: {{ .Chart.Name }}
     heritage: Helm
     release: {{ .Release.Name }}
