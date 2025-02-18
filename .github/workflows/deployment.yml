@@ -21,13 +21,13 @@ jobs:
       ENABLED: ${{ github.development.enabled }}
     secrets: inherit
 
-  deploy-pre-production:
-    needs: [deploy-development]
-    uses: ./.github/workflows/deployment_reusable_workflow.yml
-    with:
-      ENV: pre-production
-      ENABLED: ${{ github.pre-production.enabled }}
-    secrets: inherit
+#  deploy-pre-production:
+#    needs: [deploy-development]
+#    uses: ./.github/workflows/deployment_reusable_workflow.yml
+#    with:
+#      ENV: pre-production
+#      ENABLED: ${{ github.pre-production.enabled }}
+#    secrets: inherit
 
 #  destroy-development:
 #    needs: [ deploy-development, deploy-pre-production]
