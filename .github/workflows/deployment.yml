@@ -21,6 +21,8 @@ jobs:
       ENABLED: ${{ github.development.enabled }}
     secrets: inherit
 
+# If pre-production is enabled the below will need un-commenting
+
 #  deploy-pre-production:
 #    needs: [deploy-development]
 #    uses: ./.github/workflows/deployment_reusable_workflow.yml
@@ -37,8 +39,10 @@ jobs:
 #      ENABLED: false
 #    secrets: inherit
 
+# If pre-production is enabled we need to add deploy-pre-production in to needs array
+
   deploy-production:
-    needs: [deploy-development, deploy-pre-production]
+    needs: [deploy-development]
     uses: ./.github/workflows/deployment_reusable_workflow.yml
     with:
       ENV: production
