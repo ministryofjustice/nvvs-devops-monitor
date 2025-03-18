@@ -5,7 +5,7 @@ resource "aws_db_instance" "this" {
   storage_type                = "gp3"
   engine                      = "postgres"
   apply_immediately           = true
-  engine_version              = "14.12"
+  engine_version              = "14.13"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   instance_class              = "db.t3.micro"
