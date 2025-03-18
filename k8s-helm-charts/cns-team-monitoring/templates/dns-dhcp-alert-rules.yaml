@@ -88,17 +88,6 @@ spec:
         description: The RDS CPU for DHCP has been above 60 percent for 5 minutes.
         grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
     - alert: DHCP Subnet Usage Alert
-      expr: subnet_statistics_usage > 80
-      for: 5m
-      labels:
-        severity: warning
-        service: DNS DHCP
-        namespace: {{ .Release.Namespace }}
-      annotations:
-        summary: DHCP Subnet utilisation > 80%
-        description: The DHCP Subnet utilisation has been above 80 percent for 5 minutes.
-        grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/cEwjsH1Gk/kea-dhcp-metrics
-    - alert: DHCP Subnet Usage Alert
       expr: subnet_statistics_usage > 90
       for: 5m
       labels:
