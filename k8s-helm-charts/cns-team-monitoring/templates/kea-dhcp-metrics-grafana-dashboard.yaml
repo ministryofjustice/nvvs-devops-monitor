@@ -2021,7 +2021,8 @@ data:
       "style": "dark",
       "tags": [
         "Kea",
-        "DHCP"
+        "DHCP",
+        "provisioned"
       ],
       "templating": {
         "list": [
