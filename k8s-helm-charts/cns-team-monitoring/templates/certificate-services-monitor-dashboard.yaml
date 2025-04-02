@@ -537,7 +537,9 @@ data:
       ],
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "provisioned"
+      ],
       "templating": {
         "list": []
       },
