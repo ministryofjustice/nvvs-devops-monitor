@@ -6,7 +6,7 @@ on:
       - "main"
   push:
     branches:
-      - "main"
+      - "ND-763-fix-codeformatter-error"
 
 permissions:
   id-token: write
