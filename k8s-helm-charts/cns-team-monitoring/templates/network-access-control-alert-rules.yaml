@@ -2,8 +2,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: monitoring
+    meta.helm.sh/release-name: "{{ .Release.Name }}"
+    meta.helm.sh/release-namespace: "monitoring"
     prometheus-operator-validated: "true"
   creationTimestamp: "2022-08-25T09:36:30Z"
   generation: 1
