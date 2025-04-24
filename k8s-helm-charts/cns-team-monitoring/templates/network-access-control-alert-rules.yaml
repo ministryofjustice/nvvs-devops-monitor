@@ -1,22 +1,22 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: cns-team-monitoring.network-access-control.rules
-  namespace: "{{ .Release.Namespace }}"
   annotations:
-    meta.helm.sh/release-name: "{{ .Release.Name }}"
+    meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: monitoring
     prometheus-operator-validated: "true"
   creationTimestamp: "2022-08-25T09:36:30Z"
   generation: 1
   labels:
-    app: "{{ .Release.Name }}"
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/part-of: "{{ .Release.Name }}"
-    chart: { { .Chart.Name } }
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
     heritage: Helm
-    release: "{{ .Release.Name }}"
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}.network-access-control.rules
+  namespace: {{ .Release.Namespace }}
 spec:
   groups:
     - name: network-access-control.rules
@@ -26,8 +26,8 @@ spec:
           for: 1m
           labels:
             severity: warning
-            service: Network Access Control - test
-            namespace: "{{ .Release.Namespace }}"
+            service: Network Access Control
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Ethernet Reject Requests
             description: Ethernet Access Reject count is {{ "{{ $value }}" }}
@@ -38,7 +38,7 @@ spec:
           labels:
             severity: warning
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Wireless Reject Requests
             description: Wireless Access Reject count is {{ "{{ $value }}" }}
@@ -49,7 +49,7 @@ spec:
           labels:
             severity: warning
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Ignored Requests to EAP
             description: Ignored Requests to EAP count is {{ "{{ $value }}" }}
@@ -60,7 +60,7 @@ spec:
           labels:
             severity: warning
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Incorrect Shared Secret to EAP
             description: Incorrect Shared Secret to EAP count is {{ "{{ $value }}" }}
@@ -71,7 +71,7 @@ spec:
           labels:
             severity: warning
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Unknown Certificate Authority
             description: Unknown Certificate Authority errors count is {{ "{{ $value }}" }}
@@ -82,7 +82,7 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Python Errors in Policy Engine
             description: Python errors in Policy Engine count is {{ "{{ $value }}" }}
@@ -93,7 +93,7 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Failed to Find Attribute
             description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
@@ -104,7 +104,7 @@ spec:
           labels:
             severity: warning
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: All Errors in NACS
             description: Errors reported by NACS count is {{ "{{ $value }}" }}
@@ -115,7 +115,7 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: Failed to start task
             description: An unhealthy container has been released, failed to start task count is {{ "{{ $value }}" }}
@@ -126,18 +126,18 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: FreeRadius Container Health Check Alert
             description: Zero healthy NACS containers running
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
         - alert: NACS Read Replica RDS CPU Alert
-          expr: aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="mojo-production-nac-admin-read-replica"} > 60
+          expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="mojo-production-nac-admin-read-replica"} > 60
           for: 5m
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: NACS RDS CPU is above 60 percent
             description: The RDS CPU for NACS has been above 60 percent for 5 minutes.
@@ -148,7 +148,7 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: NACS ECS CPU or MemoryUtilization is above 60 percent
             description: The Memory or CPU is currently is {{ "{{ $value }}" }}
@@ -159,7 +159,7 @@ spec:
           labels:
             severity: warning
             service: NACS Certificate Expiry Warning
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: A NACS Certificate is due to expire.
             description: Please log onto NAC's and check for expiring certificates https://admin.network-access-control.service.justice.gov.uk/certificates
@@ -170,7 +170,7 @@ spec:
           labels:
             severity: critical
             service: Network Access Control
-            namespace: "{{ .Release.Namespace }}"
+            namespace: {{ .Release.Namespace }}
           annotations:
             summary: NACS EAL TCP OSCP Error count
             description: NACS EAL TCP OSCP Error count is {{ "{{ $value }}" }}
