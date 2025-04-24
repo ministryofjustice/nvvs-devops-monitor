@@ -10,5 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ministryofjustice/github-actions/code-formatter@v18.6.0
+        with:
+          ignore-files: "network-access-control-alert-rules.yaml"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
