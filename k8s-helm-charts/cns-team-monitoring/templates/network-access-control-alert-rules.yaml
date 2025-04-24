@@ -1,12 +1,14 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ .Release.Name }}.network-access-control.rules
+  name: network-access-control.rules
   namespace: {{ .Release.Namespace }}
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: monitoring
     prometheus-operator-validated: "true"
+  creationTimestamp: "2022-08-25T09:36:30Z"
+  generation: 1
   labels:
     app: {{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -20,7 +22,7 @@ spec:
     - name: network-access-control.rules
       rules:
         - alert: Ethernet Reject Requests Alert
-          expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.production_account_id }}"} > 250
+          expr: aws_mojo_nac_requests_reject_ethernet_sum{account_id="{{ .Values.production_account_id }}" } > 250
           for: 1m
           labels:
             severity: warning
@@ -30,9 +32,8 @@ spec:
             summary: Ethernet Reject Requests
             description: Ethernet Access Reject count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Wireless Reject Requests Alert
-          expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.production_account_id }}"} > 10
+          expr: aws_mojo_nac_requests_reject_wireless_802_11_sum{account_id="{{ .Values.production_account_id }}" } > 10
           for: 1m
           labels:
             severity: warning
@@ -42,9 +43,8 @@ spec:
             summary: Wireless Reject Requests
             description: Wireless Access Reject count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Ignored Requests Alert
-          expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_ignoring_request_to_auth_address_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: warning
@@ -54,9 +54,8 @@ spec:
             summary: Ignored Requests to EAP
             description: Ignored Requests to EAP count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Incorrect Shared Secret
-          expr: aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_shared_secret_is_incorrect_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: warning
@@ -66,9 +65,8 @@ spec:
             summary: Incorrect Shared Secret to EAP
             description: Incorrect Shared Secret to EAP count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Unknown Certificate Authority
-          expr: aws_mojo_nac_requests_unknown_ca_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_unknown_ca_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: warning
@@ -78,9 +76,8 @@ spec:
             summary: Unknown Certificate Authority
             description: Unknown Certificate Authority errors count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Python Errors
-          expr: aws_mojo_nac_requests_error_python_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_error_python_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: critical
@@ -90,9 +87,8 @@ spec:
             summary: Python Errors in Policy Engine
             description: Python errors in Policy Engine count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Failed Attribute
-          expr: aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_error_post_auth___failed_to_find_attribute_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: critical
@@ -102,9 +98,8 @@ spec:
             summary: Failed to Find Attribute
             description: Failed to find attribute errors in Policy Engine count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: All Errors
-          expr: aws_mojo_nac_requests_all_errors_sum{account_id="{{ .Values.production_account_id }}"} > 260
+          expr: aws_mojo_nac_requests_all_errors_sum{account_id="{{ .Values.production_account_id }}" } > 260
           for: 1m
           labels:
             severity: warning
@@ -114,9 +109,8 @@ spec:
             summary: All Errors in NACS
             description: Errors reported by NACS count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: Failed to start task Production
-          expr: aws_mojo_nac_requests_failed_to_start_task_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_failed_to_start_task_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: critical
@@ -126,9 +120,8 @@ spec:
             summary: Failed to start task
             description: An unhealthy container has been released, failed to start task count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: FreeRadius Container Health Check Alert
-          expr: aws_mojo_nac_requests_health_check_ok_sum{account_id="{{ .Values.production_account_id }}"} < 1
+          expr: aws_mojo_nac_requests_health_check_ok_sum{account_id="{{ .Values.production_account_id }}" } < 1
           for: 1m
           labels:
             severity: critical
@@ -138,9 +131,8 @@ spec:
             summary: FreeRadius Container Health Check Alert
             description: Zero healthy NACS containers running
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: NACS Read Replica RDS CPU Alert
-          expr: aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="mojo-production-nac-admin-read-replica"} > 60
+          expr:  aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier="mojo-production-nac-admin-read-replica"} > 60
           for: 5m
           labels:
             severity: critical
@@ -150,11 +142,8 @@ spec:
             summary: NACS RDS CPU is above 60 percent
             description: The RDS CPU for NACS has been above 60 percent for 5 minutes.
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: NACS ECS High CPU/Memory Alert
-          expr: |
-            aws_ecs_cpuutilization_average{dimension_ClusterName="mojo-production-nac-cluster"} > 60
-            or aws_ecs_memory_utilization_average{dimension_ClusterName="mojo-production-nac-cluster"} > 60
+          expr: aws_ecs_cpuutilization_average{dimension_ClusterName="mojo-production-nac-cluster"} > 60 or aws_ecs_memory_utilization_average{dimension_ClusterName="mojo-production-nac-cluster"} > 60
           for: 5m
           labels:
             severity: critical
@@ -162,11 +151,10 @@ spec:
             namespace: {{ .Release.Namespace }}
           annotations:
             summary: NACS ECS CPU or MemoryUtilization is above 60 percent
-            description: The Memory or CPU is currently {{ "{{ $value }}" }}
+            description: The Memory or CPU is currently is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: NACS Certificate Expiry Warning
-          expr: max_over_time(aws_mojo_nac_requests_certificate_expiry_warning_maximum{account_id="{{ .Values.production_account_id }}"}[2h15m]) > 0
+          expr: max_over_time(aws_mojo_nac_requests_certificate_expiry_warning_maximum{account_id="{{ .Values.production_account_id }}" }[2h15m]) > 0
           for: 5m
           labels:
             severity: warning
@@ -176,9 +164,8 @@ spec:
             summary: A NACS Certificate is due to expire.
             description: Please log onto NAC's and check for expiring certificates https://admin.network-access-control.service.justice.gov.uk/certificates
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-
         - alert: EAL TCP OSCP Error count alert
-          expr: aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id="{{ .Values.production_account_id }}"} > 0
+          expr: aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id="{{ .Values.production_account_id }}" } > 0
           for: 1m
           labels:
             severity: critical
