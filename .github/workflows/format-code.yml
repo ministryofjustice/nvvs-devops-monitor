@@ -4,21 +4,17 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
     branches-ignore:
-      - main  # Correct way to exclude 'main'
+      - main  # Exclude 'main' branch
 
 jobs:
   format-code:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-super-linter.yml@main
+    with:
+      super-linter-variables: |
+        {
+          "VALIDATE_X": false
+        }
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Super-Linter
-        uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-super-linter.yml@main
-        with:
-          super-linter-variables: |
-            {
-              "VALIDATE_X": false
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
