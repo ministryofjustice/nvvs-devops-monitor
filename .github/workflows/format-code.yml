@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
     branches:
-      - feature/test_Super_linter
+      - "feature/test_Super_linter"
 
 jobs:
   format-code:
