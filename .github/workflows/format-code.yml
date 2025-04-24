@@ -3,8 +3,8 @@ name: code-formatter
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
-    branches-ignore:
-      - main  # Exclude 'main' branch
+    branches:
+      - feature/test_Super_linter
 
 jobs:
   format-code:
