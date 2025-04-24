@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: cns-team-monitoring.network-access-control.rules
-  namespace: {{ "{{ .Release.Name }}" }}
+  namespace: { { "{{ .Release.Name }}" } }
 spec:
   groups:
     - name: network-access-control.rules
