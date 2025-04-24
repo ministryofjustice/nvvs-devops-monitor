@@ -3,6 +3,8 @@ name: code-formatter
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
+    branches:
+      - '!main'       # excludes main
 
 jobs:
   format-code:
