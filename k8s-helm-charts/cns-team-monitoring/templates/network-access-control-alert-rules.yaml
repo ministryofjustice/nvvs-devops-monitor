@@ -26,7 +26,7 @@ spec:
           for: 1m
           labels:
             severity: warning
-            service: Network Access Control
+            service: Network Access Control - test
             namespace: "{{ .Release.Namespace }}"
           annotations:
             summary: Ethernet Reject Requests
