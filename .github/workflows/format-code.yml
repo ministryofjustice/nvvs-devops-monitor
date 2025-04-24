@@ -3,19 +3,22 @@ name: code-formatter
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
-    branches:
-      - '!main'       # excludes main
+    branches-ignore:
+      - main  # Correct way to exclude 'main'
 
 jobs:
   format-code:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-super-linter.yml@main
+
+      - name: Run Super-Linter
+        uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-super-linter.yml@main
         with:
-            super-linter-variables: |
-              {
-                VALIDATE_X: false
-              }
+          super-linter-variables: |
+            {
+              "VALIDATE_X": false
+            }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
