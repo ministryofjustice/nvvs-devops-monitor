@@ -3,7 +3,7 @@ name: Deployment
 on:
   pull_request:
     branches:
-      - "main"
+      - "ND-763-fix-codeformatter-error"
   push:
     branches:
       - "ND-763-fix-codeformatter-error"
