@@ -1,12 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
+  name: {{ .Release.Name }}.network-access-control.rules
+  namespace: {{ .Release.Namespace }}
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: monitoring
     prometheus-operator-validated: "true"
-  creationTimestamp: "2022-08-25T09:36:30Z"
-  generation: 1
   labels:
     app: {{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -15,8 +15,6 @@ metadata:
     chart: {{ .Chart.Name }}
     heritage: Helm
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}.network-access-control.rules
-  namespace: {{ .Release.Namespace }}
 spec:
   groups:
   - name: network-access-control.rules
