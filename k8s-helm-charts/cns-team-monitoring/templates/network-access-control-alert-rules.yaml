@@ -15,7 +15,7 @@ metadata:
     chart: '{{ .Chart.Name }}'
     heritage: Helm
     release: '{{ .Release.Name }}'
-  name: '{{ .Release.Name }}'.network-access-control.rules
+  name: cns-team-monitoring.network-access-control.rules
   namespace: '{{ .Release.Namespace }}'
 spec:
   groups:
