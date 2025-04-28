@@ -170,6 +170,10 @@ spec:
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: NVVS DevOps Critical
+      emailConfigs:
+        - to: 'InfrastructureAutomationTeam@justice.gov.uk',
+        - to: 'mojnoc@justice.gov.uk',
+        - to: 'mojnoc_alerts@justice.gov.uk'
       slackConfigs:
         - apiURL:
             key: dhcp_dns_slack_webhook_url
@@ -252,6 +256,10 @@ spec:
           color: {{`'{{ template "slack.alerts.color" . }}'`}}
           iconEmoji: {{`'{{ template "slack.alerts.icon_emoji" . }}'`}}
     - name: Network Access Control Critical
+      emailConfigs:
+        - to: 'InfrastructureAutomationTeam@justice.gov.uk',
+        - to: 'mojnoc@justice.gov.uk',
+        - to: 'mojnoc_alerts@justice.gov.uk'
       slackConfigs:
         - apiURL:
             key: network_access_control_critical_slack_webhook_url
