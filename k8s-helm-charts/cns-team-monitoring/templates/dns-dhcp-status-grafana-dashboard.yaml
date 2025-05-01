@@ -859,7 +859,9 @@ data:
       "refresh": "5m",
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "provisioned"
+      ],
       "templating": {
         "list": []
       },

@@ -196,7 +196,7 @@ spec:
             key: certificate_services_slack_webhook_url
             name: slack-webhooks
             optional: false
-          channel: '#mojo-staff-infrastructure-certificate-services-alerts'
+          channel: '#mojo-staff-certificate-services-alerts'
           sendResolved: true
           title: {{`'{{ template "slack.alerts.title" . }}'`}}
           text: {{`'{{ template "slack.alerts.text" . }}'`}}

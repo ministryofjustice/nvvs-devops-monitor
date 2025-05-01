@@ -515,7 +515,8 @@ data:
       "schemaVersion": 39,
       "tags": [
         "DHCP",
-        "Kea"
+        "Kea",
+        "provisioned"
       ],
       "templating": {
         "list": [

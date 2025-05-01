@@ -2475,7 +2475,8 @@ data:
       "schemaVersion": 37,
       "style": "dark",
       "tags": [
-        "SMTP-Relay"
+        "SMTP-Relay",
+        "provisioned"
       ],
       "templating": {
         "list": [
