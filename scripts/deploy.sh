@@ -214,8 +214,7 @@ deploy_external_dns() {
     --create-namespace \
     --set txtOwnerId=$application_name \
     --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=$external_dns_iam_role_arn \
-    --set domainFilters[0]=$certificate_domain \
-    --version 1.15.2
+    --set domainFilters[0]=$certificate_domain
   # Create a dashboard for Grafana with the metrics from the ServiceMonitor\
   kubectl apply -f ./k8s-configmaps/external-dns-grafana-dashboard.yaml -n external-dns
 }
@@ -282,12 +281,12 @@ deploy_cns_team_monitoring() {
         --set alertmanager.alert_rules.ost_slack_webhook_url=$(base64_encode "$ost_slack_webhook_url") \
         --set alertmanager.alert_rules.network_access_control_production_slack_webhook_url=$(base64_encode "$network_access_control_production_slack_webhook_url") \
         --set alertmanager.alert_rules.network_access_control_pre_production_slack_webhook_url=$(base64_encode "$network_access_control_pre_production_slack_webhook_url") \
-        --set alertmanager.alert_rules.network_access_control_critical_slack_webhook_url=$(base64_encode "$network_access_control_critical_slack_webhook_url")
-        --set alertmanager.config.global.smtp_smarthost="email-smtp.eu-west-2.amazonaws.com:587" \
+        --set alertmanager.alert_rules.network_access_control_critical_slack_webhook_url=$(base64_encode "$network_access_control_critical_slack_webhook_url") \
+        --set alertmanager.config.global.smtp_smarthost="justice-gov-uk.mail.protection.outlook.com:587" \
         --set alertmanager.config.global.smtp_from="AlertManager@staff.service.justice.gov.uk" \
         --set alertmanager.config.global.smtp_require_tls="true" \
         --set alertmanager.config.global.smtp_auth_username=$alertmanager_smtp_user \
-        --set alertmanager.config.global.smtp_auth_password=$alertmanager_smtp_password \
+        --set alertmanager.config.global.smtp_auth_password=$alertmanager_smtp_password 
     else
       values_file="./k8s-helm-charts/cns-team-monitoring-non-production/values-$namespace.yaml"
       helm upgrade --install cns-team-monitoring ./k8s-helm-charts/cns-team-monitoring \

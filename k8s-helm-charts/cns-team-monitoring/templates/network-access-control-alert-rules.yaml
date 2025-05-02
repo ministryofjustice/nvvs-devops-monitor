@@ -175,15 +175,15 @@ spec:
             summary: NACS EAL TCP OSCP Error count
             description: NACS EAL TCP OSCP Error count is {{ "{{ $value }}" }}
             grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
-        - alert: EAL TCP OSCP Error count critical alert
-            expr: aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id="{{ .Values.production_account_id }}" } > 10
-            for: 1m
-            labels:
-              severity: critical
-              service: Network Access Control
-              namespace: "{{ .Release.Namespace }}"
-            annotations:
-              summary: NACS EAL TCP OSCP Error Critical count
-              description: NACS EAL TCP OSCP Error count is {{ "{{ $value }}" }}
-              grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
+        - alert: EAL TCP OSCP Critical Error count alert
+          expr: aws_mojo_nac_requests_eap_tls_ocsp_error_sum{account_id="{{ .Values.production_account_id }}" } > 10
+          for: 1m
+          labels:
+            severity: critical
+            service: Network Access Control
+            namespace: "{{ .Release.Namespace }}"
+          annotations:
+            summary: NACS EAL TCP OSCP Critical Error count
+            description: NACS EAL TCP OSCP Critical Error count is {{ "{{ $value }}" }}
+            grafana_dashboard_url: https://monitoring-alerting.staff.service.justice.gov.uk/d/CFhQiFxnk/production-network-access-control
   
