@@ -187,8 +187,8 @@ spec:
             key: pagerduty_routing_key
             name: slack-webhooks
       emailConfigs:
-        - to: 'InfrastructureAutomationTeam@justice.gov.uk',
-        - to: 'mojnoc@justice.gov.uk',
+        - to: 'InfrastructureAutomationTeam@justice.gov.uk'
+        - to: 'mojnoc@justice.gov.uk'
         - to: 'mojnoc_alerts@justice.gov.uk'
     - name: Team PKI
       slackConfigs:
@@ -274,8 +274,8 @@ spec:
             name: slack-webhooks
             optional: false
       emailConfigs:
-        - to: 'InfrastructureAutomationTeam@justice.gov.uk',
-        - to: 'mojnoc@justice.gov.uk',
+        - to: 'InfrastructureAutomationTeam@justice.gov.uk'
+        - to: 'mojnoc@justice.gov.uk'
         - to: 'mojnoc_alerts@justice.gov.uk'
     - name: Team Mercury Production
       emailConfigs:
